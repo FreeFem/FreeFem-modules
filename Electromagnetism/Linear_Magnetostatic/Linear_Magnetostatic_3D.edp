@@ -1,0 +1,98 @@
+/*
+This file is part of FreeFem++-modules.
+
+FreeFem++-modules is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Foobar is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+
+
+Linear_Magnetostatic_3D.edp, solve numerically the 3D linear magnetostatics equations with FreeFem++
+
+Author: Simon Garnotel
+Date: 13/12/2017
+*/
+
+load "gmsh"
+load "MUMPS"
+load "iovtk"
+
+//Parameters
+real Mu0 = 4.*pi*1.e-7;	//Vacuum magnetic permeability
+real MuC = 1.25e-6;		//Copper magnetic permeability
+real J0 = 500.e4;		//Current density
+
+//Mesh
+real R = 2.;
+real H = 1.;
+real Rint = 0.1;
+real Rext = 0.2;
+
+int Coil = 10;
+int BoxWall = 1;
+
+mesh3 Th = gmshload3("Linear_Magnetostatic_3D.msh");
+
+//FESpaces
+func Pk = P2;
+fespace Ah(Th, [Pk, Pk, Pk]);
+Ah [Ax, Ay, Az] = [0, 0, 0];
+
+//Macro
+macro Curl(Ax, Ay, Az) [dy(Az)-dz(Ay), dz(Ax)-dx(Az), dx(Ay)-dy(Ax)] //
+macro Divergence(Ax, Ay, Az) (dx(Ax) + dy(Ay) + dz(Az)) //
+
+//Current
+func r = sqrt(x^2+z^2);
+Ah [Jx, Jy, Jz] = J0*[
+	cos(atan2(z, x)+pi/2.) * (r >= Rint)*(r <= Rext)*(y >= -H/2.)*(y <= H/2.),
+	0,
+	sin(atan2(z, x)+pi/2.) * (r >= Rint)*(r <= Rext)*(y >= -H/2.)*(y <= H/2.)
+	];
+
+//Problem
+func Mu = Mu0 + (MuC-Mu0)*(region==Coil);
+func Nu = 1. / Mu;
+varf vLaplacian ([Ax, Ay, Az], [AAx, AAy, AAz])
+	= int3d(Th)(
+		  Nu * Curl(Ax, Ay, Az)' * Curl(AAx, AAy, AAz)
+		+ (1./Mu) * Divergence(Ax, Ay, Az) * Divergence(AAx, AAy, AAz)
+	)
+	- int3d(Th)(
+		  [Jx, Jy, Jz]' * [AAx, AAy, AAz]
+	)
+	+ on(BoxWall, Ax=0, Ay=0, Az=0)
+	;
+
+matrix<real> Laplacian = vLaplacian(Ah, Ah, solver=sparsesolver);
+real[int] LaplacianBoundary = vLaplacian(0, Ah);
+Ax[] = Laplacian^-1 * LaplacianBoundary;
+
+//Magnetic induction
+Ah [Bx, By, Bz];
+[Bx, By, Bz] = Curl(Ax, Ay, Az);
+
+//Magnetic field
+Ah [Hx, Hy, Hz];
+[Hx, Hy, Hz] = Nu * [Bx, By, Bz];
+
+//Save
+{
+	fespace PV(Th, [P1, P1, P1]);
+	PV [AAx, AAy, AAz] = [Ax, Ay, Az];
+	PV [BBx, BBy, BBz] = [Bx, By, Bz];
+	PV [HHx, HHy, HHz] = [Hx, Hy, Hz];
+	int[int] fforder = [1, 1, 1];
+	savevtk("Results/Result_3D.vtu", Th, [AAx, AAy, AAz], [BBx, BBy, BBz], [HHx, HHy, HHz], dataname="MagneticVectorPotential MagneticInduction MagneticField", order=fforder);
+}
+
+
+

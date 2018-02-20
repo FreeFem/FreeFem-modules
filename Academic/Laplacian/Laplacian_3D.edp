@@ -1,0 +1,69 @@
+/*
+This file is part of FreeFem++-modules.
+
+FreeFem++-modules is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Foobar is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+
+
+Laplace_3D.edp, solve numerically the 3D Laplace equation with FreeFem++
+
+Author: Simon Garnotel
+Date: 12/01/2018
+*/
+
+load "MUMPS"
+load "iovtk"
+include "cube.idp"
+
+// Parameters
+func f = 1.;
+
+// Mesh
+int nn = 10;
+mesh3 Th = cube(nn, nn, nn);
+
+// Fespace
+func Pk = P2;
+fespace Uh(Th, Pk);
+Uh u;
+
+// Macro
+macro grad(A) [dx(A), dy(A), dz(A)] //
+
+// Problem
+varf vLaplacian (u, uh)
+	= int3d(Th)(
+		  grad(u)' * grad(uh)
+	)
+	- int3d(Th)(
+		  f * uh
+	)
+	+ on(1, 2, 3, 4, 5, 6, u=0)
+	;
+matrix<real> Laplacian = vLaplacian(Uh, Uh, solver=sparsesolver);
+real[int] LaplacianBoundary = vLaplacian(0, Uh);
+u[] = Laplacian^-1 * LaplacianBoundary;
+
+// Plot
+plot(u, nbiso=30, fill=true, value=true, cmm="A");
+
+//Save
+{
+	fespace PV(Th, P1);
+	PV uu = u;
+	int[int] fforder = [1];
+	savevtk("Results/Result_3D.vtu", Th, u, dataname="Laplacian", order=fforder);
+}
+
+
+

@@ -1,0 +1,78 @@
+/*
+Static_Linear_Elasticity_3D.edp, solve the 3D static linear elasticity equations with FreeFem++
+
+Author: Simon Garnotel
+Date: 11/12/2017
+*/
+
+load "gmsh"
+load "MUMPS"
+load "msh3"
+load "iovtk"
+
+//Parameters
+real Rho = 8000.;		//Density
+real E = 210.e9;			//Young modulus
+real Nu = 0.27;		//Poisson ratio
+
+real Gravity = -9.81;	//Gravity
+
+//Mesh
+int Fixed = 1;			//Beam fixed label
+int Free = 2;			//Beam free label
+mesh3 Th = gmshload3("Static_Linear_Elasticity_3D.msh");
+
+//Fespace
+func Pk = P1;
+fespace Uh(Th, [Pk, Pk, Pk]);
+Uh [ux, uy, uz];
+Uh [vx, vy, vz];
+Uh [uxp, uyp, uzp];
+Uh [uxpp, uypp, uzpp];
+
+//Macro
+real sqrt2 = sqrt(2.);
+macro Epsilon(ux, uy, uz) [dx(ux), dy(uy), dz(uz),
+	(dz(uy)+dy(uz))/sqrt2,
+	(dz(ux)+dx(uz))/sqrt2,
+	(dy(ux)+dx(uy))/sqrt2] //
+macro Divergence(ux, uy, uz) (dx(ux) + dy(uy) + dz(uz)) //
+
+//Problem
+real Mu = E/(2.*(1.+Nu));
+real Lambda = E*Nu/((1.+Nu)*(1.-2.*Nu));
+
+varf vElasticity ([ux, uy, uz], [vx, vy, vz])
+	= int3d(Th)(
+		  Lambda * Divergence(vx, vy, vz) * Divergence(ux, uy, uz)
+		+ 2. * Mu * (
+			  Epsilon(vx, vy, vz)' * Epsilon(ux, uy, uz)
+		)
+	)
+	+ int3d(Th)(
+		  Rho * Gravity * vy
+	)
+	+ on(Fixed, ux=0, uy=0, uz=0)
+	;
+
+matrix Elasticity = vElasticity(Uh, Uh, solver=sparsesolver);
+real[int] ElasticityBoundary = vElasticity(0, Uh);
+ux[] = Elasticity^-1 * ElasticityBoundary;
+
+//Movemesh
+Th = movemesh(Th, [x+ux, y+uy, z+uz]);
+[ux, uy, uz] = [ux, uy, uz];
+
+//Plot
+plot([ux, uy, uz], value=true, cmm="u");
+
+//Save
+{
+	fespace PVh(Th, [P1, P1, P1]);
+	PVh [uux, uuy, uuz] = [ux, uy, uz];
+	int[int] fforder = [1];
+	savevtk("Results/Result_3D.vtu", Th, [uux, uuy, uuz], dataname="Displacement", order=fforder);
+}
+
+
+
