@@ -21,20 +21,23 @@ function copyPasteCode(code, button) {
 
   // Color button
   button.style.backgroundColor = 'rgba(0, 255, 0, 0.5)'
-  setTimeout(function() {
-    button.style.background = 'none'
-  }, 1000)
+  button.style.color = 'black'
+  button.innerText = 'copied!'
+  button.onmouseleave = function () {
+    button.innerText = 'copy'
+    button.style.backgroundColor = '#084887'
+    button.style.color = '#f9ab55'
+  }
+  // setTimeout(function() {
+  //   button.style.background = 'none'
+  // }, 1000)
 }
 
 for (let i = 0; i < codeBlocks.length; i++) {
   // Copy / Paste button
-  var p = document.createElement('p')
-  var node = document.createTextNode('copy')
-  p.appendChild(node);
-
   let button = document.createElement('button')
   button.className = 'copyPasteButton'
-  button.appendChild(p)
+  button.innerText ='copy'
   button.onclick = function() { copyPasteCode(codeBlocks[i], button) }
 
   // Add button
