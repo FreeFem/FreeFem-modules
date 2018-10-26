@@ -127,8 +127,8 @@ plot(H, nbiso=30, fill=true, value=true, cmm="H");
 plot(L, nbiso=30, fill=true, value=true, cmm="L");
 {% endhighlight %}
 
-|--|
 |Result - Magnetic induction|
+|--|
 |![Result]({{ site.url }}{{ site.baseurl }}/assets/Magnetostatic2D.png)|
 
 ### 3D
@@ -196,8 +196,8 @@ Ah [Hx, Hy, Hz];
 [Hx, Hy, Hz] = Nu * [Bx, By, Bz];
 {% endhighlight %}
 
-|--|
 |Result - Magnetic induction|
+|--|
 |![Result]({{ site.url }}{{ site.baseurl }}/assets/Magnetostatic3D.png)|
 
 ### Optional
@@ -451,6 +451,6 @@ Physical Volume(MAGNETVOLUME) = {v+0};
 Physical Volume(VACUUMVOLUME) = {v+1};
 {% endhighlight %}
 
-|--|
 |Mesh|
+|--|
 |![Result]({{ site.url }}{{ site.baseurl }}/assets/Magnetostatic3DMesh.png)|

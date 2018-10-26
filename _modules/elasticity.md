@@ -260,6 +260,6 @@ Physical Surface("Free", Free) = {s+2, s+3, s+4, s+5};
 Physical Volume("Volume", 1) = {v+0};
 {% endhighlight %}
 
-|--|
 |Mesh|
+|--|
 |![Mesh]({{ site.url }}{{ site.baseurl }}/assets/Elasticity3DMesh.png)|
