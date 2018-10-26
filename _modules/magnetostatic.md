@@ -150,7 +150,7 @@ real Rext = 0.2;
 int Coil = 10;
 int BoxWall = 1;
 
-mesh3 Th = gmshload3("Linear_Magnetostatic_3D.msh");
+mesh3 Th = gmshload3("Magnetostatic3D.msh");
 
 //FESpaces
 func Pk = P2;
@@ -186,6 +186,14 @@ varf vLaplacian ([Ax, Ay, Az], [AAx, AAy, AAz])
 matrix<real> Laplacian = vLaplacian(Ah, Ah, solver=sparsesolver);
 real[int] LaplacianBoundary = vLaplacian(0, Ah);
 Ax[] = Laplacian^-1 * LaplacianBoundary;
+
+//Magnetic induction
+Ah [Bx, By, Bz];
+[Bx, By, Bz] = Curl(Ax, Ay, Az);
+
+//Magnetic field
+Ah [Hx, Hy, Hz];
+[Hx, Hy, Hz] = Nu * [Bx, By, Bz];
 {% endhighlight %}
 
 |--|

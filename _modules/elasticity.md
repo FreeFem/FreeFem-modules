@@ -122,7 +122,7 @@ real Gravity = -9.81;	//Gravity
 //Mesh
 int Fixed = 1;			//Beam fixed label
 int Free = 2;			//Beam free label
-mesh3 Th = gmshload3("Static_Linear_Elasticity_3D.msh");
+mesh3 Th = gmshload3("Elasticity3D.msh");
 
 //Fespace
 func Pk = P1;
