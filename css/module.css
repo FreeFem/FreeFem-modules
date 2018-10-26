@@ -53,14 +53,14 @@ nav li:hover {
 }
 
 .content {
-  padding: 10px;
+  padding: 0 10px 20px 10px;
   width: 100%;
   overflow: auto;
 }
 
 .content h1, .content h2, .content h3, .content h4, .content h5 {
-  margin: 5px;
-  padding: 0;
+  margin: 0 -10px 10px -10px;
+  padding: 10px;
   font-weight: normal;
   background-color: rgba(0, 205, 255, 0.1);
 }
