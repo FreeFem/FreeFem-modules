@@ -100,6 +100,8 @@ Th = movemesh(Th, [x+ux, y+uy]);
 plot([ux, uy], value=true, cmm="u");
 {% endhighlight %}
 
+![Result warped by a factor 1000]({{ site.url }}{{ site.baseurl }}/assets/Elasticity2D.png)
+
 ### 3D
 
 Elasticity equation on a beam.
@@ -164,6 +166,8 @@ Th = movemesh(Th, [x+ux, y+uy, z+uz]);
 //Plot
 plot([ux, uy, uz], value=true, cmm="u");
 {% endhighlight %}
+
+![Result warp by a factor 1000]({{ site.url }}{{ site.baseurl }}/assets/Elasticity3D.png)
 
 ### Optional
 
@@ -251,3 +255,5 @@ Physical Surface("Free", Free) = {s+2, s+3, s+4, s+5};
 //Volumes
 Physical Volume("Volume", 1) = {v+0};
 {% endhighlight %}
+
+![Mesh]({{ site.url }}{{ site.baseurl }}/assets/Elasticity3DMesh.png)
