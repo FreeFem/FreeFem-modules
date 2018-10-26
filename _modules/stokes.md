@@ -112,7 +112,7 @@ plot(p, cmm="Pressure");
 plot([ux, uy], cmm="Velocity");
 {% endhighlight %}
 
-|Result - velocity and pressure|
+|Result - velocity \(top\) and pressure \(bottom\)|
 |--|
 |![Velocity]({{ site.url }}{{ site.baseurl }}/assets/Stokes2D_u.png)|
 |![Pressure]({{ site.url }}{{ site.baseurl }}/assets/Stokes2D_p.png)|
@@ -193,7 +193,7 @@ plot(p, cmm="Presure");
 plot([ux, uy, uz], cmm="Velocity");
 {% endhighlight %}
 
-|Result - velocity and pressure|
+|Result - velocity (top) and pressure (bottom)|
 |--|
 |![Velocity]({{ site.url }}{{ site.baseurl }}/assets/Stokes3D_u.png)|
 |![Pressure]({{ site.url }}{{ site.baseurl }}/assets/Stokes3D_p.png)|
