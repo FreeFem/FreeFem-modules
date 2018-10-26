@@ -101,8 +101,8 @@ plot([ux, uy], value=true, cmm="u");
 {% endhighlight %}
 
 |--|
-|![Result warped by a factor 1000]({{ site.url }}{{ site.baseurl }}/assets/Elasticity2D.png)|
 |Result warped by a factor 1000|
+|![Result warped by a factor 1000]({{ site.url }}{{ site.baseurl }}/assets/Elasticity2D.png)|
 
 ### 3D
 
@@ -170,8 +170,8 @@ plot([ux, uy, uz], value=true, cmm="u");
 {% endhighlight %}
 
 |--|
-|![Result warped by a factor 1000]({{ site.url }}{{ site.baseurl }}/assets/Elasticity3D.png)|
 |Result warped by a factor 1000|
+|![Result warped by a factor 1000]({{ site.url }}{{ site.baseurl }}/assets/Elasticity3D.png)|
 
 ### Optional
 
@@ -261,5 +261,5 @@ Physical Volume("Volume", 1) = {v+0};
 {% endhighlight %}
 
 |--|
-|![Mesh]({{ site.url }}{{ site.baseurl }}/assets/Elasticity3DMesh.png)|
 |Mesh|
+|![Mesh]({{ site.url }}{{ site.baseurl }}/assets/Elasticity3DMesh.png)|
