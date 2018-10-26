@@ -127,6 +127,10 @@ plot(H, nbiso=30, fill=true, value=true, cmm="H");
 plot(L, nbiso=30, fill=true, value=true, cmm="L");
 {% endhighlight %}
 
+|--|
+|![Result]({{ site.url }}{{ site.baseurl }}/assets/Magnetostatic2D.png)|
+|Result|
+
 ### 3D
 
 {% highlight cpp %}
@@ -183,3 +187,7 @@ matrix<real> Laplacian = vLaplacian(Ah, Ah, solver=sparsesolver);
 real[int] LaplacianBoundary = vLaplacian(0, Ah);
 Ax[] = Laplacian^-1 * LaplacianBoundary;
 {% endhighlight %}
+
+|--|
+|![Result]({{ site.url }}{{ site.baseurl }}/assets/Magnetostatic3D.png)|
+|Result|
