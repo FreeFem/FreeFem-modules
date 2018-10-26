@@ -90,3 +90,8 @@ nav li:hover {
 .copyPasteButton p {
   margin: 0;
 }
+
+.content img {
+  margin: auto;
+  width: 50%;
+}

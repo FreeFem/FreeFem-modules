@@ -75,6 +75,8 @@ u[] = Laplacian^-1 * LaplacianBoundary;
 plot(u, nbiso=30, fill=true, value=true, cmm="A");
 {% endhighlight %}
 
+![Result]({{ site.url }}{{ site.baseurl }}/assets/Laplacian2D.png)
+
 ### 3D
 
 Laplacian equation on a cube.
@@ -114,3 +116,5 @@ u[] = Laplacian^-1 * LaplacianBoundary;
 // Plot
 plot(u, nbiso=30, fill=true, value=true, cmm="A");
 {% endhighlight %}
+
+![Result]({{ site.url }}{{ site.baseurl }}/assets/Laplacian3D.png)
