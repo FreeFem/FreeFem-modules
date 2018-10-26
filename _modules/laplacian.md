@@ -75,9 +75,10 @@ u[] = Laplacian^-1 * LaplacianBoundary;
 plot(u, nbiso=30, fill=true, value=true, cmm="A");
 {% endhighlight %}
 
+|Result|
 |--|
 ![Result]({{ site.url }}{{ site.baseurl }}/assets/Laplacian2D.png)|
-|Result|
+
 
 ### 3D
 
@@ -119,6 +120,6 @@ u[] = Laplacian^-1 * LaplacianBoundary;
 plot(u, nbiso=30, fill=true, value=true, cmm="A");
 {% endhighlight %}
 
+|Result|
 |--|
 |![Result]({{ site.url }}{{ site.baseurl }}/assets/Laplacian3D.png)|
-|Result|
