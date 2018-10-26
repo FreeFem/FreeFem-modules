@@ -94,4 +94,6 @@ nav li:hover {
 .content img {
   margin: auto;
   width: 50%;
+  display: block;
+  text-align: center;
 }
