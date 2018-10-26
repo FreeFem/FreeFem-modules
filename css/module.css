@@ -46,16 +46,6 @@ nav li:hover {
   display: none;
 }
 
-.categoriesArea {
-  margin: auto;
-  width: 90%;
-}
-
-.searchArea {
-  margin: auto;
-  width: 90%;
-}
-
 .author {
   position: absolute;
   top: 10px;
