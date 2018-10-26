@@ -1,23 +1,55 @@
-# How to contribute ?
+# Add a module
 
-Feel free to help us to increase the number of available algorithms !
+- Fork the project on your Github account
 
-All contributions are under LGPL licence
----------------------------------------
+- Create a new file in `_modules/`, e.g `myModule.js`
 
-## Preferred folder organization
+- Fill the front matter:
 
-See the [example folder](Example) for the organization of your algorithm folder.
+```
+---
+name: {required: module name}
+category: {required: module category}
+layout: module
+author: {required: your name}
+authorURL: {your personnal page/Github profil}
+---
+```
 
-Please don't forget to add your algorithm to the list in the repository's root README.md file.
+- Write your module page
 
-## Via Github
+Page architecture :
 
-Just do a pull request !
+```
+# {Module name}
 
-## Via email
+{Short description}
 
-Send us your algorithm folder (.zip, .tar.gz, ...) directly to simon.garnotel [at] airthium.com.
-We will add it for you.
+## Problem
 
+{Continuous equations, with parameters description, ...}
 
+## Variational form
+
+{Variational form and spaces}
+
+## Algorithms
+
+[Optionaly 2D/3D]
+
+{Description of the case}
+
+{FreeFem++ algorithm}
+
+## Validation
+
+[Optional]
+
+## References
+
+[Optional]
+
+{Publications related to the algorithm, prefer researchgate if possible}
+```
+
+- Open a pull request

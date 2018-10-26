@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% include html_mathjax %}
+    <title>{{page.title}}</title>
+    <link rel="stylesheet" href="{{ site.url }}{{ site.baseurl }}/css/html.css" />
+    <link rel="stylesheet" href="{{ site.url }}{{ site.baseurl }}/css/header.css" />
+    <link rel="stylesheet" href="{{ site.url }}{{ site.baseurl }}/css/footer.css" />
+    <link rel="stylesheet" href="{{ site.url }}{{ site.baseurl }}/css/home.css" />
+    <link rel="stylesheet" href="{{ site.url }}{{ site.baseurl }}/css/categories.css" />
+    <link rel="stylesheet" href="{{ site.url }}{{ site.baseurl }}/css/search.css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/png" href="{{ site.url }}{{ site.baseurl }}/favicon.png"/>
+    <script src="{{ site.url }}{{ site.baseurl }}/js/homeCategories.js"></script>
+    <script src="{{ site.url }}{{ site.baseurl }}/js/homeSearch.js"></script>
+  </head>
+  <body>
+    {% include header.html %}
+
+    <div class="container">
+      <div class="content">
+        {{ content }}
+      </div>
+
+      <div class="categoriesArea">
+        {% include categories.html %}
+      </div>
+
+      <div class="searchArea">
+        {% include search.html %}
+      </div>
+
+      <div class="modulesList" id="modulesList">
+        {% for module in site.modules %}
+        <a href="{{ site.url }}{{ site.baseurl }}{{ module.url}}">
+          <div class="module">
+            <div class="moduleName">
+              {{ module.name }}
+            </div>
+            <div class="moduleCategory light">
+              {{module.category}}
+            </div>
+            <script>
+              addToCategories('{{module.category}}')
+            </script>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+
+    {% include footer.html %}
+    
+    <script>
+      colorCategories()
+    </script>
+  </body>
+</html>

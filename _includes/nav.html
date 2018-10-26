@@ -1,0 +1,20 @@
+<nav>
+  <div class="categoriesArea">
+    {% include categories.html %}
+  </div>
+  <div class="searchArea">
+    {% include search.html %}
+  </div>
+
+  <ul id="menu">
+    <li><a href="{{ site.url }}{{ site.baseurl }}/">Home</a></li>
+    {% for module in site.modules %}
+    <li>
+      <a href="{{ site.url }}{{ site.baseurl }}{{ module.url}}">
+        {{ module.name }}
+      </a>
+      <span class="hidden">{{ module.category }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+</nav>

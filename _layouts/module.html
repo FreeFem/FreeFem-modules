@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% include html_mathjax %}
+    <title>{{site.title}} - {{page.name}}</title>
+    <link rel="stylesheet" href="{{ site.url }}{{ site.baseurl }}/css/html.css" />
+    <link rel="stylesheet" href="{{ site.url }}{{ site.baseurl }}/css/header.css" />
+    <link rel="stylesheet" href="{{ site.url }}{{ site.baseurl }}/css/footer.css" />
+    <link rel="stylesheet" href="{{ site.url }}{{ site.baseurl }}/css/module.css" />
+    <link rel="stylesheet" href="{{ site.url }}{{ site.baseurl }}/css/categories.css" />
+    <link rel="stylesheet" href="{{ site.url }}{{ site.baseurl }}/css/search.css" />
+    <link rel="stylesheet" href="{{ site.url }}{{ site.baseurl }}/css/pygments.css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/png" href="{{ site.url }}{{ site.baseurl }}/favicon.png"/>
+    <script src="{{ site.url }}{{ site.baseurl }}/js/moduleSearch.js"></script>
+    <script src="{{ site.url }}{{ site.baseurl }}/js/moduleCategories.js"></script>
+  </head>
+  <body>
+    {% include header.html %}
+
+    <div class="container">
+      {% include nav.html %}
+
+      {% for module in site.modules %}
+        <script>
+          addToCategories('{{module.category}}')
+        </script>
+      {% endfor %}
+
+      <div class="content">
+        <div class="author">
+          Author:
+          {% if page.authorURL %}
+          <a href="{{ page.authorURL }}" target="_blank">
+          {% endif %}
+            {{ page.author }}
+          {% if page.authorURL %}
+          </a>
+          {% endif %}
+        </div>
+        {{ content }}
+      </div>
+    </div>
+
+    {% include footer.html %}
+    
+    <script src="{{ site.url }}{{ site.baseurl }}/js/copyPasteCode.js"></script>
+  </body>
+</html>

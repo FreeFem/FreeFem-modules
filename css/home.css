@@ -1,0 +1,53 @@
+.container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.categoriesArea {
+  margin: auto;
+  padding: 10px;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+
+.searchArea {
+  margin: auto;
+  padding: 10px;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+
+.modulesList {
+  margin: auto;
+  padding: 10px;
+  width: 50%;
+}
+
+.module {
+  margin: auto;
+  padding: 10px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.module a {
+  text-decoration: none;
+  color: rgb(0, 100, 155);
+}
+
+.module:hover {
+  background-color: rgba(0, 204, 255, 0.1);
+}
+
+.moduleCategory {
+  color: #888;
+}

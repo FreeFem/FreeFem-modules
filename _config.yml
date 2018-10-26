@@ -1,0 +1,12 @@
+title: "FreeFem++ modules"
+subtitle: "A collection of mathematically validated modules for FreeFem++"
+description: "A collection of mathematically validated modules for FreeFem++"
+
+markdown: kramdown
+
+include: ["_modules"]
+
+collections:
+    modules:
+      output: true
+      permalink: /:collection/:path/
