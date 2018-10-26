@@ -112,9 +112,13 @@ plot(p, cmm="Pressure");
 plot([ux, uy], cmm="Velocity");
 {% endhighlight %}
 
-|Result - velocity and pressure||
-|--|--|
-|![Velocity]({{ site.url }}{{ site.baseurl }}/assets/Stokes2D_u.png)|![Pressure]({{ site.url }}{{ site.baseurl }}/assets/Stokes2D_p.png)
+|Result - velocity|
+|--|
+|![Velocity]({{ site.url }}{{ site.baseurl }}/assets/Stokes2D_u.png)|
+
+|Result - pressure|
+|--|
+|![Pressure]({{ site.url }}{{ site.baseurl }}/assets/Stokes2D_p.png)|
 
 ### 3D
 
@@ -191,3 +195,11 @@ S;
 plot(p, cmm="Presure");
 plot([ux, uy, uz], cmm="Velocity");
 {% endhighlight %}
+
+|Result - velocity|
+|--|
+|![Velocity]({{ site.url }}{{ site.baseurl }}/assets/Stokes3D_u.png)|
+
+|Result - pressure|
+|--|
+|![Pressure]({{ site.url }}{{ site.baseurl }}/assets/Stokes3D_p.png)|
