@@ -169,8 +169,8 @@ Th = movemesh(Th, [x+ux, y+uy, z+uz]);
 plot([ux, uy, uz], value=true, cmm="u");
 {% endhighlight %}
 
-|--|
 |Result warped by a factor 1000|
+|--|
 |![Result warped by a factor 1000]({{ site.url }}{{ site.baseurl }}/assets/Elasticity3D.png)|
 
 ### Optional
