@@ -25,4 +25,12 @@
   padding: 5px 5px 5px 30px;
   width: 100%;
   font-size: 1em;
+  border: 1px solid #ddd;
+}
+
+input:focus {
+    background-color: #fff;
+    border-color: #178fbb;
+    color: #222;
+    outline-color: #178fbb;
 }
