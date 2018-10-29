@@ -1,5 +1,5 @@
 header {
-  flex: 1 1 0px;
+  flex: 1 1 auto;
   display: inline-flex;
   justify-content: center;
   background-color: #222;
