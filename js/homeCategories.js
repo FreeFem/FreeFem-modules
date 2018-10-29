@@ -4,7 +4,7 @@ addToCategories = (item) => {
   const index = categories.indexOf(item)
   if (index > -1)
     return
-    
+
   addCategory(item)
   categories.push(item)
 }
@@ -12,14 +12,16 @@ addToCategories = (item) => {
 addCategory = (item) => {
   const label = document.createElement('label')
   label.className = 'light light-' + categories.length
+  label.setAttribute('for', item)
   label.innerHTML = item
   const input = document.createElement('input')
   input.type = 'checkbox'
+  input.className = 'osx-checkbox'
   input.checked = true
   input.id = item
   input.onchange = function() { onCategoryChange(item, input.checked) }
   label.appendChild(input)
-  
+
   categoriesDiv.appendChild(label)
 }
 
@@ -56,7 +58,7 @@ toogleCategories = () => {
 
 colorCategories = () => {
   const modules = document.getElementsByClassName('moduleCategory')
-  
+
   for (let i = 0; i < modules.length; i++) {
     let text = modules[i].innerHTML
     text = text.replace(/\s/g, '')
