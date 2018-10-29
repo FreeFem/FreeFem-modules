@@ -48,3 +48,16 @@
 .moduleCategory {
   color: #888;
 }
+
+@media only screen and (max-width: 600px) {
+  .categoriesArea {
+    width: 100%;
+  }
+  .searchArea {
+    width: 100%;
+  }
+  .modulesList {
+    padding: 0;
+    width: 100%;
+  }
+}
