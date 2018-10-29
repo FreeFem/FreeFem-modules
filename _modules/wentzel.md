@@ -2,8 +2,6 @@
 name: Wentzel
 category: academic
 layout: module
-author: Beniamin Bogosel
-authorURL: http://www.cmap.polytechnique.fr/~beniamin.bogosel/
 ---
 
 # Wentzel
@@ -105,3 +103,7 @@ cout << " Total CPU time = " << clock()-cpu << endl;
 ## References
 
 [B. Bogosel, The method of fundamental solutions applied to boundary eigenvalue problems, 2016, Journal of Computational and Applied Mathematics](https://www.researchgate.net/publication/282658142_The_method_of_fundamental_solutions_applied_to_boundary_eigenvalue_problems)
+
+### Authors
+
+Author: [Beniamin Bogosel](http://www.cmap.polytechnique.fr/~beniamin.bogosel/)

@@ -2,8 +2,6 @@
 name: Stokes
 category: fluid
 layout: module
-author: Simon Garnotel
-authorURL: https://github.com/sgarnotel
 ---
 
 # Stokes

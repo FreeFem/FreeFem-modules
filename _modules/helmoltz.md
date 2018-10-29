@@ -2,8 +2,6 @@
 name: Helmoltz
 category: electromagnetism
 layout: module
-author: Alexis Tacnet
-authorURL: https://github.com/alxkt
 ---
 
 {% comment %}
@@ -59,13 +57,13 @@ border a11(t=0,1) {x=a-c; y=c+(b-c*2)*t; label=1;}
 border a21(t=1,0) {x=c+(a-c*2)*t; y=b-c; label=1;}
 border a31(t=1,0) {x=c; y=c+(b-c*2)*t; label=1;}
 
-real p=5, q=20, d=34, e=1; 
+real p=5, q=20, d=34, e=1;
 border b00(t=0,1) {x=p+d*t; y=q; label=3;}
 border b10(t=0,1) {x=p+d; y=q+e*t; label=3;}
 border b20(t=1,0) {x=p+d*t; y=q+e; label=3;}
 border b30(t=1,0) {x=p; y=q+e*t; label=3;}
 
-real r=30, s=1, j=1, u=15; 
+real r=30, s=1, j=1, u=15;
 border c00(t=0,1) {x=r+j*t; y=s; label=3;}
 border c10(t=0,1) {x=r+j; y=s+u*t; label=3;}
 border c20(t=1,0) {x=r+j*t; y=s+u; label=3;}
@@ -80,19 +78,19 @@ plot(Sh);
 // Source loop
 for (int bx = 1; bx <= 7; bx++){
 	border C(t=0,2*pi){x=2+cos(t);y=bx*5+sin(t);label=2;}
-	
+
 	mesh Th = buildmesh(a00(10*n)+a10(10*n)+a20(10*n)+a30(10*n)
 			+a01(10*n)+a11(10*n)+a21(10*n)+a31(10*n)+C(10)
 			+b00(5*n)+b10(5*n)+b20(5*n)+b30(5*n)
 			+c00(5*n)+c10(5*n)+c20(5*n)+c30(5*n));
-	
+
 	// Fespace
 	fespace Vh(Th, Pk);
 	Vh wallreflexion = randreal1();
 	Vh<complex> wallabsorption = randreal1()*0.5i;
 	Vh k = 6;
 	Vh<complex> v, w;
-	
+
 	// Function
 	func real wall(){
 		if (Th(x,y).region == Th(0.5,0.5).region || Th(x,y).region == Th(7,20.5).region || Th(x,y).region == Th(30.5,2).region)	//TODO use a, b & c, not hard defined regions
@@ -100,10 +98,10 @@ for (int bx = 1; bx <= 7; bx++){
 		else
 			return 0;
 	}
-	
+
 	cout << "Reflexion of walls : " << wallreflexion << "\n";
 	cout << "Absorption of walls : " << wallabsorption << "\n";
-	
+
 	// Problem
 	problem muwave(v, w)
 		= int2d(Th)(
@@ -112,12 +110,16 @@ for (int bx = 1; bx <= 7; bx++){
 		)
 		+ on(2, v=1)
 		;
-	
+
 	// Solve
 	muwave;
-	
+
 	// Plot
 	Vh vm = log(real(v)^2 + imag(v)^2);
 	plot(vm, fill=true, value=false, nbiso=65);
 }
 {% endhighlight %}
+
+### Authors
+
+Author: [Alexis Tacnet](https://github.com/alxkt)

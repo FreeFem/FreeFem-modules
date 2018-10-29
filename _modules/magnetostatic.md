@@ -2,8 +2,6 @@
 name: Magnetostatic
 category: electromagnetism
 layout: module
-author: Simon Garnotel
-authorURL: https://github.com/sgarnotel
 ---
 
 # Stokes

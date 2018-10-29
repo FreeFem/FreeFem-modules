@@ -2,8 +2,6 @@
 name: Elasticity
 category: solid
 layout: module
-author: Simon Garnotel
-authorURL: https://github.com/sgarnotel
 ---
 
 # Elasticity
