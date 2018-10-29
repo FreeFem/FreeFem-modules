@@ -28,9 +28,6 @@ function copyPasteCode(code, button) {
     button.style.backgroundColor = '#084887'
     button.style.color = '#f9ab55'
   }
-  // setTimeout(function() {
-  //   button.style.background = 'none'
-  // }, 1000)
 }
 
 for (let i = 0; i < codeBlocks.length; i++) {

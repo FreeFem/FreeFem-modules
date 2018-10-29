@@ -7,10 +7,6 @@
   justify-content: flex-start;
 }
 
-/* From https://www.w3schools.com/howto/howto_css_custom_checkbox.asp */
-
-/* Customize the label (the container) */
-
 .categories .light {
     margin: 5px 5px 5px 5px;
 }
@@ -25,84 +21,10 @@
     padding: 2px 4px;
     text-transform: lowercase;
     white-space: nowrap;
-}
-
-input[type="checkbox"], input[type="radio"] {
-    line-height: normal;
-}
-
-input[type="checkbox"], input[type="radio"] {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    padding: 0;
-}
-
-.osx-checkbox + label {
-    position: relative;
-    display: block;
-    padding-left: 30px;
-    cursor: pointer;
-    vertical-align: middle;
-}
-
-.osx-checkbox:checked + label::before {
-    border: #3e97eb;
-    background: #3e97eb;
-}
-
-.osx-checkbox:checked + label::before {
-    animation-name: none;
-}
-
-.osx-checkbox + label::before {
-    border-radius: 3px;
-}
-
-.osx-checkbox + label::before {
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: inline-block;
-    width: 13px;
-    height: 13px;
-    content: '';
-    border: 1px solid #c0c0c0;
-}
-
-::after, ::before {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
-.osx-checkbox:checked + label::after {
-    display: block;
-}
-.osx-checkbox + label::after {
-    top: 1px;
-    left: 4px;
-    box-sizing: border-box;
-    width: 5px;
-    height: 9px;
-    transform: rotate(45deg);
-    border-width: 2px;
-        border-top-width: 2px;
-        border-left-width: 2px;
-    border-style: solid;
-        border-top-style: solid;
-        border-left-style: solid;
-    border-color: #fff;
-        border-top-color: rgb(255, 255, 255);
-        border-left-color: rgb(255, 255, 255);
-    border-top: 0;
-    border-left: 0;
-}
-
-.osx-checkbox + label::after {
-    position: absolute;
-    display: none;
-    content: '';
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 .light-0 {

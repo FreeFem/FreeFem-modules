@@ -16,7 +16,6 @@ addCategory = (item) => {
   label.innerHTML = item
   const input = document.createElement('input')
   input.type = 'checkbox'
-  input.className = 'osx-checkbox'
   input.checked = true
   input.id = item
   input.onchange = function() { onCategoryChange(item, input.checked) }

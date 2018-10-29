@@ -15,3 +15,30 @@ a {
   text-decoration: none;
   color: rgb(0, 100, 155);
 }
+
+input[type=checkbox] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+}
+
+input[type=checkbox] {
+  margin: 3px;
+  padding: 0;
+  height: 15px;
+  width: 15px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background: #fff;
+}
+
+input[type="checkbox"]:checked {
+  background: #3e97eb;
+}
+
+input[type="checkbox"]:checked:before{
+  padding-left:1px;
+  content: "\2713";
+  display: block;
+  color: white;
+}
