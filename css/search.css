@@ -1,14 +1,8 @@
 .search {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex: 1 1 auto;
 }
 
 .search label {
-  margin: 0;
-  /* padding: 0 5px 0 5px; */
-  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -23,7 +17,7 @@
 
 .search input {
   padding: 5px 5px 5px 30px;
-  width: 100%;
+  flex: 1 1 auto;
   font-size: 1em;
   border: 1px solid #ddd;
 }

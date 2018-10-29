@@ -1,9 +1,6 @@
 header {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
+  flex: 1 1 0px;
+  display: inline-flex;
   justify-content: center;
   background-color: #222;
 }
@@ -12,6 +9,10 @@ header div {
   margin: 0;
   padding: 10px;
   color: white;
+}
+
+header a {
+  display: flex;
 }
 
 header img {
