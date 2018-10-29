@@ -93,14 +93,14 @@ for (int bx = 1; bx <= 7; bx++){
 
 	// Function
 	func real wall(){
-		if (Th(x,y).region == Th(0.5,0.5).region || Th(x,y).region == Th(7,20.5).region || Th(x,y).region == Th(30.5,2).region)	//TODO use a, b & c, not hard defined regions
+		if (Th(x,y).region == Th(0.5,0.5).region || Th(x,y).region == Th(7,20.5).region || Th(x,y).region == Th(30.5,2).region)
 			return 1;
 		else
 			return 0;
 	}
 
-	cout << "Reflexion of walls : " << wallreflexion << "\n";
-	cout << "Absorption of walls : " << wallabsorption << "\n";
+	cout << "Reflexion of walls : " << wallreflexion[].max << "\n";
+	cout << "Absorption of walls : " << wallabsorption[].max << "\n";
 
 	// Problem
 	problem muwave(v, w)
