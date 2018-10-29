@@ -39,11 +39,12 @@
           {% endif %}
         </div>
         {{ content }}
+        {% include footer.html %}
       </div>
     </div>
 
-    {% include footer.html %}
-    
+
+
     <script src="{{ site.url }}{{ site.baseurl }}/js/copyPasteCode.js"></script>
   </body>
 </html>
