@@ -31,6 +31,10 @@ nav li:hover {
   background-color: rgba(0, 205, 255, 0.1);
 }
 
+.navButton {
+  display: none;
+}
+
 .hidden {
   display: none;
 }
@@ -99,8 +103,27 @@ nav li:hover {
 }
 
 @media only screen and (max-width: 600px) {
-  nav {
-    display: none;
+  .container {
+    position :relative;
+    flex-direction: column;
   }
   
+  nav {
+    display: none;
+    max-height: 500px;
+    overflow: auto;
+  }
+  
+  .navButton {
+    display: block;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    color: orange;
+  }
+  
+  .navButton button {
+    background: none;
+    border: none;
+  }
 }
