@@ -261,3 +261,7 @@ Physical Volume("Volume", 1) = {v+0};
 |Mesh|
 |--|
 |![Mesh]({{ site.url }}{{ site.baseurl }}/assets/Elasticity3DMesh.png)|
+
+## Authors
+
+Author: [Simon Garnotel](https://github.com/sgarnotel)

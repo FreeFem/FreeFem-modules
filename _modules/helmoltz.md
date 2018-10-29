@@ -120,6 +120,6 @@ for (int bx = 1; bx <= 7; bx++){
 }
 {% endhighlight %}
 
-### Authors
+## Authors
 
 Author: [Alexis Tacnet](https://github.com/alxkt)

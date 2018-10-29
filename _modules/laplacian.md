@@ -121,3 +121,7 @@ plot(u, nbiso=30, fill=true, value=true, cmm="A");
 |Result|
 |--|
 |![Result]({{ site.url }}{{ site.baseurl }}/assets/Laplacian3D.png)|
+
+## Authors
+
+Author: [Simon Garnotel](https://github.com/sgarnotel)
