@@ -120,6 +120,10 @@ for (int bx = 1; bx <= 7; bx++){
 }
 {% endhighlight %}
 
+|Result|
+|--|
+|[Result]({{ site.url }}{{ site.baseurl }}/assets/Helmoltz.png)|
+
 ## Authors
 
 Author: [Alexis Tacnet](https://github.com/alxkt)
