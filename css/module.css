@@ -6,7 +6,7 @@
 }
 
 nav {
-  flex: 1 1 auto;
+  flex: 0 1 300px;
   border-right: 1px solid #0CF;
 }
 
