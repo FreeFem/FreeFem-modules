@@ -452,3 +452,7 @@ Physical Volume(VACUUMVOLUME) = {v+1};
 |Mesh|
 |--|
 |![Result]({{ site.url }}{{ site.baseurl }}/assets/Magnetostatic3DMesh.png)|
+
+## Authors
+
+Author: [Simon Garnotel](https://github.com/sgarnotel)
