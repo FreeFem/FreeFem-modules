@@ -2,6 +2,7 @@ footer {
   display: flex;
   justify-content: space-around;
   background-color: #222;
+  flex: 0 1 auto;
 }
 
 footer div {
