@@ -24,6 +24,8 @@ $
 
 ## Algorithm
 
+Wifi propagation
+
 {% highlight cpp %}
 // Parameters
 real beta = 0.3; //parameter for the Laplace-Beltrami coefficient

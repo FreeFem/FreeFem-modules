@@ -13,10 +13,12 @@ Algorithms for solving the 2D and 3D static Stokes equations
 Solve:
 
 $$
+\left\{
 \begin{align*}
 	-\Delta\mathbf{u} + \nabla p &= 0\\
 	\nabla\cdot\mathbf{u} &= 0
 \end{align*}
+\right.
 $$
 
 ## Variational form
@@ -44,6 +46,8 @@ $
 ## Algorithms
 
 ### 2D
+
+Poiseuille flow in a pipe
 
 {% highlight cpp %}
 //Parameters
@@ -118,6 +122,8 @@ plot([ux, uy], cmm="Velocity");
 |![Pressure]({{ site.url }}{{ site.baseurl }}/assets/Stokes2D_p.png)|
 
 ### 3D
+
+Poiseuille flow in a pipe
 
 {% highlight cpp %}
 load "msh3"
