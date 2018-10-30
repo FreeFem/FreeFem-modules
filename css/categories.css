@@ -100,7 +100,7 @@
 /** CHECKBOX Bootstrap**/
 .custom-control {
   margin: 5px;
-  padding: 2px;
+  padding: 2px 4px;
   border-radius: 2px;
   font-size: 0.8em;
   font-weight: normal;
