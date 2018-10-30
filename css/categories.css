@@ -97,12 +97,16 @@
     opacity: 1;
 }
 
+.moduleCategory {
+    font-size: 0.8em;
+    line-height: 12px;
+    padding: 4px;
+    border-radius: 2px;
+}
+
 /** CHECKBOX Bootstrap**/
 .custom-control {
   margin: 5px;
-  padding: 2px 4px;
-  border-radius: 2px;
-  font-size: 0.8em;
   font-weight: normal;
   text-transform: lowercase;
   white-space: nowrap;
@@ -110,21 +114,24 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  min-height: 1.5rem;
-  padding-right: 1.5rem;
+  border-radius: 2px;
 }
 
 .custom-control-label {
   margin-bottom: 0;
+  cursor: pointer;
+  padding: 4px 20px 4px 4px;
+  line-height: 12px;
+  font-size: 0.8em;
 }
 
 .custom-control-label::before {
   position: absolute;
-  top: 8px;
-  right: 6px;
+  top: 5px;
+  right: 5px;
   display: block;
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   pointer-events: none;
   content: "";
   -webkit-user-select: none;
@@ -136,11 +143,11 @@
 
 .custom-control-label::after {
   position: absolute;
-  top: 8px;
-  right: 6px;
+  top: 5px;
+  right: 5px;
   display: block;
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   content: "";
   background-repeat: no-repeat;
   background-position: center center;
