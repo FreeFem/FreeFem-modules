@@ -13,10 +13,10 @@ Algorithms for solving the 2D and 3D static Stokes equations
 Solve:
 
 $$
-\begin{align}
+\begin{align*}
 	-\Delta\mathbf{u} + \nabla p &= 0\\
 	\nabla\cdot\mathbf{u} &= 0
-\end{align}
+\end{align*}
 $$
 
 ## Variational form
