@@ -12,10 +12,12 @@ Algorithms for solving the 2D and 3D static Stokes equations
 
 Solve:
 
-$
-\displaystyle{todo}
-$
-
+$$
+\begin{align}
+	-\Delta\mathbf{u} + \nabla p &= 0\\
+	\nabla\cdot\mathbf{u} &= 0
+\end{align}
+$$
 
 ## Variational form
 
@@ -195,6 +197,10 @@ plot([ux, uy, uz], cmm="Velocity");
 |--|
 |![Velocity]({{ site.url }}{{ site.baseurl }}/assets/Stokes3D_u.png)|
 |![Pressure]({{ site.url }}{{ site.baseurl }}/assets/Stokes3D_p.png)|
+
+## Validation
+
+TODO
 
 ## Authors
 

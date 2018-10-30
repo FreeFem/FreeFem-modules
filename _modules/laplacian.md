@@ -37,7 +37,7 @@ $
 
 ### 2D
 
-Laplacian equation on a square.
+Laplace equation on a square.
 
 {% highlight cpp %}
 // Parameters
@@ -80,7 +80,7 @@ plot(u, nbiso=30, fill=true, value=true, cmm="A");
 
 ### 3D
 
-Laplacian equation on a cube.
+Laplace equation on a cube.
 
 {% highlight cpp %}
 include "cube.idp"
@@ -121,6 +121,10 @@ plot(u, nbiso=30, fill=true, value=true, cmm="A");
 |Result|
 |--|
 |![Result]({{ site.url }}{{ site.baseurl }}/assets/Laplacian3D.png)|
+
+## Validation
+
+TODO
 
 ## Authors
 

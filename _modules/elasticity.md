@@ -10,11 +10,23 @@ Algorithms for solving the 2D and 3D static linear elasticity equations
 
 ## Problem
 
+Solve:
+
 $
-\displaystyle{todo}
+\displaystyle{
+	-\nabla\cdot\sigma = \mathbf{f}
+}
 $
 
 With:
+
+$
+\displaystyle{
+	\sigma_{ij}(\mathbf{u}) = \lambda\delta_{ij}\nabla\cdot\mathbf{u} + 2\mu\varepsilon_{ij}(\mathbf{u})
+}
+$
+
+and
 
 $
 \displaystyle{
@@ -24,9 +36,11 @@ $
 
 ## Variational form
 
+Let $\Omega\in\mathbb{R}^n$, $2\leq n\leq3$. Let $\mathbf{u}, \mathbf{v}\in \left(H^1(\Omega)\right)^n$. The variational form reads as follow:
+
 $
 \displaystyle{
-	\int_{\Omega}{\lambda\nabla\cdot\mathbf{u}\nabla\cdot\mathbf{v} + 2\mu\varepsilon(\mathbf{u})} - \int_{\Omega}{\mathbf{f}\cdot\mathbf{v}}
+	\int_{\Omega}{\lambda\nabla\cdot\mathbf{u}\nabla\cdot\mathbf{v} + 2\mu\varepsilon(\mathbf{u})}:\varepsilon(\mathbf{v}) - \int_{\Omega}{\mathbf{f}\cdot\mathbf{v}} = 0
 }
 $
 
@@ -261,6 +275,10 @@ Physical Volume("Volume", 1) = {v+0};
 |Mesh|
 |--|
 |![Mesh]({{ site.url }}{{ site.baseurl }}/assets/Elasticity3DMesh.png)|
+
+## Validation
+
+TODO
 
 ## Authors
 

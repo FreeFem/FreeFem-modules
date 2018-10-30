@@ -122,7 +122,7 @@ for (int bx = 1; bx <= 7; bx++){
 
 |Result|
 |--|
-|[Result]({{ site.url }}{{ site.baseurl }}/assets/Helmoltz.png)|
+|![Result]({{ site.url }}{{ site.baseurl }}/assets/Helmoltz.png)|
 
 ## Authors
 
