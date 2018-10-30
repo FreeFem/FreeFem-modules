@@ -2,7 +2,7 @@
 
 - Fork the project on your Github account
 
-- Create a new file in `_modules/`, e.g `myModule.md` (you could use the [TEMPALTE](.github/TEMPLATE.md))
+- Create a new file in `_modules/`, e.g `myModule.md` (you could use the [TEMPLATE](.github/TEMPLATE.md))
 
 - Fill the front matter:
 
