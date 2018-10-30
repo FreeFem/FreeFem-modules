@@ -1,29 +1,29 @@
 .container {
-  margin: 0;
   padding: 0;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
   flex: 1 1 auto;
 }
 
 .categoriesArea {
-  margin: auto;
   width: 50%;
   display: flex;
   justify-content: center;
+  align-self: center;
 }
 
 .searchArea {
-  margin: auto;
-
   width: 50%;
   display: flex;
   justify-content: center;
+  align-self: center;
 }
 
 .modulesList {
-  margin: auto;
   padding: 10px;
   width: 50%;
+  align-self: center;
 }
 
 .module {
@@ -55,7 +55,7 @@
     width: 100%;
   }
   .modulesList {
-    padding: 0;
+    padding: 5px;
     width: 100%;
   }
 }
