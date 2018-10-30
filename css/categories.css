@@ -120,11 +120,11 @@
 
 .custom-control-label::before {
   position: absolute;
-  top: 0.35rem;
-  right: 0.2rem;
+  top: 8px;
+  right: 6px;
   display: block;
-  width: 1rem;
-  height: 1rem;
+  width: 12px;
+  height: 12px;
   pointer-events: none;
   content: "";
   -webkit-user-select: none;
@@ -136,11 +136,11 @@
 
 .custom-control-label::after {
   position: absolute;
-  top: 0.35rem;
-  right: 0.2rem;
+  top: 8px;
+  right: 6px;
   display: block;
-  width: 1rem;
-  height: 1rem;
+  width: 12px;
+  height: 12px;
   content: "";
   background-repeat: no-repeat;
   background-position: center center;
@@ -176,7 +176,7 @@
 }
 
 .custom-checkbox .custom-control-label::before {
-  border-radius: 0.25rem;
+  border-radius: 2px;
 }
 
 .custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
