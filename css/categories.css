@@ -131,7 +131,7 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  background-color: #dee2e6;
+  background-color: white;
 }
 
 .custom-control-label::after {
