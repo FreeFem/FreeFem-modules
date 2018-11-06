@@ -26,7 +26,7 @@ To create a link in markdown:
 [title][www.example.com]
 ```
 
-To include an image, add the compressed PNG or JPG to the [/assets](/assets) folder and use the following:
+To include an image, add the compressed PNG or JPG to the [assets](/assets) folder and use the following:
 ```markdown
 |Title|
 |--|
