@@ -1,33 +1,34 @@
-# Add a module
+# How to add a module
 
 - Fork the project on your Github account
 
-- Create a new file in `_modules/` in Markdown format, e.g `myModule.md` (you could use the [MODULE_TEMPLATE](MODULE_TEMPLATE.md))
+- Create a new file in `_modules/` in Markdown format, e.g `myModule.md`. Please use the [MODULE_TEMPLATE.md](MODULE_TEMPLATE.md) file.
 
-- Fill the front matter:
+- Fill the header with your module name and the corresponding tag :
 
 ```
 ---
-name: {required: module name}
-category: {required: module category}
+name: "module name"
+category: "module category (solid, electromagnetism, academic, fluid, etc.)"
 layout: module
 ---
 ```
+Note: we do not support multiple tags yet. Let us know if you require this functionality.
 
 - Write your module page
 
 - Open a pull request
 
-## Some tips
+## Markdown tips
 
-Create a link in markdown:
+To create a link in markdown:
 ```markdown
 [title][www.example.com]
 ```
 
-Include an image:
+To include an image:
 ```markdown
 |Title|
 |--|
-|![not displayed title]({{ site.url }}{{ site.baseurl }}/assets/myimage.png)|
+|![alt attribute - not displayed, usually the same as the title]({{ site.url }}{{ site.baseurl }}/assets/myimage.png)|
 ```
