@@ -1,6 +1,6 @@
 ---
-name: [module name]
-category: [academic, solid, fluid, ...]
+name: "module name"
+category: "module category (solid, electromagnetism, academic, fluid, etc.)"
 layout: module
 ---
 
@@ -10,7 +10,7 @@ layout: module
 
 ## Problem
 
-[Equations and parameters decription]
+[Equations and parameters description]
 
 ## Variational form
 
@@ -41,8 +41,8 @@ _[End optional]_
 
 ## References
 
-[Links to references, prefer open-access]
+[Links to references, in open-access if possible]
 
 ## Authors
 
-[List of authors, optionaly with a link]
+[List of authors, optionnaly with a link to their webpage or email address]
