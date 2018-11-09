@@ -13,7 +13,6 @@ category: "module category (solid, electromagnetism, academic, fluid, etc.)"
 layout: module
 ---
 ```
-Note: we do not support multiple tags yet. Let us know if you require this functionality.
 
 - Write your module page
 
