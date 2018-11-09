@@ -1,0 +1,73 @@
+// Parameters
+func Pk = P2;
+
+func f = -2.*x*(y-1.)*(y-2.*x+x*y+2.)*exp(x-y);
+func uD = 0;
+func ue = exp(x-y)*x*(1.-x)*y*(1.-y);
+
+int nn = 10;	//Mesh quality
+int nTests = 5;
+
+// Macro
+macro grad(A) [dx(A), dy(A)] //
+
+// Tests loop
+real[int] errL2(nTests), h(nTests);
+for (int i = 0; i < nTests; i++) {
+	// Mesh
+	border b1(t=0, 1){x=t; y=0; label=1;}
+	border b2(t=0, 1){x=1; y=t; label=2;}
+	border b3(t=0, 1){x=1-t; y=1; label=3;}
+	border b4(t=0, 1){x=0; y=1-t; label=4;}
+	mesh Th = buildmesh(b1(nn) + b2(nn) + b3(nn) + b4(nn));
+	int[int] Wall = [1, 2, 3, 4];
+
+	// Fespace
+	fespace Uh(Th, Pk);
+	Uh u;
+
+	// Problem
+	varf vPoisson (u, uh)
+		= int2d(Th)(
+			  grad(u)' * grad(uh)
+		)
+		+ int2d(Th)(
+			  f * uh
+		)
+		+ on(Wall, u=uD)
+		;
+	
+	matrix<real> Poisson = vPoisson(Uh, Uh, solver=sparsesolver);
+	real[int] PoissonBoundary = vPoisson(0, Uh);
+	u[] = Poisson^-1 * PoissonBoundary;
+
+	// Error
+	h[i] = (1./nn);
+	errL2[i] = sqrt(int2d(Th)((u-ue)^2));
+	cout << "h = " << h[i] << " - err = " << errL2[i] << endl;
+	
+	// Increase nn
+	nn *= 2;
+	
+	// Export
+	if (i == nTests-1) {
+		load "iovtk"
+		fespace PVh(Th, P1);
+		PVh uu = u;
+		string dataName = "u";
+		int[int] order = [1];
+		savevtk("Poisson2D.vtu", Th, uu, dataname=dataName, order=order);
+	}
+}
+
+// Save
+{
+	ofstream err("Poisson2DError.dat");
+	for (int i = 0; i < nTests; i++)
+		err << h[i] << "\t" << errL2[i] << endl;
+}
+
+// Slope
+real slope = (log(errL2[0])-log(errL2[nTests-1])) / (log(h[0]) - log(h[nTests-1]));
+cout << "slope = " << slope << endl;
+

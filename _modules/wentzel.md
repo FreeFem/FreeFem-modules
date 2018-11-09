@@ -18,7 +18,7 @@ Parametrization uses a vector of the form.
 
 $
 \displaystyle{
-  \int_{\Omega}{\nabla\mathbf{u}:\nabla\mathbf{v} + \beta} + \beta\int_{\partial\Omega}{\nabla_{\tau}\mathbf{u}:\nabla_{\tau}\mathbf{v}} = \lambda\int_{\Omega}{\mathbf{u}\cdot\mathbf{v}}
+  \int_{\Omega}{\nabla\mathbf{u}:\nabla\mathbf{v}} + \beta\int_{\partial\Omega}{\nabla_{\tau}\mathbf{u}:\nabla_{\tau}\mathbf{v}} = \lambda\int_{\Omega}{\mathbf{u}\cdot\mathbf{v}}
 }
 $
 

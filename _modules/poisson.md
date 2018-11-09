@@ -1,12 +1,12 @@
 ---
-name: Laplacian
+name: Poisson
 category: academic
 layout: module
 ---
 
-# Laplacian
+# Poisson
 
-Algorithms for solving the 2D and 3D Laplace equation
+Algorithms for solving the 2D and 3D Poisson's equation
 
 ## Problem
 
@@ -37,7 +37,7 @@ $
 
 ### 2D
 
-Laplace equation on a square.
+Poisson's equation on a square.
 
 {% highlight cpp %}
 // Parameters
@@ -56,18 +56,18 @@ Uh u;
 macro grad(A) [dx(A), dy(A)] //
 
 // Problem
-varf vLaplacian (u, uh)
+varf vPoisson (u, uh)
 	= int2d(Th)(
 		  grad(u)' * grad(uh)
 	)
-	- int2d(Th)(
+	+ int2d(Th)(
 		  f * uh
 	)
 	+ on(1, 2, 3, 4, u=0)
 	;
-matrix<real> Laplacian = vLaplacian(Uh, Uh, solver=sparsesolver);
-real[int] LaplacianBoundary = vLaplacian(0, Uh);
-u[] = Laplacian^-1 * LaplacianBoundary;
+matrix<real> Poisson = vPoisson(Uh, Uh, solver=sparsesolver);
+real[int] PoissonBoundary = vPoisson(0, Uh);
+u[] = Poisson^-1 * PoissonBoundary;
 
 // Plot
 plot(u, nbiso=30, fill=true, value=true, cmm="A");
@@ -75,12 +75,12 @@ plot(u, nbiso=30, fill=true, value=true, cmm="A");
 
 |Result|
 |--|
-![Result]({{ site.url }}{{ site.baseurl }}/assets/Laplacian2D.png)|
+![Result]({{ site.url }}{{ site.baseurl }}/assets/Poisson2D.png)|
 
 
 ### 3D
 
-Laplace equation on a cube.
+Poisson's equation on a cube.
 
 {% highlight cpp %}
 include "cube.idp"
@@ -101,18 +101,18 @@ Uh u;
 macro grad(A) [dx(A), dy(A), dz(A)] //
 
 // Problem
-varf vLaplacian (u, uh)
+varf vPoisson (u, uh)
 	= int3d(Th)(
 		  grad(u)' * grad(uh)
 	)
-	- int3d(Th)(
+	+ int3d(Th)(
 		  f * uh
 	)
 	+ on(1, 2, 3, 4, 5, 6, u=0)
 	;
-matrix<real> Laplacian = vLaplacian(Uh, Uh, solver=sparsesolver);
-real[int] LaplacianBoundary = vLaplacian(0, Uh);
-u[] = Laplacian^-1 * LaplacianBoundary;
+matrix<real> Poisson = vPoisson(Uh, Uh, solver=sparsesolver);
+real[int] PoissonBoundary = vPoisson(0, Uh);
+u[] = Poisson^-1 * PoissonBoundary;
 
 // Plot
 plot(u, nbiso=30, fill=true, value=true, cmm="A");
@@ -120,11 +120,37 @@ plot(u, nbiso=30, fill=true, value=true, cmm="A");
 
 |Result|
 |--|
-|![Result]({{ site.url }}{{ site.baseurl }}/assets/Laplacian3D.png)|
+|![Result]({{ site.url }}{{ site.baseurl }}/assets/Poisson3D.png)|
 
 ## Validation
 
-TODO
+### 2D
+
+Let $u_e$ be the analytical solution on $\Omega=[0,1]^2$:
+
+$
+\displaystyle{
+	u_e = x(1-x)y(1-y)e^{x-y}
+}
+$
+
+We get, for homogenous Dirichlet conditions on $\partial\Omega$:
+
+$
+\displaystyle{
+	f = -2x(y-1)(y-2x+xy+2)e^{x-y}
+}
+$
+
+We get the following convergence curve:
+
+|Convergence curve|
+|--|
+|![Convergence curve]({{ site.url }}{{ site.baseurl }}/assets/Poisson/Poisson2DError.png)|
+
+The slope abtained with this algorithm is equal to $3.0235$, that correspond to the theoretical value of $3$.
+
+The complete script is available [here]({{ site.url }}{{ site.baseurl }}/assets/Poisson/Poisson2D.edp)
 
 ## Authors
 
