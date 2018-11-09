@@ -142,15 +142,15 @@ $
 }
 $
 
-We get the following convergence curve:
+and the following convergence curve:
 
 |Convergence curve|
 |--|
 |![Convergence curve]({{ site.url }}{{ site.baseurl }}/assets/Poisson/Poisson2DError.png)|
 
-The slope abtained with this algorithm is equal to $3.0235$, that correspond to the theoretical value of $3$.
+The slope obtained with this algorithm is equal to $3.0235$, which corresponds to the theoretical value of $3$.
 
-The complete script is available [here]({{ site.url }}{{ site.baseurl }}/assets/Poisson/Poisson2D.edp)
+The complete validation script is available [here]({{ site.url }}{{ site.baseurl }}/assets/Poisson/Poisson2D.edp)
 
 ## Authors
 

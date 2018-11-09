@@ -104,8 +104,11 @@ nav li:hover {
 }
 
 @media only screen and (max-width: 600px) {
+  header {
+    position: relative;
+  }
+
   .container {
-    position :relative;
     flex-direction: column;
   }
 
@@ -115,9 +118,11 @@ nav li:hover {
   }
 
   .navButton {
+    margin: 0;
+    padding: 0;
     display: block;
     position: absolute;
-    top: 0px;
+    bottom: 0px;
     right: 0px;
     color: orange;
   }
@@ -125,5 +130,18 @@ nav li:hover {
   .navButton button {
     background: none;
     border: none;
+  }
+
+  .navButton button:focus {
+    outline: none;
+  }
+
+  #navImage {
+    fill: white;
+  }
+
+  #navImageClose {
+    display: none;
+    fill: white;
   }
 }

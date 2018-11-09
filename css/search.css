@@ -9,10 +9,9 @@
   position: relative;
 }
 
-.search img {
+.search svg {
   height: 24px;
   position: absolute;
-  padding-left: 5px;
 }
 
 .search input {

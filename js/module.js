@@ -1,14 +1,12 @@
 showNav = () => {
   if (nav.style.display === 'block') {
     nav.style.display = 'none'
-    if (navImage.src.includes('menu-close.svg')) {
-      navImage.src = navImage.src.replace('menu-close.svg', 'menu.svg')
-    }
+    navImage.style.display = 'block'
+    navImageClose.style.display = 'none'
   }
   else {
     nav.style.display = 'block'
-    if (navImage.src.includes('menu.svg')) {
-      navImage.src = navImage.src.replace('menu.svg', 'menu-close.svg')
-    }
+    navImage.style.display = 'none'
+    navImageClose.style.display = 'block'
   }
 }
