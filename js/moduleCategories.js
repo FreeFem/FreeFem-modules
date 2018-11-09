@@ -1,12 +1,16 @@
 categories = []
 
 addToCategories = (item) => {
-  const index = categories.indexOf(item)
-  if (index > -1)
+  const items = item.split(', ')
+
+  items.forEach(item => {
+    const index = categories.indexOf(item)
+    if (index > -1)
     return
 
-  addCategory(item)
-  categories.push(item)
+    addCategory(item)
+    categories.push(item)
+  })
 }
 
 addCategory = (item) => {
