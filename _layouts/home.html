@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     {% include html_mathjax %}
-    <title>{{page.title}}</title>
+    <title>{{ page.title }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ site.url }}{{ site.baseurl }}/css/html.css" />
     <link rel="stylesheet" href="{{ site.url }}{{ site.baseurl }}/css/header.css" />
@@ -38,11 +38,13 @@
             <div class="moduleName">
               {{ module.name }}
             </div>
-            <div class="moduleCategory light">
-              {{module.category}}
+            <div class="moduleCategory">
+              <script>
+                document.write(writeCategory('{{ module.category }}'))
+              </script>
             </div>
             <script>
-              addToCategories('{{module.category}}')
+              addToCategories('{{ module.category }}')
             </script>
           </div>
         </a>

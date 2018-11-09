@@ -98,10 +98,16 @@
 }
 
 .moduleCategory {
-    font-size: 0.8em;
-    line-height: 12px;
-    padding: 4px;
-    border-radius: 2px;
+  display: flex;
+  flex-direction: row;
+}
+
+.light {
+  font-size: 0.8em;
+  line-height: 12px;
+  margin: 0 2px;
+  padding: 4px;
+  border-radius: 2px;
 }
 
 /** CHECKBOX Bootstrap**/

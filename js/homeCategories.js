@@ -1,17 +1,21 @@
 categories = []
 
 addToCategories = (item) => {
-  const index = categories.indexOf(item)
-  if (index > -1)
+  const items = item.split(', ')
+
+  items.forEach(item => {
+    const index = categories.indexOf(item)
+    if (index > -1)
     return
 
-  addCategory(item)
-  categories.push(item)
+    addCategory(item)
+    categories.push(item)
+  })
 }
 
 addCategory = (item) => {
   const div = document.createElement('div')
-  div.className = 'custom-control custom-checkbox light-' + categories.length
+  div.className = 'custom-control custom-checkbox light-' + (categories.length%14)
 
   const label = document.createElement('label')
   label.className = 'custom-control-label'
@@ -62,13 +66,27 @@ toogleCategories = () => {
   }
 }
 
+writeCategory = (item) => {
+  const items = item.split(',')
+
+  let elements = ''
+  items.forEach(item => {
+    elements += '<div class="light">' + item + '</div>'
+  })
+
+  return elements
+}
+
 colorCategories = () => {
   const modules = document.getElementsByClassName('moduleCategory')
 
   for (let i = 0; i < modules.length; i++) {
-    let text = modules[i].innerHTML
-    text = text.replace(/\s/g, '')
-    const index = categories.indexOf(text)
-    modules[i].className += ' light-'+index
+    for (let j = 1; j < modules[i].children.length; j++) {
+      const module = modules[i].children[j]
+      let text = module.innerHTML
+      text = text.replace(/\s/g, '')
+      const index = categories.indexOf(text)
+      module.className += ' light-'+index
+    }
   }
 }

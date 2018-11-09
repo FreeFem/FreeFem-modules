@@ -11,7 +11,7 @@ addToCategories = (item) => {
 
 addCategory = (item) => {
   const div = document.createElement('div')
-  div.className = 'custom-control custom-checkbox light-' + categories.length
+  div.className = 'custom-control custom-checkbox light-' + (categories.length%14)
 
   const label = document.createElement('label')
   label.className = 'custom-control-label'
