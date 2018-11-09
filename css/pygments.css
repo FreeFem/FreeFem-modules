@@ -1,5 +1,5 @@
 .highlight .hll { background-color: #ffffcc }
-.highlight  { position: relative; background: #f8f8f8; padding: 20px; overflow: auto; }
+.highlight  { position: relative; background: #f8f8f8; padding: 20px; overflow: hidden; }
 .highlight .c { color: #408080; font-style: italic } /* Comment */
 .highlight .err { border: 1px solid #FF0000 } /* Error */
 .highlight .k { color: #008000; font-weight: bold } /* Keyword */
@@ -67,6 +67,10 @@
 .highlight .vi { color: #19177C } /* Name.Variable.Instance */
 .highlight .vm { color: #19177C } /* Name.Variable.Magic */
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+
+.highlight pre {
+  overflow: auto;
+}
 
 @media only screen and (max-width: 600px) {
   .highlight {

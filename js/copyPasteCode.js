@@ -38,5 +38,5 @@ for (let i = 0; i < codeBlocks.length; i++) {
   button.onclick = function() { copyPasteCode(codeBlocks[i], button) }
 
   // Add button
-  codeBlocks[i].appendChild(button)
+  codeBlocks[i].children[0].appendChild(button)
 }
