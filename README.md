@@ -6,4 +6,6 @@ A collection of mathematically validated modules for FreeFem++
 
 ## Contributing
 
-Your contributions are welcomed: [CONTRIBUTING](CONTRIBUTING.md)
+This is a community project, contributions are highly encouraged!
+
+See the [CONTRIBUTING](CONTRIBUTING.md) document.
