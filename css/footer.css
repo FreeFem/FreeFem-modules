@@ -14,7 +14,7 @@ footer a {
   margin: 0;
   padding: 0;
   text-decoration: none;
-  color: white;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 footer a:hover {

@@ -4,13 +4,34 @@
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
+  margin-bottom: 10px;
 }
 
 .categoriesArea {
+  padding: 10px;
   width: 50%;
-  display: flex;
-  justify-content: center;
   align-self: center;
+  justify-content: center;
+  display: flex;
+}
+
+.contribute {
+  margin: 10px;
+  width: 50%;
+  align-self: center;
+  border-top: 1px solid lightgrey;
+  border-radius: 2px;
+}
+
+.contribute h2 {
+  text-align: center;
+  padding: 0 10px;
+  color: #bf1919;
+}
+
+.contribute p {
+  text-align: center;
+  padding: 0 10px;
 }
 
 .searchArea {
@@ -24,6 +45,7 @@
   padding: 10px;
   width: 50%;
   align-self: center;
+  flex-grow: 1;
 }
 
 .module {
