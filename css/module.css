@@ -6,7 +6,8 @@
 }
 
 nav {
-  display: block;
+  display: flex;
+  flex-direction: column;
   flex: 0 1 300px;
   border-right: 1px solid #0CF;
 }
@@ -15,17 +16,11 @@ nav ul {
   margin: 0;
   padding: 10px;
   list-style-type: none;
+  flex-grow: 1;
 }
 
 nav li {
   border-radius: 2px;
-}
-
-nav a {
-  display: block;
-  padding: 5px;
-  text-decoration: none;
-  color: rgb(0, 100, 155);
 }
 
 nav li:hover {
@@ -36,12 +31,29 @@ nav li:hover {
   display: none;
 }
 
-.hidden {
-  display: none;
+#menu a {
+  display: block;
+  padding: 5px;
 }
 
-.author {
+.contribute {
+  margin: 10px;
+  align-self: center;
+  border-top: 1px solid lightgrey;
+  border-radius: 2px;
+}
 
+.contribute h2 {
+  text-align: center;
+  color: #bf1919;
+}
+
+.contribute p {
+  text-align: center;
+}
+
+.hidden {
+  display: none;
 }
 
 .content {
