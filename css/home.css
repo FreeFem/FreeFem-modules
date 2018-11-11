@@ -75,13 +75,17 @@
 
 @media only screen and (max-width: 600px) {
   .categoriesArea {
+    padding: 5px 0;
     width: 100%;
   }
   .searchArea {
     width: 100%;
   }
   .modulesList {
-    padding: 5px 0 0 0;
+    padding: 5px 0;
     width: 100%;
+  }
+  .contribute {
+    display: none;
   }
 }

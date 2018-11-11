@@ -120,6 +120,10 @@ nav li:hover {
     flex-direction: column;
   }
 
+  .contribute {
+    display: none;
+  }
+
   nav {
     display: none;
     height: 500px;
