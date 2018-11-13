@@ -2,6 +2,8 @@ title: "FreeFem++ modules"
 subtitle: "A collection of mathematically validated modules for FreeFem++"
 description: "A collection of mathematically validated modules for FreeFem++"
 
+url: "https://modules.freefem.org/"
+
 markdown: kramdown
 
 include: ["_modules"]
