@@ -8,7 +8,7 @@
 nav {
   display: flex;
   flex-direction: column;
-  flex: 0 1 300px;
+  flex: 1 1 auto;
   border-right: 1px solid #0CF;
 }
 
