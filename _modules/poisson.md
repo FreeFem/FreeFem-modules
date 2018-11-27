@@ -20,7 +20,7 @@ With $f$ an external force.
 
 ## Variational form
 
-Let $\Omega\in\mathbb{R}^n$, $2\leq n\leq3$. Let $u, v\in H^1(\Omega)$. The variational form reads as follow:
+Let $\Omega\in\mathbb{R}^n$, $2\leq n\leq3$. Let $u, v\in H^1(\Omega)$. The variational form reads as follows:
 
 $
 \displaystyle{-\int_{\Omega}{\Delta u v} - \int_{\Omega}{f v} = 0}

@@ -36,7 +36,7 @@ $
 
 ## Variational form
 
-Let $\Omega\in\mathbb{R}^n$, $2\leq n\leq3$. Let $\mathbf{u}, \mathbf{v}\in \left(H^1(\Omega)\right)^n$. The variational form reads as follow:
+Let $\Omega\in\mathbb{R}^n$, $2\leq n\leq3$. Let $\mathbf{u}, \mathbf{v}\in \left(H^1(\Omega)\right)^n$. The variational form reads as follows:
 
 $
 \displaystyle{
