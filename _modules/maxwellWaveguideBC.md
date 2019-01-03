@@ -27,7 +27,9 @@ $$
 that allows one to implement it by means of FreeFem++ tools without low-level matrix assembly (for the price of performance, of course).
 
 ## Algorithms
+### 2D - Cartesian
 
+### 2D - axial-symmetric
 ```C
 load "Element_Mixte"
 real height = 3;
@@ -104,7 +106,7 @@ func matrix<complex> matrixBC(int modeNum, int boundaryLabel, real k)
 {		
    complex[int] BCr  = vectorBCh( modeNum, boundaryLabel,k);
    complex[int] BCrf = vectorBCe( -modeNum, boundaryLabel,k);
-   matrix<complex> Br = BCr*BCrf'; // cartesian product
+   matrix<complex> Br = BCr*BCrf';                           // cartesian product
    return Br;		
 }	
 	
@@ -116,7 +118,7 @@ func matrix<complex> generateBCMatrix(int numberOfModes, int boundaryLabel, int 
          matrix<complex> Br2 = matrixBC(sign*i, boundaryLabel, k);
          Br1 = Br1 + Br2;
     }
-    return Br1;		
+    return Br1;
 }	
 
 //complimentary function for calculating scattering
@@ -149,22 +151,22 @@ func complex[int] modeAmplitudes
          int m = modeM [testmode];
          int modeNum = -(testmode + 1);
 	 complex res = int1d(Th,otherBoundaryLabel)((// x -> z, y ->  r, z -> phi;    n [Es Hv]
-														 2.*pi*y*
-														 conj(
-														     - (ez/y)*anH(x, y, (N.x)*modeNum, 2, height, 0, k)														  												  
-														     + (anE(x, y,  (N.x)*modeNum, 3, height, 0, k))*(-(dx(ez)/y + 1i*m*ex/y) / (1i*k) ) //Ez = anE(..,3,..)*y
-														     + (ey) *anH(x, y,  (N.x)*modeNum, 3, height, 0, k)
-														     - anE(x, y,  (N.x)*modeNum, 2, height, 0, k)*((dx(ey) - dy(ex))/(1i*k))
+			     2.*pi*y*
+			      conj(
+				  - (ez/y)*anH(x, y, (N.x)*modeNum, 2, height, 0, k)  
+                                  + (anE(x, y,  (N.x)*modeNum, 3, height, 0, k))*(-(dx(ez)/y + 1i*m*ex/y) / (1i*k) ) //Ez = anE(..,3,..)*y
+				  + (ey) *anH(x, y,  (N.x)*modeNum, 3, height, 0, k)
+				  - anE(x, y,  (N.x)*modeNum, 2, height, 0, k)*((dx(ey) - dy(ex))/(1i*k))
 														     )*(N.x)
-														 )
+			          )
 														 /(fNorm(modeNum, height, k)/*power*/));	
             cout << "inner loop: res=" << res <<",  abs(res) = "<<abs(res)<<endl; 														 
-			 if(needdB) result(testmode) =  20*log10(abs(res)); 
-			 else       result(testmode) =  res;
-		 }
+        if(needdB) result(testmode) =  20*log10(abs(res)); 
+        else       result(testmode) =  res;
+    }
 	
-		return result;
-	}
+    return result;
+}
 		
 	int m = 0;                           //not used in this implementation, keep it for consistency 
 	real sigma = 9.*pi*pi-75;//70.;
