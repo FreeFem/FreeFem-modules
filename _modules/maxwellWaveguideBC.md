@@ -29,54 +29,48 @@ that allows one to implement it by means of FreeFem++ tools without low-level ma
 ## Algorithms
 
 ```C
- load "Element_Mixte"
-    load "Element_P3"
-    func complex epsilon(real xx, real yy)
-    {
-         return 1. + 0*1i;
-    //	if(xx > 0.25 && xx < 0.75/* && yy > 0.25 && yy < 0.75*/) return 5;
-    //	else return  1.;
-    }
-    real height = 3;
-	real length = 3;
-    func mesh generateMesh()
-    {
-        return square(30,30, [x*length, y*height]);
-    }
-    mesh Th = generateMesh();
-	include "axial2D_modes.idp"
-	plot(Th);
+load "Element_Mixte"
+real height = 3;
+real length = 3;
+func mesh generateMesh()
+{
+    return square(30,30, [x*length, y*height]);
+}
+func complex epsilon(real xx, real yy)
+{
+    return 1. + 0*1i;
+//  if(xx > 0.25 && xx < 0.75/* && yy > 0.25 && yy < 0.75*/) return 5; else return  1.;
+}
 
-    fespace Vh(Th,[RT1Ortho, P2]); // finite element space
+mesh Th = generateMesh();
+//	plot(Th);
+include "axial2D_modes.idp"
+
+fespace Vh(Th,[RT1Ortho, P2]); // finite element space
 	
-	func matrix<complex> MakswellEqs(real sigma, int m, real h)
-	{
-	   
-	   macro odx(F) (dx(F) +  1i*h*F) // dx -> odx 
+func matrix<complex> MakswellEqs(real sigma, int m, real h)
+{
+    macro odx(F) (dx(F) +  1i*h*F) // dx -> odx 
+    varf MKSWL([Hz,Hr, Hphi],[vHz,vHr, vHphi]) = 
+         int2d(Th)(        
+        	   (
+		             (dy(Hphi) - 1i*m*Hr )*conj(dy(vHphi)- 1i*m*vHr )/y      //curl_z // vHphi => (Hphi*y)
+        		 +   (odx(Hr) - dy(Hz))*conj(odx(vHr) - dy(vHz))*y	     //curl_phi
+        		 +   (1i*m*Hz  - odx(Hphi))*conj(1i*m*vHz  - odx(vHphi))/y   //curl_r
+        	   )	
+        	   -sigma*y*epsilon(x,y)*(conj(vHr)*Hr+conj(vHphi)*Hphi/(y*y)+conj(vHz)*Hz)  // vHphi => (Hphi*y)
+        	  )        
+        	    + on(3,  Hz = 0, Hr = 0, Hphi = 0)
+        	    + on(1,  Hphi = 0) //Hr - at the axis does'not have meaning due to used RT1Ortho
+                  ;
+    matrix<complex> OP = MKSWL(Vh, Vh, solver=UMFPACK); 
+    return OP;
+}
 
-      
-       varf MKSWL([Hz,Hr, Hphi],[vHz,vHr, vHphi]) = 
-        	int2d(Th)(
-        
-        		(
-        			 (dy(Hphi) - 1i*m*Hr )*conj(dy(vHphi)- 1i*m*vHr )/y 	//rot_z // vHphi => (Hphi*y)
-        		 +   (odx(Hr) - dy(Hz))*conj(odx(vHr) - dy(vHz))*y		 	//rot_phi
-        		 +   (1i*m*Hz  - odx(Hphi))*conj(1i*m*vHz  - odx(vHphi))/y    //rot_r
-        
-        		)	
-        	-sigma*y*epsilon(x,y)*(conj(vHr)*Hr+conj(vHphi)*Hphi/(y*y)+conj(vHz)*Hz)//*exp(1i*h*x) // vHphi => (Hphi*y)
-        	         )
-        
-        		+ on(3,  Hz = 0, Hr = 0, Hphi = 0)
-        	    + on(1,  Hphi = 0) //Hr - на оси не имеет значения
-         ;
-	    matrix<complex> OP = MKSWL(Vh, Vh, solver=UMFPACK); 
-	    return OP;
-	}    	
-	func complex[int] vectorBCh(int modeNum, int boundaryLabel, real k)
-	{
-		int m = modeM [abs(modeNum)];
-		varf BoundCondRot([Ex,Ey,Ez],[vEx,vEy,vEz]) =   int1d(Th,boundaryLabel)(/*2.*pi*//*y*/(// x -> z, y ->  r, z -> phi
+func complex[int] vectorBCh(int modeNum, int boundaryLabel, real k)
+{
+    int m = modeM [abs(modeNum)];
+    varf BoundCondRot([Ex,Ey,Ez],[vEx,vEy,vEz]) =   int1d(Th,boundaryLabel)(/*2.*pi*//*y*/(// x -> z, y ->  r, z -> phi
 		                                                                  anH(x, y, (N.x)*modeNum, 1, height, 0, k)*conj(/*0.*/ - N.y*vEz/*/y*/) // 0 => N.z
                                                                         + anH(x, y, (N.x)*modeNum, 2, height, 0, k)*conj(N.x*vEz/*/y*/ /*- 0.*/)
 																	    + anH(x, y, (N.x)*modeNum, 3, height, 0, k)*conj(N.y*vEx - N.x*vEy)*y
@@ -251,4 +245,4 @@ _[End optional]_
 
 ## Authors
 
-[List of authors, optionnaly with a link to their webpage or email address]
+Petr Makhalov
