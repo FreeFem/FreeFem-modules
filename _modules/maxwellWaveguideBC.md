@@ -236,7 +236,7 @@ Finally, the main script
     {        
         complex[int] BCr  = vectorBCh( modeNum, boundaryLabel,k);
         complex[int] BCrf = vectorBCe( -modeNum, boundaryLabel,k);
-        matrix<complex> Br = BCr*BCrf'; // cartesian product
+        matrix<complex> Br = BCr*BCrf'; // 'cartesian product
         return Br;        
     }    
     
@@ -393,7 +393,7 @@ func matrix<complex> matrixBC(int modeNum, int boundaryLabel, real k)
 {		
    complex[int] BCr  = vectorBCh( modeNum, boundaryLabel,k);
    complex[int] BCrf = vectorBCe( -modeNum, boundaryLabel,k);
-   matrix<complex> Br = BCr*BCrf';                           // cartesian product
+   matrix<complex> Br = BCr*BCrf';                           //' cartesian product
    return Br;		
 }	
 	
