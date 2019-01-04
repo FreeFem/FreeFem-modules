@@ -28,8 +28,295 @@ that allows one to implement it by means of FreeFem++ tools without low-level ma
 
 ## Algorithms
 ### 2D - Cartesian
+Hardcoded TE modes. File `cartezian2D_TEmodes.idp`:
+```C
+// cartezian2D_TEmodes.idp
+func real Kappate(int modeNumber, real size1, real size2)
+{
+    return pi*modeNumber/size1;
+}
+func complex anEte(real xx, real yy, int modeNumber, int componentNumber, real size1, real size2, real k) 
+{
+    real kp = Kappate(abs(modeNumber), size1, 0);
+    real h = H(k, kp);
+    real sign = 0; if(modeNumber >= 0) sign = 1.; else sign = -1.;
+    if(componentNumber == 3){
+        return -sin(kp*yy)*(1. + 0*1i)*sqrt(k/h)*exp(1i*h*xx*sign);
+    }
+    return 0*1i;
+}
+
+func complex anHte(real xx, real yy, int modeNumber, int componentNumber, real size1, real size2, real k)
+{
+    real kp = Kappate(abs(modeNumber), size1, 0);
+    real h = H(k, kp);
+    real sign = 0; if(modeNumber >= 0) sign = 1.; else sign = -1.;
+    if(componentNumber == 3){
+        return 0;
+    }
+    if(componentNumber == 2){
+        return -sin(kp*yy)*sqrt(h/k)*sign*exp(1i*h*xx*sign);
+    }
+    if(componentNumber == 1){
+        return  kp*cos(kp*yy)/(1i*k)*sqrt(k/h)*exp(1i*h*xx*sign);
+    }    
+    return 0*1i;
+}
+
+func real fNormte(int modeNumber, real size1)
+{
+    return  1.*size1;
+}
+```
+Hardcoded TM modes. File `cartezian2D_TMmodes.idp`
+```C
+// cartezian2D_TMmodes.idp
+func real Kappatm(int modeNumber, real size1, real size2)
+{
+    return pi*(modeNumber-1)/size1;
+}
+func complex anHtm(real xx, real yy, int modeNumber, int componentNumber, real size1, real size2, real k) 
+{
+    real kp = Kappatm(abs(modeNumber), size1, 0);
+    real h = H(k, kp);
+    real sign = 0; if(modeNumber >= 0) sign = 1.; else sign = -1.;
+    if(componentNumber == 3){
+        return cos(kp*yy)*sqrt(k/h)*exp(1i*h*xx*sign);
+    }
+    return 0;
+}
+
+func complex anEtm(real xx, real yy, int modeNumber, int componentNumber, real size1, real size2, real k)
+{
+    real kp = Kappatm(abs(modeNumber), size1, 0);
+    real h = H(k, kp);    
+    real sign = 0; if(modeNumber >= 0) sign = 1.; else sign = -1.; 
+    if(componentNumber == 3){
+        return 0;
+    }
+    if(componentNumber == 2){
+        return cos(kp*yy)*sqrt(h/k)*exp(1i*h*xx*sign)*sign;
+    }    
+    if(componentNumber == 1){
+        return  kp*sin(kp*yy)/(1i*sqrt(k*h))*exp(1i*h*xx*sign);
+    }    
+    return 0*1i;
+}
+
+func real fNormtm(int modeNumber, real size1)
+{
+    if(abs(modeNumber) == 1) return 2.*size1;
+    else return  1.*size1;
+}
+```
+
+Script for intermixing TM and TE modes. File `cartezian2D_modes.idp`
+```C
+// cartezian2D_modes.idp
+func real H(real k, real kp) 
+{
+    return sqrt(k*k-kp*kp);
+}
+include "cartezian2D_TEmodes.idp"
+include "cartezian2D_TMmodes.idp"
+func complex anE(real xx, real yy, int modeNumber, int componentNumber, real size1, real size2, real k) 
+{
+    real sign = 0; if(modeNumber >= 0) sign = 1.; else sign = -1.;
+    if(abs(modeNumber) % 2 == 0) 
+        return anEte(xx, yy, abs(modeNumber)/2*sign, componentNumber, size1, size2, k);
+    else 
+        return anEtm(xx, yy, (modeNumber+sign*1)/2, componentNumber, size1, size2, k);
+}
+func complex anH(real xx, real yy, int modeNumber, int componentNumber, real size1, real size2, real k)
+{
+    real sign = 0; if(modeNumber >= 0) sign = 1.; else sign = -1.;
+    if(abs(modeNumber) % 2 == 0) 
+        return anHte(xx, yy,  abs(modeNumber)/2*sign, componentNumber, size1, size2, k);
+    else 
+        return anHtm(xx, yy, (modeNumber+sign*1)/2, componentNumber, size1, size2, k);
+}
+func real fNorm(int modeNumber, real size1)
+{
+    real sign = 0; if(modeNumber >= 0) sign = 1.; else sign = -1.;
+    if(abs(modeNumber) % 2 == 0) 
+        return fNormte( abs(modeNumber)/2*sign, size1);
+    else 
+        return fNormtm((modeNumber+sign*1)/2, size1);
+}
+func real Kappa(int modeNumber, real size1, real size2)
+{
+    real sign = 0; if(modeNumber >= 0) sign = 1.; else sign = -1.;
+    if(modeNumber % 2 == 0) 
+        return Kappate(modeNumber/2, size1, 0);
+    else 
+        return Kappatm((modeNumber+1)/2, size1, 0);
+}
+```
+
+Finally, the main script
+```C
+   load "Element_Mixte"
+    load "Element_P3"
+    func complex epsilon(real xx, real yy)
+    {
+         return 1. + 0*1i;
+    //    if(xx > 0.25 && xx < 0.75/* && yy > 0.25 && yy < 0.75*/) return 5;
+    //    else return  1.;
+    }
+    include "cartezian2D_modes.idp"
+//  include "cartezian2D_TE_only.idp"
+//  include "cartezian2D_TM_only.idp"
+
+    real height = 1;
+    real length = 2;
+    func mesh generateMesh()
+    {
+        return square(35,10, [x*length, y*height]);
+    }
+    int rightBorderLabel = 2;
+    int  leftBorderLabel = 4;
+    mesh Th = generateMesh();
+    plot(Th);
+
+    fespace Vh(Th,[RT1Ortho, P2]); // finite element space
+     
+    func matrix<complex> MakswellEqs(real sigma, int m)
+    {       
+       varf MKSWL([Ex,Ey, Ez],[vEx, vEy, vEz]) = 
+            int2d(Th)(
+        (
+             (dy(Ez) - 1i*m*Ey )*conj(dy(vEz)- 1i*m*vEy )       //curl_x
+         +   (dx(Ey) - dy(Ex))*conj(dx(vEy) - dy(vEx))          //curl_z
+         +   (1i*m*Ex  - dx(Ez))*conj(1i*m*vEx  - dx(vEz))    //curl_y
+        
+        )
+        -sigma*epsilon(x,y)*(conj(vEy)*Ey+conj(vEz)*Ez + conj(vEx)*Ex)
+                    )
+        
+            + on(1, 3, Ex = 0, Ey = 0, Ez = 0)
+         ;
+        matrix<complex> OP = MKSWL(Vh, Vh, solver=UMFPACK); 
+        return OP;
+    }  
+      
+    func complex[int] vectorBCh(int modeNum, int boundaryLabel, real k)
+    {
+        varf BoundCondRot([Ex,Ey,Ez],[vEx,vEy,vEz]) = 
+            int1d(Th,boundaryLabel)(          
+            (
+                anH(x, y, (N.x)*modeNum, 1, height, 0, k)*conj(0*vEy - N.y*vEz)
+              + anH(x, y, (N.x)*modeNum, 2, height, 0, k)*conj(N.x*vEz - 0*vEx)
+              + anH(x, y, (N.x)*modeNum, 3, height, 0, k)*conj(N.y*vEx - N.x*vEy)
+            )*(1i*k)                    // [n v*] rot E = [n v*] (i k H)               
+                                    );                         
+        complex[int] BCr = BoundCondRot(0,Vh);
+        return BCr;                
+        
+    }    
+    
+    func complex[int] vectorBCe(int modeNum, int boundaryLabel, real k) 
+    {
+        varf BoundCondField([Ex,Ey,Ez],[vEx,vEy,vEz]) = 
+            int1d(Th,boundaryLabel)
+            (
+                (conj(
+                      - vEz*anH(x, y, (N.x)*modeNum, 2, height, 0, k)        
+                      - anE(x, y,  (N.x)*modeNum, 3, height, 0, k)*(dx(vEz)/(1i*k) )
+                      + vEy *anH(x, y,  (N.x)*modeNum, 3, height, 0, k) 
+                      - anE(x, y,  (N.x)*modeNum, 2, height, 0, k)*((dx(vEy) - dy(vEx))/(1i*k))
+                      )*(N.x)
+                )
+                /fNorm(modeNum, height)
+            );
+        complex[int] BCrf = BoundCondField(0,Vh);
+        return BCrf;
+        
+    }
+    func matrix<complex> matrixBC(int modeNum, int boundaryLabel, real k)
+    {        
+        complex[int] BCr  = vectorBCh( modeNum, boundaryLabel,k);
+        complex[int] BCrf = vectorBCe( -modeNum, boundaryLabel,k);
+        matrix<complex> Br = BCr*BCrf'; // cartesian product
+        return Br;        
+    }    
+    
+    func matrix<complex> generateBCMatrix(int numberOfModes, int boundaryLabel, int sign, real k)
+    {
+        matrix<complex> Br1; 
+        for(int i = 1; i <= numberOfModes; i++) 
+        {
+            matrix<complex> Br2 = matrixBC(sign*i, boundaryLabel, k);
+            Br1 = Br1 + Br2;
+        }
+        return Br1;        
+    }    
+    func complex[int] modeAmplitudes
+    (complex[int]& eVec, int numOfModes, int referenceMode, int inputBoundaryLabel, int otherBoundaryLabel, real k,  bool needdB)
+    {
+        complex[int] result(numOfModes);
+        Vh<complex> [ex,ey,ez]; 
+        ex[] = eVec;
+        if(needdB) for(int i = 0; i < numOfModes; i++) result(i) = log10(0.);
+        complex[int] probe = vectorBCe( -referenceMode, inputBoundaryLabel, k);
+        complex power = eVec'*probe;
+        cout<<"mode = "<<referenceMode<<"   power = "<<abs(power)<<", "<<power<<endl;
+        for(int testmode = 0; testmode < numOfModes; testmode++)             
+        {
+            // complex[int] probe2 = vectorBCe( (testmode+1), otherBoundaryLabel);
+            // complex res = eVec'*probe2/power;
+            complex res = int1d(Th,otherBoundaryLabel)
+            (
+                (
+                    conj(
+                        - ez*anH(x, y, -(N.x)*(testmode+1), 2, height, 0, k)
+                        - anE(x, y, -(N.x)*(testmode+1), 3, height, 0, k)*(dx(ez)/(1i*k) )
+                        + ey*anH(x, y, -(N.x)*(testmode+1), 3, height, 0, k) 
+                        - anE(x, y, -(N.x)*(testmode+1), 2, height, 0, k)*((dx(ey) - dy(ex))/(1i*k))
+                        )*(N.x)
+                )
+                /(fNorm(-(N.x)*(testmode+1), height)*power)
+            );
+             if(needdB) result(testmode) =  20*log10(abs(res)); 
+             else       result(testmode) =  res;
+        }
+        return result;
+    }
+    
+    real sigma = 9.*pi*pi+3.;
+    real k = sqrt(sigma);
+    cout<<"h1 = "<<H(k, Kappa(1,1,1))<<",  kappa1 = "<<Kappa(1,1,1)<<endl; 
+    cout<<"h2 = "<<H(k, Kappa(2,1,1))<<",  kappa2 = "<<Kappa(2,1,1)<<endl; 
+    cout<<"h3 = "<<H(k, Kappa(3,1,1))<<",  kappa3 = "<<Kappa(3,1,1)<<endl; 
+    cout<<"h4 = "<<H(k, Kappa(4,1,1))<<",  kappa4 = "<<Kappa(4,1,1)<<endl;     
+    
+    int numberOfModesToAccount = 4;
+    matrix<complex> Br = generateBCMatrix(numberOfModesToAccount, rightBorderLabel,1, k);
+    matrix<complex> Bl = generateBCMatrix(numberOfModesToAccount, leftBorderLabel, 1, k);
+    matrix<complex> OP = MakswellEqs(sigma, 0) ;
+    
+    matrix<complex> A; //Here is an odd thing happens. Initially, I wrote  "A = OP + generateBCMatrix(...) + generateBCMatrix(...);"
+    A = OP;            //but I've found out that the result depends on the order of calling  the constructors (and,generally, is wrong),
+    A = A + Br;        //so now I'm not sure now even if  "matrix A= OP + Bl +Br"  will work correctly and add them step by step
+    A = A + Bl;                                                 
+    complex[int] u(Bl.n);
+    set(A, solver = UMFPACK);
+    complex[int] RHS =  vectorBCh(2 , leftBorderLabel, k);    
+    
+    u = A^-1*(RHS);
+
+    Vh<complex> [Ex,Ey,Ez]; 
+    Ex[] = u;
+
+ // plot(Ex, fill = true, cmm = "Ex");
+    plot(Ey, fill = true, cmm = "Ey");
+    plot(Ez, fill = true, cmm = "Ez");
+    
+    cout<<    modeAmplitudes(u, numberOfModesToAccount, -2, leftBorderLabel,  leftBorderLabel, k, true)<<endl;
+    cout<<    modeAmplitudes(u, numberOfModesToAccount, -2, leftBorderLabel, rightBorderLabel, k, true)<<endl;
+```
 
 ### 2D - axial-symmetric
+
 ```C
 load "Element_Mixte"
 real height = 3;
