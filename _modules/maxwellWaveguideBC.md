@@ -511,7 +511,11 @@ _[End optional]_
 
 ## Validation
 
-[Validation algorithms and results, e.g. convergence curves]
+### 2D, Cartezian
+No reflection TE mode:
+
+No reflection TM mode: 
+
 
 ## References
 
