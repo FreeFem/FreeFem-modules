@@ -316,7 +316,7 @@ Finally, the main script
 ### 2D - axial-symmetric
 In the axial-symmetric case dimensionless norm and transversal wave numbers are read from file `modes_m=0.txt`. If only TE or TM modes are required, just delete unnecessary raws. The first lines is the lines number. For the rest: the first column is Bessel funstion or Bessel function prime zeros, the second column is the mode type (TE or TM), the next is M=0, the last is the dimensionless norm.
 ```
-22
+19
 2.404825557695773	1 	0	0.7793251491983979
 3.8317059702075125	0 	0	1.190818894252844
 5.5200781102863115	1 	0	1.763983488461943
@@ -336,9 +336,6 @@ In the axial-symmetric case dimensionless norm and transversal wave numbers are 
 27.493479132040253	1 	0	8.752890449018484
 29.046828534916855	0 	0	9.241789609116804
 30.634606468431976	1 	0	9.752594764648169
-33.77582021357357	1 	0	10.75235390625179
-36.917098353664045	1 	0	11.752153930469028
-60.46945784534749	0 	0	19.246052960482373
 ```
 Note that in 2D axial symmetric Maxwell equations (in axial cut) the variable $r E_{\phi}$ is used rather than $E_{\phi}$
 ```C
