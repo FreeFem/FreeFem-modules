@@ -155,8 +155,7 @@ func real Kappa(int modeNumber, real size1, real size2)
 
 Finally, the main script
 ```C
-   load "Element_Mixte"
-    load "Element_P3"
+    load "Element_Mixte"
     func complex epsilon(real xx, real yy)
     {
          return 1. + 0*1i;
@@ -187,12 +186,11 @@ Finally, the main script
         (
              (dy(Ez) - 1i*m*Ey )*conj(dy(vEz)- 1i*m*vEy )       //curl_x
          +   (dx(Ey) - dy(Ex))*conj(dx(vEy) - dy(vEx))          //curl_z
-         +   (1i*m*Ex  - dx(Ez))*conj(1i*m*vEx  - dx(vEz))    //curl_y
+         +   (1i*m*Ex  - dx(Ez))*conj(1i*m*vEx  - dx(vEz))      //curl_y
         
         )
         -sigma*epsilon(x,y)*(conj(vEy)*Ey+conj(vEz)*Ez + conj(vEx)*Ex)
                     )
-        
             + on(1, 3, Ex = 0, Ey = 0, Ez = 0)
          ;
         matrix<complex> OP = MKSWL(Vh, Vh, solver=UMFPACK); 
@@ -207,7 +205,7 @@ Finally, the main script
                 anH(x, y, (N.x)*modeNum, 1, height, 0, k)*conj(0*vEy - N.y*vEz)
               + anH(x, y, (N.x)*modeNum, 2, height, 0, k)*conj(N.x*vEz - 0*vEx)
               + anH(x, y, (N.x)*modeNum, 3, height, 0, k)*conj(N.y*vEx - N.x*vEy)
-            )*(1i*k)                    // [n v*] rot E = [n v*] (i k H)               
+            )*(1i*k)                    // [n v*] curl E = [n v*] (i k H)               
                                     );                         
         complex[int] BCr = BoundCondRot(0,Vh);
         return BCr;                
@@ -294,9 +292,9 @@ Finally, the main script
     matrix<complex> Bl = generateBCMatrix(numberOfModesToAccount, leftBorderLabel, 1, k);
     matrix<complex> OP = MakswellEqs(sigma, 0) ;
     
-    matrix<complex> A; //Here is an odd thing happens. Initially, I wrote  "A = OP + generateBCMatrix(...) + generateBCMatrix(...);"
-    A = OP;            //but I've found out that the result depends on the order of calling  the constructors (and,generally, is wrong),
-    A = A + Br;        //so now I'm not sure now even if  "matrix A= OP + Bl +Br"  will work correctly and add them step by step
+    matrix<complex> A; //A = OP + generateBCMatrix(...) + generateBCMatrix(...) produces order dependent incorrect result
+    A = OP;            //tested FreeFem++ v 3.56
+    A = A + Br;        
     A = A + Bl;                                                 
     complex[int] u(Bl.n);
     set(A, solver = UMFPACK);
@@ -316,7 +314,7 @@ Finally, the main script
 ```
 
 ### 2D - axial-symmetric
-
+Note that in 2D axial symmetric Maxwell equations (in axial cut) the variable $r E_{\phi}$ is used rather than $E_{\phi}$
 ```C
 load "Element_Mixte"
 real height = 3;
