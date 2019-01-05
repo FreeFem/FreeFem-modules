@@ -170,7 +170,7 @@ Finally, the main script
     real length = 2;
     func mesh generateMesh()
     {
-        return square(35,10, [x*length, y*height]);
+        return square(50,10, [x*length, y*height]);
     }
     int rightBorderLabel = 2;
     int  leftBorderLabel = 4;
@@ -314,6 +314,32 @@ Finally, the main script
 ```
 
 ### 2D - axial-symmetric
+In the axial-symmetric case dimensionless norm and transversal wave numbers are read from file `modes_m=0.txt`. If only TE or TM modes are required, just delete unnecessary raws. The first lines is the lines number. For the rest: the first column is Bessel funstion or Bessel function prime zeros, the second column is the mode type (TE or TM), the next is M=0, the last is the dimensionless norm.
+```
+22
+2.404825557695773	1 	0	0.7793251491983979
+3.8317059702075125	0 	0	1.190818894252844
+5.5200781102863115	1 	0	1.763983488461943
+7.0155866698156215	0 	0	2.2165400124021
+8.653727912911013	1 	0	2.7590751389668657
+10.173468135062722	0 	0	3.226726175661221
+11.791534439014281	1 	0	3.7566997735908174
+13.323691936314221	0 	0	4.232168817077737
+14.930917708487787	1 	0	4.755305323217033
+16.470630050877634	0 	0	5.235551752495418
+18.071063967910924	1 	0	5.754389740203993
+19.615858510468243	0 	0	6.237857058819471
+21.21163662987926	1 	0	6.753743000677423
+22.760084380592772	0 	0	7.239528520160257
+24.352471530749302	1 	0	7.753262043197564
+25.903672087618382	0 	0	8.240795797022049
+27.493479132040253	1 	0	8.752890449018484
+29.046828534916855	0 	0	9.241789609116804
+30.634606468431976	1 	0	9.752594764648169
+33.77582021357357	1 	0	10.75235390625179
+36.917098353664045	1 	0	11.752153930469028
+60.46945784534749	0 	0	19.246052960482373
+```
 Note that in 2D axial symmetric Maxwell equations (in axial cut) the variable $r E_{\phi}$ is used rather than $E_{\phi}$
 ```C
 load "Element_Mixte"
