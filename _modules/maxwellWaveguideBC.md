@@ -256,12 +256,12 @@ Finally, the main script
         ex[] = eVec;
         if(needdB) for(int i = 0; i < numOfModes; i++) result(i) = log10(0.);
         complex[int] probe = vectorBCe( -referenceMode, inputBoundaryLabel, k);
-        complex power = eVec'*probe;
+        complex power = eVec'*probe;     //'
         cout<<"mode = "<<referenceMode<<"   power = "<<abs(power)<<", "<<power<<endl;
         for(int testmode = 0; testmode < numOfModes; testmode++)             
         {
             // complex[int] probe2 = vectorBCe( (testmode+1), otherBoundaryLabel);
-            // complex res = eVec'*probe2/power;
+            // complex res = eVec'*probe2/power;   //'
             complex res = int1d(Th,otherBoundaryLabel)
             (
                 (
