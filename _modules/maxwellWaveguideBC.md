@@ -339,180 +339,171 @@ In the axial-symmetric case dimensionless norm and transversal wave numbers are 
 ```
 Note that in 2D axial symmetric Maxwell equations (in axial cut) the variable $r E_{\phi}$ is used rather than $E_{\phi}$
 ```C
-load "Element_Mixte"
-real height = 3;
-real length = 3;
-func mesh generateMesh()
-{
-    return square(30,30, [x*length, y*height]);
-}
-func complex epsilon(real xx, real yy)
-{
-    return 1. + 0*1i;
-//  if(xx > 0.25 && xx < 0.75/* && yy > 0.25 && yy < 0.75*/) return 5; else return  1.;
-}
-
-mesh Th = generateMesh();
-//	plot(Th);
-include "axial2D_modes.idp"
-
-fespace Vh(Th,[RT1Ortho, P2]); // finite element space
-	
-func matrix<complex> MakswellEqs(real sigma, int m, real h)
-{
-    macro odx(F) (dx(F) +  1i*h*F) // dx -> odx 
-    varf MKSWL([Hz,Hr, Hphi],[vHz,vHr, vHphi]) = 
-         int2d(Th)(        
-        	   (
-		       (dy(Hphi) - 1i*m*Hr )*conj(dy(vHphi)- 1i*m*vHr )/y      //curl_z // vHphi => (Hphi*y)
-        	     + (odx(Hr) - dy(Hz))*conj(odx(vHr) - dy(vHz))*y	       //curl_phi
-        	     + (1i*m*Hz  - odx(Hphi))*conj(1i*m*vHz  - odx(vHphi))/y   //curl_r
-        	   )	
-        	   - sigma*y*epsilon(x,y)*(conj(vHr)*Hr+conj(vHphi)*Hphi/(y*y)+conj(vHz)*Hz)  // vHphi => (Hphi*y)
-        	  )        
-        	  + on(3,  Hz = 0, Hr = 0, Hphi = 0)
-        	  + on(1,  Hphi = 0)        //Hr - at the axis does'not have meaning due to used RT1Ortho
-                  ;
-    matrix<complex> OP = MKSWL(Vh, Vh, solver=UMFPACK); 
-    return OP;
-}
-
-func complex[int] vectorBCh(int modeNum, int boundaryLabel, real k)
-{
-    int m = modeM [abs(modeNum)];
-    varf BoundCondRot([Ex,Ey,Ez],[vEx,vEy,vEz]) =   
-        int1d(Th,boundaryLabel)
-            (/*2.*pi*//*y*/(                          // x -> z, y ->  r, z -> phi
-                anH(x, y, (N.x)*modeNum, 1, height, 0, k)*conj(/*0.*/ - N.y*vEz/*/y*/) // 0 => N.z
-              + anH(x, y, (N.x)*modeNum, 2, height, 0, k)*conj(N.x*vEz/*/y*/ /*- 0.*/)
-              + anH(x, y, (N.x)*modeNum, 3, height, 0, k)*conj(N.y*vEx - N.x*vEy)*y
-	     )*(1i*k));                  // [n v*] curl E = [n v*] (i k H) 
-     complex[int] BCr = BoundCondRot(0,Vh);
-     return BCr;
-}	
-	
-func complex[int] vectorBCe(int modeNum, int boundaryLabel, real k) 
-{
-    int m = modeM [abs(modeNum)];
-    cout<<"modeNum = "<<modeNum<<endl;
-    varf BoundCondField([Ex,Ey,Ez],[vEx,vEy,vEz]) =  
-        int1d(Th,boundaryLabel)
-            ((// x(1) -> z, y(2) ->  r, z(3) -> phi;    n [Es Hv]
-              2.*pi*/*y*/
-	          conj( - (vEz/*/y*/)*anH(x, y, (N.x)*modeNum, 2, height, 0, k)
-			+ (anE(x, y,  (N.x)*modeNum, 3, height, 0, k))*((-dx(vEz)/*/y*/ +  1i*m*vEx/*/y*/) / (1i*k) ) //Ez = anE(..,3,..)*y
-			+ (vEy) *anH(x, y,  (N.x)*modeNum, 3, height, 0, k) * y  
-			- anE(x, y,  (N.x)*modeNum, 2, height, 0, k)*((dx(vEy) - dy(vEx))/(1i*k) * y)
-		      )*(N.x)
-	     )/fNorm(modeNum, height, k)
-	    ); 
-    complex[int] BCrf = BoundCondField(0,Vh);
-    return BCrf;
-}
-
-func matrix<complex> matrixBC(int modeNum, int boundaryLabel, real k)
-{		
-   complex[int] BCr  = vectorBCh( modeNum, boundaryLabel,k);
-   complex[int] BCrf = vectorBCe( -modeNum, boundaryLabel,k);
-   matrix<complex> Br = BCr*BCrf';                           //' cartesian product
-   return Br;		
-}	
-	
-func matrix<complex> generateBCMatrix(int numberOfModes, int boundaryLabel, int sign, real k)
-{
-    matrix<complex> Br1; 
-    for(int i = 1; i <= numberOfModes; i++)
+    load "Element_Mixte"
+    func complex epsilon(real xx, real yy)
     {
-         matrix<complex> Br2 = matrixBC(sign*i, boundaryLabel, k);
-         Br1 = Br1 + Br2;
+         return 1. + 0*1i;
+    //    if(xx > 0.25 && xx < 0.75 && yy > 0.25 && yy < 0.75) return 5;     else return  1.;
     }
-    return Br1;
-}	
-
-//complimentary function for calculating scattering
-func complex[int] modeAmplitudes  
-(complex[int]& eVec, int numOfModes, int referenceMode, int inputBoundaryLabel, int otherBoundaryLabel, real k,  bool needdB)
-{
-    complex[int] result(numOfModes);
-    Vh<complex> [ex,ey,ez]; 
-    ex[] = eVec;
-    if(needdB) for(int i = 0; i < numOfModes; i++) result(i) = log10(0.);
-    complex[int] probe = vectorBCe(-referenceMode, inputBoundaryLabel, k);
-    Vh<complex> [pex, pey, pez];
-    pex[] = probe;	
-    int m = modeM [abs(referenceMode)-1];
-    complex power =  // eVec'*probe;
-        int1d(Th,otherBoundaryLabel)((// x -> z, y ->  r, z -> phi;    n [Es Hv]
-	  2.*pi*y*
-	  conj(-(pez/y)*(-(dx(ex)/y + 1i*m*ex/y) / (1i*k) )       
-	  + ((ez/y))*(-(dx(pex)/y + 1i*m*pex/y) / (1i*k) ) //Ez = anE(..,3,..)*y
-          + (pey) *((dx(ey) - dy(ex))/(1i*k))
-          - (ey)*((dx(pey) - dy(pex))/(1i*k))
-          )*(N.x)
-	 )
-     /* / fNorm(referenceMode, height, k)*/);	
-    cout<<"modeAmplitudes: mode = "<<referenceMode<<"   power = "<<abs(power)<<"(abs),   "<<power<<endl;
-    for(int testmode = 0; testmode < numOfModes; testmode++)	
+    real height = 3;
+    real length = 3;
+    func mesh generateMesh()
     {
-      // complex[int] probe2 = vectorBCe( (testmode+1), otherBoundaryLabel);
-      // complex res = eVec'*probe2/power;
-         int m = modeM [testmode];
-         int modeNum = -(testmode + 1);
-	 complex res = int1d(Th,otherBoundaryLabel)((// x -> z, y ->  r, z -> phi;    n [Es Hv]
-			     2.*pi*y*
-			      conj(
-				  - (ez/y)*anH(x, y, (N.x)*modeNum, 2, height, 0, k)  
-                                  + (anE(x, y,  (N.x)*modeNum, 3, height, 0, k))*(-(dx(ez)/y + 1i*m*ex/y) / (1i*k) ) //Ez = anE(..,3,..)*y
-				  + (ey) *anH(x, y,  (N.x)*modeNum, 3, height, 0, k)
-				  - anE(x, y,  (N.x)*modeNum, 2, height, 0, k)*((dx(ey) - dy(ex))/(1i*k))
-														     )*(N.x)
-			          )
-														 /(fNorm(modeNum, height, k)/*power*/));	
-            cout << "inner loop: res=" << res <<",  abs(res) = "<<abs(res)<<endl; 														 
-        if(needdB) result(testmode) =  20*log10(abs(res)); 
-        else       result(testmode) =  res;
+        return square(30,30, [x*length, y*height]);
     }
-	
-    return result;
-}
-		
-	int m = 0;                           //not used in this implementation, keep it for consistency 
-	real sigma = 9.*pi*pi-75;//70.;
-	real k = sqrt(sigma);
-	cout<<"h1 = "<<H(k, Kappa(1,height,1))<<",  kappa1 = "<<Kappa(1,height,1)<<",  k = "<<k<<",  beta_ph = "<<k/H(k, Kappa(1,height,1))<<endl; 
-	cout<<"h2 = "<<H(k, Kappa(2,height,1))<<",  kappa2 = "<<Kappa(2,height,1)<<",  k = "<<k<<",  beta_ph = "<<k/H(k, Kappa(1,height,1))<<endl; 
-	cout<<"h3 = "<<H(k, Kappa(3,height,1))<<",  kappa3 = "<<Kappa(3,height,1)<<",  k = "<<k<<",  beta_ph = "<<k/H(k, Kappa(1,height,1))<<endl; 
-	cout<<"h3 = "<<H(k, Kappa(4,height,1))<<",  kappa3 = "<<Kappa(4,height,1)<<",  k = "<<k<<",  beta_ph = "<<k/H(k, Kappa(1,height,1))<<endl; 	
+    mesh Th = generateMesh();
+    int rightBorderLabel = 2;
+    int  leftBorderLabel = 4;
+    include "axial2D_modes.idp"
+//    plot(Th);
 
-int rightBorderLabel = 2;
-int  leftBorderLabel = 4;
-int numberOfModesToAccount = 3;
-int targetMode = 3;
-matrix<complex> Br = generateBCMatrix(numberOfModesToAccount, rightBorderLabel,1, k);
-matrix<complex> Bl = generateBCMatrix(numberOfModesToAccount, leftBorderLabel, 1, k);
-matrix<complex> OP = MakswellEqs(sigma, m, 0) ;
-	
-matrix<complex> A; //A =  OP + Bl + Br;   //Here is an odd thing happens. Initially, I wrote  "A = OP + generateBCMatrix(...) + generateBCMatrix(...);"
-A = OP;                                   //but I've found out that the result depends on the order of calling the constructors (and,generally, is wrong),
-A = A + Br;                               //so now I'm not sure now even if  "matrix A= OP + Bl +Br"  will work correctly and add them step by step
-A = A + Bl; 
-complex[int] u(Br.n);
-set(A, solver = UMFPACK);
-complex[int] RHS =  vectorBCh(targetMode , leftBorderLabel, k);	
+    fespace Vh(Th,[RT1Ortho, P2]); // finite element space
     
-u = A^-1*(RHS);
+    func matrix<complex> MakswellEqs(real sigma, int m, real h)
+    {
+		varf MKSWL([Ez,Er, Ephi],[vEz,vEr, vEphi]) = 
+            int2d(Th)(        
+                (
+                     (dy(Ephi) - 1i*m*Er )*conj(dy(vEphi)- 1i*m*vEr )/y      //curl_z // vEphi => (Ephi*y)
+                 +   (dx(Er) - dy(Ez))*conj(dx(vEr) - dy(vEz))*y             //curl_phi
+                 +   (1i*m*Ez  - odx(Ephi))*conj(1i*m*vEz  - odx(vEphi))/y   //curl_r        
+                )    
+            -sigma*y*epsilon(x,y)*(conj(vEr)*Er+conj(vEphi)*Ephi/(y*y)+conj(vEz)*Ez)
+                     )        
+                + on(3,  Ez = 0, Er = 0, Ephi = 0)
+                + on(1,  Ephi = 0)                    //Er at the axis does not change anything due to RT1Ortho elements
+         ;
+        matrix<complex> OP = MKSWL(Vh, Vh, solver=UMFPACK); 
+        return OP;
+    }        
+    func complex[int] vectorBCh(int modeNum, int boundaryLabel, real k)
+    {
+        int m = modeM [abs(modeNum)];
+        varf BoundCondRot([Ex,Ey,Ez],[vEx,vEy,vEz]) =
+    		int1d(Th,boundaryLabel)(
+			    (// x -> z, y ->  r, z -> phi
+                    anH(x, y, (N.x)*modeNum, 1, height, 0, k)*conj( - N.y*vEz)
+                  + anH(x, y, (N.x)*modeNum, 2, height, 0, k)*conj(N.x*vEz)
+                  + anH(x, y, (N.x)*modeNum, 3, height, 0, k)*conj(N.y*vEx - N.x*vEy)*y
+                )*(1i*k)
+									);          // [n v*] curl E = [n v*] (i k H)                                                                       
+        complex[int] BCr = BoundCondRot(0,Vh);
+        return BCr;                        
+    }    
 	
+    func complex[int] vectorBCe(int modeNum, int boundaryLabel, real k) 
+    {
+        int m = modeM [abs(modeNum)];
+        cout<<"modeNum = "<<modeNum<<endl;
+        varf BoundCondField([Ex,Ey,Ez],[vEx,vEy,vEz]) =  
+		    int1d(Th,boundaryLabel)(
+			(                                                     // x(1) -> z, y(2) ->  r, z(3) -> phi;    n [Es Hv]
+                2.*pi*conj
+				(
+                  - (vEz)*anH(x, y, (N.x)*modeNum, 2, height, 0, k) 
+                  + (anE(x, y,  (N.x)*modeNum, 3, height, 0, k))*((-dx(vEz) + 1i*m*vEx) / (1i*k) ) //Ez = anE(..,3,..)*y
+                  + (vEy) *anH(x, y,  (N.x)*modeNum, 3, height, 0, k) * y  
+                  - anE(x, y,  (N.x)*modeNum, 2, height, 0, k)*((dx(vEy) - dy(vEx))/(1i*k) * y)
+                )*(N.x)
+            ) 
+            /fNorm(modeNum, height, k)
+									); 
+        complex[int] BCrf = BoundCondField(0,Vh);
+        return BCrf;        
+    }
+    func matrix<complex> matrixBC(int modeNum, int boundaryLabel, real k)
+    {        
+        complex[int] BCr  = vectorBCh( modeNum, boundaryLabel,k);
+        complex[int] BCrf = vectorBCe( -modeNum, boundaryLabel,k);
+        matrix<complex> Br = BCr*BCrf'; // 'cartesian product
+        return Br;        
+    }    
+    
+    func matrix<complex> generateBCMatrix(int numberOfModes, int boundaryLabel, int sign, real k)
+    {
+        matrix<complex> Br1; 
+        for(int i = 1; i <= numberOfModes; i++) 
+        {
+            matrix<complex> Br2 = matrixBC(sign*i, boundaryLabel, k);
+            Br1 = Br1 + Br2;
+        }
+        return Br1;        
+    }    
+    func complex[int] modeAmplitudes     //complimentary function for calculating scattering parameters
+	(complex[int]& eVec, int numOfModes, int referenceMode, int inputBoundaryLabel, int otherBoundaryLabel, real k,  bool needdB)
+    {
+        complex[int] result(numOfModes);
+        Vh<complex> [ex,ey,ez]; 
+        ex[] = eVec;
+        if(needdB) for(int i = 0; i < numOfModes; i++) result(i) = log10(0.);
+        complex[int] probe = vectorBCe(-referenceMode, inputBoundaryLabel, k);
+        Vh<complex> [pex, pey, pez];
+        pex[] = probe;    
+        int m = modeM [abs(referenceMode)-1];
+        complex power =   eVec'*probe;
 
-Vh<complex> [Ex,Ey,Ez]; 
-Ex[] = u;
+        for(int testmode = 0; testmode < numOfModes; testmode++)    
+        {
+            // complex[int] probe2 = vectorBCe( (testmode+1), otherBoundaryLabel);
+            // complex res = eVec'*probe2/power;
+            int m = modeM [testmode];
+            int modeNum = -(testmode + 1);
+            complex tmpPower = 1;
+            if(abs(power) != 0) tmpPower = power;
+            
+            complex res = int1d(Th,otherBoundaryLabel)((// x -> z, y ->  r, z -> phi;    n [Es Hv]
+                2.*pi*y*
+                conj(
+                  - (ez/y)*anH(x, y, modeNum, 2, height, 0, k)                                                                                                            
+                  + (anE(x, y,  modeNum, 3, height, 0, k))*(-(dx(ez)/y + 1i*m*ex/y) / (1i*k) ) //Ez = anE(..,3,..)*y
+                  + (ey) *anH(x, y,  modeNum, 3, height, 0, k)
+                  - anE(x, y,  modeNum, 2, height, 0, k)*((dx(ey) - dy(ex))/(1i*k))
+                    )*(N.x)
+                                                         )
+                                                         /(fNorm(modeNum, height, k)*tmpPower)); 
+             if(needdB) result(testmode) =  20*log10(abs(res)); 
+             else       result(testmode) =  res;
+         }
+    
+        return result;
+    }
+    
+    real sigma = 9.*pi*pi-81.5;
+    real k = sqrt(sigma);
+    cout<<"h1 = "<<H(k, Kappa(1,height,1))<<",  kappa1 = "<<Kappa(1,height,1)<<",  k = "<<k<<endl; 
+    cout<<"h2 = "<<H(k, Kappa(2,height,1))<<",  kappa2 = "<<Kappa(2,height,1)<<",  k = "<<k<<endl; 
+    cout<<"h3 = "<<H(k, Kappa(3,height,1))<<",  kappa3 = "<<Kappa(3,height,1)<<",  k = "<<k<<endl; 
+    cout<<"h4 = "<<H(k, Kappa(4,height,1))<<",  kappa3 = "<<Kappa(4,height,1)<<",  k = "<<k<<endl;     
+    
+    int numberOfModesToAccount = 2;
+    int targetMode = 2;
+    matrix<complex> Br = generateBCMatrix(numberOfModesToAccount, rightBorderLabel,1, k);
+    matrix<complex> Bl = generateBCMatrix(numberOfModesToAccount, leftBorderLabel, 1, k);
+    matrix<complex> OP = MakswellEqs(sigma, m, 0) ;
+    
+    matrix<complex> A;        //A = OP + generateBCMatrix(...) + generateBCMatrix(...) produces
+    A = OP;                   //order dependent incorrect result tested FreeFem++ v 3.56
+    A = A + Br;                                                 
+    A = A + Bl; 
+    complex[int] u(Br.n);
+    set(A, solver = UMFPACK);
+    complex[int] RHS =  vectorBCh(targetMode , leftBorderLabel, k);    
+    
+    u = A^-1*(RHS);    
 
-plot(Ex, fill = true, cmm = "Ex");
-plot(Ey, fill = true, cmm = "Ey");
-//fespace Uh (Th, P1); Uh<complex> Ezreal = Ez/(y+1e-10);
-//plot(Ezreal, fill = true, cmm = "Ez");
-	
-cout<<	modeAmplitudes(u, numberOfModesToAccount, -targetMode,  leftBorderLabel,  rightBorderLabel, k, false)<<endl;
-cout<<	modeAmplitudes(u, numberOfModesToAccount,  targetMode,  leftBorderLabel,  leftBorderLabel, k, false)<<endl; 
+    Vh<complex> [Ex,Ey,Ez]; 
+    Ex[] = u;
+    
+    fespace Uh (Th, P1);
+    Uh<complex> Ezreal = Ez/(y+1e-10);
+    Uh<complex> Exnorm = Ex;
+
+    plot(Ex, fill = true, cmm = "EX NORM");
+    plot(Ey, fill = true, cmm = "EY");     
+    plot(Ezreal, fill = true, cmm = "EZ");
+    
+    cout<<    modeAmplitudes(u, numberOfModesToAccount, -targetMode,  leftBorderLabel,  rightBorderLabel, k, false)<<endl;
+    cout<<    modeAmplitudes(u, numberOfModesToAccount, -targetMode,  leftBorderLabel,  leftBorderLabel, k, false)<<endl; 
 ```
 
 _[Optional]_
