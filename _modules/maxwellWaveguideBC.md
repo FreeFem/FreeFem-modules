@@ -314,7 +314,7 @@ Finally, the main script
 ```
 
 ### 2D - axial-symmetric
-In the axial-symmetric case dimensionless norm and transversal wave numbers are read from file `modes_m=0.txt`. If only TE or TM modes are required, just delete unnecessary raws. The first lines is the lines number. For the rest: the first column is Bessel funstion or Bessel function prime zeros, the second column is the mode type (TE or TM), the next is M=0, the last is the dimensionless norm.
+In the axial-symmetric case dimensionless norm and transversal wave numbers are read from file `modes_m=0.txt`. If only TE or TM modes are required, just delete unnecessary raws. The first lines is the lines number. For the rest: the first column is Bessel funstion or Bessel function prime zeros, the second column is the mode type (TE or TM), the next is M=0, the last is the dimensionless norm. `modes_m=0.txt`:
 ```
 19
 2.404825557695773	1 	0	0.7793251491983979
@@ -337,6 +337,173 @@ In the axial-symmetric case dimensionless norm and transversal wave numbers are 
 29.046828534916855	0 	0	9.241789609116804
 30.634606468431976	1 	0	9.752594764648169
 ```
+Hardcoded TE modes, file ```axial2D_TEmodes.idp```
+```C
+#axial2D_TEmodes.idp
+func real Kappate(int modeNumber, real size1, real size2)
+{
+    return kappas[abs(modeNumber)-1]/size1;
+}
+func complex anEte(real xx, real yy, int modeNumber, int M, int componentNumber, real size1, real size2, real k) 
+{
+    if(M!=0){ cout<< "M != 0: feature not implemented" <<endl; exit(-1);}
+    real kp = Kappate(modeNumber, size1, 0);
+    real h = H(k, kp);
+    real sign = 0; if(modeNumber >= 0) sign = 1.; else sign = -1.;
+    real rho = kp*yy;
+    real mu = kp*size1;
+    //cout << kp << "," << h << "," << rho << endl;
+    int m = M*sign;
+    if(componentNumber == 2){ //r
+        return 0;                   //  k*m*jn(M, rho)*exp(1i*h*xx*sign)/yy; // m == 0
+    }
+    if(componentNumber == 3){//phi    
+        real jnDash = 0.5*(jn(M-1, rho) - jn(M+1, rho));        
+        return 1i*k*mu*(jnDash)*exp(1i*h*xx*sign)/size1;
+    }
+    return 0*1i;
+}
+
+func complex anHte(real xx, real yy, int modeNumber, int M,  int componentNumber, real size1, real size2, real k)
+{
+    if(M!=0){ cout<< "M != 0: feature not implemented" <<endl; exit(-1);}
+    real kp = Kappate(abs(modeNumber), size1, 0);
+    real h = H(k, kp);
+    real sign = 0; if(modeNumber >= 0) sign = 1.; else sign = -1.;
+    real rho = kp*yy;
+    real mu = kp*size1;
+    real m = M*sign;    
+    if(componentNumber == 3){//phi
+        return 0; // h*m*sign*jn(M, rho)*exp(1i*h*xx*sign);  // m == 0
+    }
+    if(componentNumber == 2){//r
+        real jnDash = 0.5*(jn(M-1, rho) - jn(M+1, rho));
+	return -1i*h*sign*mu*jnDash/size1*exp(1i*h*xx*sign);
+    }
+    if(componentNumber == 1){//z
+        return  (-k*k + h*h)*jn(M, rho)*exp(1i*h*xx*sign);
+    }    
+    return 0*1i;
+}
+
+func real fNormte(int modeNumber, real size1, real k)
+{
+    real kp = Kappate(modeNumber, size1, 0);
+    real h = H(k, kp);
+    return  4.*pi*h*k*norma[abs(modeNumber)-1];
+}
+```
+Hardcoded TM modes, file ```axial2D_TMmodes.idp```
+```C
+func real Kappatm(int modeNumber, real size1, real size2)
+{
+    return kappas[abs(modeNumber)-1]/size1;
+}
+func complex anHtm(real xx, real yy, int modeNumber, int M, int componentNumber, real size1, real size2, real k) 
+{
+    if(M!=0){ cout<< "M != 0: feature not implemented" <<endl; exit(-1);}
+    real kp = Kappatm(modeNumber, size1, 0);
+    real h = H(k, kp);
+    real sign = 0; if(modeNumber >= 0) sign = 1.; else sign = -1.;
+    real rho = kp*yy;
+    real mu = kp*size1;
+    int m = M*sign;
+    if(componentNumber == 2){ //r
+        return 0;   //-k*m*jn(M, rho)*exp(1i*h*xx*sign)/yy;   // m == 0
+    }
+    if(componentNumber == 3){//phi    
+        real jnDash = 0.5*(jn(M-1, rho) - jn(M+1, rho));        
+        return -1i*k*mu*(jnDash)*exp(1i*h*xx*sign)/size1;
+    }
+    return 0*1i;
+}
+
+func complex anEtm(real xx, real yy, int modeNumber, int M,  int componentNumber, real size1, real size2, real k) 
+{
+    if(M!=0){ cout<< "M != 0: feature not implemented" <<endl; exit(-1);}
+    real kp = Kappatm(abs(modeNumber), size1, 0);
+    real h = H(k, kp);
+    real sign = 0; if(modeNumber >= 0) sign = 1.; else sign = -1.;
+    real rho = kp*yy;
+    real mu = kp*size1;
+    real m = M*sign;    
+    if(componentNumber == 3){//phi
+        return 0;      // h*m*sign*jn(M, rho)*exp(1i*h*xx*sign)/(yy); // m == 0
+    }
+    if(componentNumber == 2){//r
+        real jnDash = 0.5*(jn(M-1, rho) - jn(M+1, rho));
+        return -1i*h*sign*mu*jnDash/size1*exp(1i*h*xx*sign);
+    }
+    if(componentNumber == 1){//z
+        return  (-k*k + h*h)*jn(M, rho)*exp(1i*h*xx*sign);
+    }    
+    return 0*1i;
+}
+func real fNormtm(int modeNumber, real size1, real k)
+{
+    real kp = Kappatm(modeNumber, size1, 0);
+    real h = H(k, kp);
+    return  -4*pi*h*k*norma[abs(modeNumber)-1]; 
+}
+```
+Script for intermixing TM and TE modes. File `axial2D_modes.idp`
+```C
+// axial2D_modes.idp
+ifstream modeInput("modes_m=0.txt");
+int modesNumInput;
+modeInput >> modesNumInput;
+real[int] kappas(modesNumInput);
+int[int] modeType(modesNumInput);
+int[int] modeM (modesNumInput);
+real[int] norma(modesNumInput);
+for(int i = 0; i < modesNumInput; i++){
+    modeInput >> kappas[i] >> modeType[i] >> modeM[i] >> norma[i];
+    cout <<"i = "<<i << ", kappa = "<<kappas[i]<<",  modeType ="<<modeType[i]<<", modeM = "<<modeM[i]<<", norma = "<<norma[i]<<endl;
+}
+func real H(real k, real kp) 
+{
+    return sqrt(k*k-kp*kp);
+}
+include "axial2D_TEmodes.idp"
+include "axial2D_TMmodes.idp"
+func complex anE(real xx, real yy, int modeNumber, int componentNumber, real size1, real size2, real k) 
+{
+    int absM = abs(modeNumber-1);
+    if(modeType[absM] == 0) 
+        return anEte(xx, yy, modeNumber, modeM[absM], componentNumber, size1, size2, k);
+    else 
+        return anEtm(xx, yy, modeNumber, modeM[absM], componentNumber, size1, size2, k);
+    return 0;
+}
+func complex anH(real xx, real yy, int modeNumber, int componentNumber, real size1, real size2, real k)
+{                       
+    int absM = abs(modeNumber)-1;
+    if(modeType[absM] == 0) 
+        return anHte(xx, yy,  modeNumber, modeM[absM], componentNumber, size1, size2, k);
+    else 
+        return anHtm(xx, yy,  modeNumber, modeM[absM], componentNumber, size1, size2, k);
+    return 0;
+}
+func real fNorm(int modeNumber, real size1, real k)
+{
+    int absM = abs(modeNumber);
+    if(modeType[absM-1] == 0) 
+        return fNormte( modeNumber, size1, k);
+    else 
+        return fNormtm( modeNumber, size1, k);
+    return 0;
+}
+func real Kappa(int modeNumber, real size1, real size2)
+{
+    int absM = abs(modeNumber);
+    if(modeType[absM-1] == 0) 
+        return Kappate(modeNumber, size1, 0);
+    else 
+        return Kappatm(modeNumber, size1, 0);
+    return 0;
+}
+```
+Finally, the main script.
 Note that in 2D axial symmetric Maxwell equations (in axial cut) the variable $r E_{\phi}$ is used rather than $E_{\phi}$
 ```C
     load "Element_Mixte"
@@ -366,7 +533,7 @@ Note that in 2D axial symmetric Maxwell equations (in axial cut) the variable $r
                 (
                      (dy(Ephi) - 1i*m*Er )*conj(dy(vEphi)- 1i*m*vEr )/y      //curl_z // vEphi => (Ephi*y)
                  +   (dx(Er) - dy(Ez))*conj(dx(vEr) - dy(vEz))*y             //curl_phi
-                 +   (1i*m*Ez  - odx(Ephi))*conj(1i*m*vEz  - odx(vEphi))/y   //curl_r        
+                 +   (1i*m*Ez  - dx(Ephi))*conj(1i*m*vEz  - dx(vEphi))/y   //curl_r        
                 )    
             -sigma*y*epsilon(x,y)*(conj(vEr)*Er+conj(vEphi)*Ephi/(y*y)+conj(vEz)*Ez)
                      )        
@@ -381,12 +548,12 @@ Note that in 2D axial symmetric Maxwell equations (in axial cut) the variable $r
         int m = modeM [abs(modeNum)];
         varf BoundCondRot([Ex,Ey,Ez],[vEx,vEy,vEz]) =
     		int1d(Th,boundaryLabel)(
-			    (// x -> z, y ->  r, z -> phi
+			    (             // x -> z, y ->  r, z -> phi
                     anH(x, y, (N.x)*modeNum, 1, height, 0, k)*conj( - N.y*vEz)
                   + anH(x, y, (N.x)*modeNum, 2, height, 0, k)*conj(N.x*vEz)
                   + anH(x, y, (N.x)*modeNum, 3, height, 0, k)*conj(N.y*vEx - N.x*vEy)*y
-                )*(1i*k)
-									);          // [n v*] curl E = [n v*] (i k H)                                                                       
+                             )*(1i*k)
+				       );                                    // [n v*] curl E = [n v*] (i k H)                                                                       
         complex[int] BCr = BoundCondRot(0,Vh);
         return BCr;                        
     }    
@@ -398,16 +565,14 @@ Note that in 2D axial symmetric Maxwell equations (in axial cut) the variable $r
         varf BoundCondField([Ex,Ey,Ez],[vEx,vEy,vEz]) =  
 		    int1d(Th,boundaryLabel)(
 			(                                                     // x(1) -> z, y(2) ->  r, z(3) -> phi;    n [Es Hv]
-                2.*pi*conj
-				(
+                2.*pi*conj(
                   - (vEz)*anH(x, y, (N.x)*modeNum, 2, height, 0, k) 
                   + (anE(x, y,  (N.x)*modeNum, 3, height, 0, k))*((-dx(vEz) + 1i*m*vEx) / (1i*k) ) //Ez = anE(..,3,..)*y
                   + (vEy) *anH(x, y,  (N.x)*modeNum, 3, height, 0, k) * y  
                   - anE(x, y,  (N.x)*modeNum, 2, height, 0, k)*((dx(vEy) - dy(vEx))/(1i*k) * y)
-                )*(N.x)
-            ) 
-            /fNorm(modeNum, height, k)
-									); 
+                         )*(N.x)
+                       ) /fNorm(modeNum, height, k)
+			                  ); 
         complex[int] BCrf = BoundCondField(0,Vh);
         return BCrf;        
     }
@@ -440,12 +605,10 @@ Note that in 2D axial symmetric Maxwell equations (in axial cut) the variable $r
         Vh<complex> [pex, pey, pez];
         pex[] = probe;    
         int m = modeM [abs(referenceMode)-1];
-        complex power =   eVec'*probe;
+        complex power =   eVec'*probe; //'
 
         for(int testmode = 0; testmode < numOfModes; testmode++)    
         {
-            // complex[int] probe2 = vectorBCe( (testmode+1), otherBoundaryLabel);
-            // complex res = eVec'*probe2/power;
             int m = modeM [testmode];
             int modeNum = -(testmode + 1);
             complex tmpPower = 1;
@@ -460,7 +623,7 @@ Note that in 2D axial symmetric Maxwell equations (in axial cut) the variable $r
                   - anE(x, y,  modeNum, 2, height, 0, k)*((dx(ey) - dy(ex))/(1i*k))
                     )*(N.x)
                                                          )
-                                                         /(fNorm(modeNum, height, k)*tmpPower)); 
+                                                         /(fNorm(modeNum, height, k)*tmpPower));                                                      
              if(needdB) result(testmode) =  20*log10(abs(res)); 
              else       result(testmode) =  res;
          }
@@ -470,16 +633,17 @@ Note that in 2D axial symmetric Maxwell equations (in axial cut) the variable $r
     
     real sigma = 9.*pi*pi-81.5;
     real k = sqrt(sigma);
-    cout<<"h1 = "<<H(k, Kappa(1,height,1))<<",  kappa1 = "<<Kappa(1,height,1)<<",  k = "<<k<<endl; 
-    cout<<"h2 = "<<H(k, Kappa(2,height,1))<<",  kappa2 = "<<Kappa(2,height,1)<<",  k = "<<k<<endl; 
-    cout<<"h3 = "<<H(k, Kappa(3,height,1))<<",  kappa3 = "<<Kappa(3,height,1)<<",  k = "<<k<<endl; 
-    cout<<"h4 = "<<H(k, Kappa(4,height,1))<<",  kappa3 = "<<Kappa(4,height,1)<<",  k = "<<k<<endl;     
+    cout<<"h1 = "<<H(k, Kappa(1,height,1))<<",  kappa1 = "<<Kappa(1,height,1)<<",  k = "<<k<<",  beta_ph = "<<k/H(k, Kappa(1,height,1))<<endl; 
+    cout<<"h2 = "<<H(k, Kappa(2,height,1))<<",  kappa2 = "<<Kappa(2,height,1)<<",  k = "<<k<<",  beta_ph = "<<k/H(k, Kappa(2,height,1))<<endl; 
+    cout<<"h3 = "<<H(k, Kappa(3,height,1))<<",  kappa3 = "<<Kappa(3,height,1)<<",  k = "<<k<<",  beta_ph = "<<k/H(k, Kappa(3,height,1))<<endl; 
+    cout<<"h4 = "<<H(k, Kappa(4,height,1))<<",  kappa3 = "<<Kappa(4,height,1)<<",  k = "<<k<<",  beta_ph = "<<k/H(k, Kappa(4,height,1))<<endl;     
     
+
     int numberOfModesToAccount = 2;
-    int targetMode = 2;
+    int targetMode = 1;
     matrix<complex> Br = generateBCMatrix(numberOfModesToAccount, rightBorderLabel,1, k);
     matrix<complex> Bl = generateBCMatrix(numberOfModesToAccount, leftBorderLabel, 1, k);
-    matrix<complex> OP = MakswellEqs(sigma, m, 0) ;
+    matrix<complex> OP = MakswellEqs(sigma, 0, 0) ;
     
     matrix<complex> A;        //A = OP + generateBCMatrix(...) + generateBCMatrix(...) produces
     A = OP;                   //order dependent incorrect result tested FreeFem++ v 3.56
@@ -503,7 +667,7 @@ Note that in 2D axial symmetric Maxwell equations (in axial cut) the variable $r
     plot(Ezreal, fill = true, cmm = "EZ");
     
     cout<<    modeAmplitudes(u, numberOfModesToAccount, -targetMode,  leftBorderLabel,  rightBorderLabel, k, false)<<endl;
-    cout<<    modeAmplitudes(u, numberOfModesToAccount, -targetMode,  leftBorderLabel,  leftBorderLabel, k, false)<<endl; 
+cout<< modeAmplitudes(u, numberOfModesToAccount, -targetMode, leftBorderLabel, leftBorderLabel, k, false)<<endl; 
 ```
 
 _[Optional]_
