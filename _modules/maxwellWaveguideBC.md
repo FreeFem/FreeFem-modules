@@ -688,14 +688,20 @@ _[End optional]_
 ## Validation
 
 ### 2D, Cartezian
-No reflection TE mode:
+Left and right borders are waveguide ports. Input mode TE01
 
-No reflection TM mode: 
+Left and right borders are waveguide ports. Input mode TM01
+
+### 2D, axial-symmetric
+
+Left and right borders are waveguide ports, bottom border is the axis. Input mode TE01
+
+Left and right borders are waveguide ports, bottom border is the axis. Input mode TM01
 
 
 ## References
 
-[Links to references, in open-access if possible]
+
 
 ## Authors
 
