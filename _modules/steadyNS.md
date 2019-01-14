@@ -1,5 +1,5 @@
 ---
-name: "steadyNS"
+name: "Steady Navier-Stokes"
 category: "fluid"
 layout: module
 ---
