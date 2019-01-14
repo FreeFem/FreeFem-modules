@@ -40,7 +40,7 @@ $$
   \left\{
     \begin{array}{rccl}
     -\nu \Delta \mathbf{u}^{k+1} + (\mathbf{u}^k \cdot\nabla)\mathbf{u}^{k+1}+(\mathbf{u}^{k+1} \cdot\nabla)\mathbf{u}^{k} +\nabla p^{k+1} = (\mathbf{u}^k\cdot\nabla)\mathbf{u}^k\\
-    \div(\mathbf{u}^{k+1})=0
+    \nabla\cdot\mathbf{u}^{k+1}=0
     \end{array}
 \right.
 $$
@@ -154,8 +154,8 @@ TODO
 
 ## References
 
-This example is inspired from the official FreeFem++ documentation, Section 3.10, "Newton Method for the Steady Navier-Stokes equations".
+This example is inspired from the official FreeFem++ documentation, ["Newton Method for the Steady Navier-Stokes equations"](https://doc.freefem.org/tutorials/NavierStokesNewton/).
 
 ## Authors
 
-Florian Omnès (https://github.com/flomnes)
+[Florian Omnès](https://github.com/flomnes)
