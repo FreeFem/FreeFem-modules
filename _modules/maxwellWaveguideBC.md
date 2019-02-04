@@ -688,9 +688,24 @@ _[End optional]_
 ## Validation
 
 ### 2D, Cartezian
-Left and right borders are waveguide ports. Input mode TE01
+Left and right borders are waveguide ports. Input mode TE1
 
-Left and right borders are waveguide ports. Input mode TM01
+abs(Ez)
+
+!(../assets/waveguideBC/cart_TE1.png)
+
+Re(Ez)
+
+!(../assets/waveguideBC/cart_TE1_Re.png)
+
+Left and right borders are waveguide ports. Input mode TM1
+
+abs(Ex)
+!(../assets/waveguideBC/cart_TM1_Ex.png)
+
+abs(Ey)
+
+!(../assets/waveguideBC/cart_TM1_EY.png)
 
 ### 2D, axial-symmetric
 
