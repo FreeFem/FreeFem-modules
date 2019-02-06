@@ -516,7 +516,7 @@ Note that in 2D axial symmetric Maxwell equations (in axial cut) the variable $r
     real length = 3;
     func mesh generateMesh()
     {
-        return square(30,30, [x*length, y*height]);
+        return square(60,30, [x*length, y*height]);
     }
     mesh Th = generateMesh();
     int rightBorderLabel = 2;
