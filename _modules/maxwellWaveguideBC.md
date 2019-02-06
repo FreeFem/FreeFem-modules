@@ -686,7 +686,7 @@ _[Optional]_
 _[End optional]_
 
 ## Validation
-
+Following examples show reflectiveless transition of a waveguide mode traveling from one port (left) to an other (right).
 ### 2D, Cartezian
 Left and right borders are waveguide ports. Input mode TE1
 
@@ -711,10 +711,18 @@ Left and right borders are waveguide ports. Input mode TM1
 ![abs(Ey)]({{ site.url }}{{ site.baseurl }}/assets/waveguideBC/cart_TM1_EY.png)|
 
 ### 2D, axial-symmetric
-
-Left and right borders are waveguide ports, bottom border is the axis. Input mode TE01
-
-Left and right borders are waveguide ports, bottom border is the axis. Input mode TM01
+|Mode TE01, abs(Ephi)|
+|--|
+![abs(Ephi)]({{ site.url }}{{ site.baseurl }}/assets/waveguideBC/axi_TE01_Ephi.png)|
+|Mode TE01, Re(Ephi)|
+|--|
+![abs(Ephi)]({{ site.url }}{{ site.baseurl }}/assets/waveguideBC/axi_TE01_Ephi.png)|
+|Mode TM02, abs(Ez)|
+|--|
+![abs(Ephi)]({{ site.url }}{{ site.baseurl }}/assets/waveguideBC/axi_TM02_Ez.png)|
+|Mode TM02, abs(Er)|
+|--|
+![abs(Ephi)]({{ site.url }}{{ site.baseurl }}/assets/waveguideBC/axi_TM02_Er.png)|
 
 
 ## References
