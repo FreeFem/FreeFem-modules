@@ -670,21 +670,6 @@ Note that in 2D axial symmetric Maxwell equations (in axial cut) the variable $r
 cout<< modeAmplitudes(u, numberOfModesToAccount, -targetMode, leftBorderLabel, leftBorderLabel, k, false)<<endl; 
 ```
 
-_[Optional]_
-### 2D
-
-[Case description]
-
-### 3D
-
-[Case description]
-
-### Optional
-
-[e.g., Gmsh script]
-
-_[End optional]_
-
 ## Validation
 Following examples show reflectiveless transition of a waveguide mode traveling from one port (left) to an other (right).
 ### 2D, Cartezian
@@ -723,10 +708,6 @@ Left and right borders are waveguide ports. Input mode TM1
 |Mode TM02, abs(Er)|
 |--|
 ![abs(Ephi)]({{ site.url }}{{ site.baseurl }}/assets/waveguideBC/axi_TM02_Er.png)|
-
-
-## References
-
 
 
 ## Author
