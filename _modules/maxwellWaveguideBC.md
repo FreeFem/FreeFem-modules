@@ -1,5 +1,5 @@
 ---
-name: "Maxwell waveguide boundary condtions"
+name: "Maxwell waveguide boundary conditions"
 category: "electromagnetism, academic"
 layout: module
 ---
