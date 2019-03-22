@@ -4,7 +4,7 @@ category: electromagnetism
 layout: module
 ---
 
-# Stokes
+# Magnetostatic
 
 Algorithms for solving the 2D and 3D linear magnetostatic equations.
 

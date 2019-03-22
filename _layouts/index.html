@@ -39,7 +39,7 @@
           <ul id="menu">
             {% for module in site.modules %}
             <li>
-              <a href="{{ site.url }}{{ site.baseurl }}{{ module.url}}" onclick="fetchModule(event, '{{ site.url }}{{ site.baseurl }}{{ module.url}}', '{{ module.title }}')" {% if module.url == page.url  %} class="current" {% endif %}>
+              <a href="{{ site.url }}{{ site.baseurl }}{{ module.url}}" onclick="fetchModule(event, '{{ site.url }}{{ site.baseurl }}{{ module.url}}', '{{ module.title }}')">
                 {{ module.name }}
               </a>
               <span class="hidden">{{ module.category }}</span>
@@ -48,6 +48,7 @@
               </script>
             </li>
             {% endfor %}
+
           </ul>
         </div>
 
@@ -55,7 +56,30 @@
     </div>
 
     <div id="algoDisplay">
-      {{ content }}
+      <div id="home">
+        <img class="top-right" src="{{ site.url }}{{ site.baseurl }}/img/Rayons.jpg" alt=""></img>
+        <img class="bottom-left" src="{{ site.url }}{{ site.baseurl }}/img/Disc.jpg" alt=""></img>
+        <h1>A collection of mathematically validated modules for FreeFEM</h1>
+
+        <div>
+          <h2>We need your help !</h2>
+
+          <p>Help us build the largest cutting edge algorithms repository</p>
+
+          <p>Join us on GithHub and share your knowledge with the FreeFEM community</p>
+
+          <a class="header-github" href="https://github.com/FreeFem/FreeFem-modules" target="_blank">
+            <i class="fab fa-github"></i>
+            <p class="header-github-title" >
+              FreeFEM on GitHub
+            </p>
+            <p class="header-github-stars" id="headerGithubStarsForks">
+              <span id="headerGithubStars"></span> stars - <span id="headerGithubForks"></span> forks
+            </p>
+          </a>
+          <script async src="{{ site.url }}{{ site.baseurl }}/js/github.js"></script>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -69,7 +93,7 @@
         removeItemButton: true,
         duplicateItemsAllowed: false,
         paste: false,
-        position: 'below:'
+        position: 'below:',
       });
 
       const choices = document.getElementById('choices-multiple-remove-button')

@@ -1,0 +1,60 @@
+@media screen and (max-width:1200px) {
+  header a.icon {
+    float: right;
+    display: block !important;
+  }
+
+  .top-nav {
+    width: 0;
+    overflow: hidden;
+    flex-direction: column;
+    position: absolute;
+    top: 3.75rem;
+    background-color: #FFF;
+    border-bottom: 0.125rem solid #EFEFEF;
+    padding: 1.25rem 0;
+  }
+
+  .top-nav a {
+    text-align: left !important;
+    margin: 0 auto 0 3.75rem;
+    padding: 0.75rem 0;
+  }
+}
+
+/** FOR MOBILE PHONES **/
+@media screen and (max-width:600px) {
+  header img {
+    margin-right: 0 !important;
+  }
+
+  #main {
+    flex-direction: column !important;
+  }
+
+  #sideNavigation {
+    width: unset !important;
+    max-height: 25vh !important;
+    position: unset !important;
+    overflow: auto;
+    border-bottom: 0.125rem solid #EFEFEF;
+  }
+
+  .side-nav {
+    position: unset !important;
+  }
+
+  #algoDisplay {
+    width: unset !important;
+  }
+
+  figure {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  table {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}

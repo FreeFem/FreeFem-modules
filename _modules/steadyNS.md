@@ -45,7 +45,7 @@ $$
 \right.
 $$
 
-## FreeFem++ code
+## FreeFEM code
 
 {% highlight cpp %}
 //Parameters
@@ -154,7 +154,7 @@ TODO
 
 ## References
 
-This example is inspired from the official FreeFem++ documentation, ["Newton Method for the Steady Navier-Stokes equations"](https://doc.freefem.org/tutorials/NavierStokesNewton/).
+This example is inspired from the official FreeFEM documentation, ["Newton Method for the Steady Navier-Stokes equations"](https://doc.freefem.org/tutorials/NavierStokesNewton/).
 
 ## Authors
 

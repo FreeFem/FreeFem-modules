@@ -1,8 +1,8 @@
-title: "FreeFem++ modules"
-subtitle: "A collection of mathematically validated modules for FreeFem++"
-description: "A collection of mathematically validated modules for FreeFem++"
+title: "FreeFEM modules"
+subtitle: "A collection of mathematically validated modules for FreeFEM"
+description: "A collection of mathematically validated modules for FreeFEM"
 
-url: "https://modules.freefem.org/"
+# url: "https://modules.freefem.org"
 
 markdown: kramdown
 
