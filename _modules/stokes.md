@@ -204,9 +204,9 @@ plot([ux, uy, uz], cmm="Velocity");
 |![Velocity]({{ site.url }}{{ site.baseurl }}/assets/Stokes3D_u.png)|
 |![Pressure]({{ site.url }}{{ site.baseurl }}/assets/Stokes3D_p.png)|
 
-## Validation
+<!-- ## Validation
 
-TODO
+TODO -->
 
 ## Authors
 
