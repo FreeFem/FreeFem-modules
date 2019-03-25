@@ -133,8 +133,8 @@ for (int i = 0; i < nbiter; i++) {
 
 |Result - velocity (top) and pressure (bottom)|
 |--|
-|![Velocity]({{ site.url }}{{ site.baseurl }}/assets/NavierStokes/NavierStokes2D_u.jpeg)|
-|![Pressure]({{ site.url }}{{ site.baseurl }}/assets/NavierStokes/NavierStokes2D_p.jpeg)|
+|![Velocity]({{ site.url }}{{ site.baseurl }}/assets/NavierStokesCharacteristics/NavierStokes2D_u.jpeg)|
+|![Pressure]({{ site.url }}{{ site.baseurl }}/assets/NavierStokesCharacteristics/NavierStokes2D_p.jpeg)|
 
 ## Authors
 
