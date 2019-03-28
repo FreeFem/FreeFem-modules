@@ -166,7 +166,7 @@ header a.icon {
 }
 
 #sideNavigation .search input:focus {
-    border: 1px solid #00007F;
+  border: 1px solid #00007F;
 }
 
 #sideNavigation .search svg {
@@ -175,7 +175,7 @@ header a.icon {
 }
 
 #sideNavigation .search svg g {
-    fill: #00007F;
+  fill: #00007F;
 }
 
 /** MODULES LIST **/
@@ -346,15 +346,15 @@ header a.icon {
   color: #0000FF;
 }
 
-#home .header-github:hover > i {
+#home .header-github:hover>i {
   color: #0000FF;
 }
 
-#home .header-github:hover > .header-github-title {
+#home .header-github:hover>.header-github-title {
   color: #0000FF;
 }
 
-#home .header-github:hover > .header-github-stars {
+#home .header-github:hover>.header-github-stars {
   color: #0000FF;
 }
 
