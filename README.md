@@ -1,8 +1,8 @@
-# FreeFem++ modules
+# FreeFEM modules
 
-A collection of mathematically validated modules for [FreeFem++](https://freefem.org/)
+A collection of mathematically validated modules for [FreeFEM](https://freefem.org/)
 
-[FreeFem++ modules](https://freefem.github.io/FreeFem-modules/)
+[FreeFEM modules](https://freefem.github.io/FreeFem-modules/)
 
 ## Contributing
 
