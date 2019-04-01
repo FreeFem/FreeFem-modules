@@ -71,12 +71,9 @@ header #headerSymbol {
 nav {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
-  margin-right: 3.75rem;
-}
-
-nav a {
-  margin-left: 2.5rem;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 990px;
 }
 
 #donate {
