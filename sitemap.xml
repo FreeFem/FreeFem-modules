@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://modules.freefem.org</loc>
+    <priority>1</priority>
+  </url>
+  <url>
+    <loc>https://modules.freefem.org/modules/elasticity/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://modules.freefem.org/modules/helmoltz/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://modules.freefem.org/modules/magnetostatic/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://modules.freefem.org/modules/maxwell-waveguide-boundary-conditions/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://modules.freefem.org/modules/poisson/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://modules.freefem.org/modules/navier-stokes/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://modules.freefem.org/modules/steady-navier-stokes/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://modules.freefem.org/modules/stokes/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://modules.freefem.org/modules/wentzell/</loc>
+    <priority>0.5</priority>
+  </url>
+</urlset>

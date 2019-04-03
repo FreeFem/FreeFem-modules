@@ -1,5 +1,5 @@
 ---
-name: Wentzel
+name: Wentzell
 category: academic
 layout: module
 ---
@@ -28,23 +28,23 @@ Wifi propagation
 
 {% highlight cpp %}
 // Parameters
-real beta = 0.3; //parameter for the Laplace-Beltrami coefficient
-				 //For Steklov eigenvalue choose 0
+real beta = 0.3; // parameter for the Laplace-Beltrami coefficient
+				 // For Steklov eigenvalue choose 0
 int M = 300;
 int eigCount = 11; //the number of eigenvalues to compute
 
-real[int] vec = [1.0,0,0,0,0.3];  //vector of Fourier coefficients for the
-								  //boundary parametrization
+real[int] vec = [1.0,0,0,0,0.3];  // vector of Fourier coefficients for the
+								  // boundary parametrization
 
 // Function
-//evaluation of a trigonometric polynomial
+// evaluation of a trigonometric polynomial
 func real ptrig(real t, real[int] VV){
 	real[int] vect = VV;
 	int n = (vect.n-1)/2;
-	real[int] as = vect(1:n) ;    //coeffs of cos
-	real[int] bs = vect(n+1:2*n); //coeffs of sin
+	real[int] as = vect(1:n) ;    // coeffs of cos
+	real[int] bs = vect(n+1:2*n); // coeffs of sin
 	real a0 =vect(0);
-	real Sum = a0;   //initialize sum
+	real Sum = a0;   // initialize sum
 	for(int i=0;i<n;i++){Sum+=(as[i]*cos((i+1)*t)+bs[i]*sin((i+1)*t));}
 	return Sum;
 }
@@ -61,7 +61,7 @@ fespace Vh(Th, P2);
 Vh uh,vh;
 
 // Problem
-//weak form of the Wentzell problem
+// weak form of the Wentzell problem
 varf va (uh, vh)
 	= int2d(Th)(
 		  dx(uh)*dx(vh)
