@@ -226,6 +226,7 @@ header a.icon {
 
 #algoDisplay p, .MathJax_Display {
   margin: 1rem !important;
+  width: unset !important;
 }
 
 #algoDisplay figure.highlight {
