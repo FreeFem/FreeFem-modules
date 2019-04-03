@@ -38,6 +38,7 @@ $$
 $$
 
 Using the characteristics method, the discretized weak form reads as follow:
+
 $$
 	\frac{\rho}{dt}(\mathbf{u}^{n+1} - \mathbf{u}^n\circ\mathbf{X}^n)\mathbf{v}
 	- \mu\int_{\Omega}{\nabla\mathbf{u}:\nabla\mathbf{v}
