@@ -141,4 +141,4 @@ for (int i = 0; i < nbiter; i++) {
 
 Author: [Simon Garnotel](https://github.com/sgarnotel)
 
-From the [documentation](https://doc.freefem.org/models/navierStokesEquations.html)
+From the [documentation](https://doc.freefem.org/models/navier-stokes-equations.html)
