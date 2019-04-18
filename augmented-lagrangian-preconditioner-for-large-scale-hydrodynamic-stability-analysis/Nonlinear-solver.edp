@@ -1,0 +1,177 @@
+/*
+   Author(s): Johann Moulin <johann.moulin@onera.fr>
+              Pierre Jolivet <pierre.jolivet@enseeiht.fr>
+              Olivier Marquet <olivier.marquet@onera.fr>
+        Date: 2018-07-20
+
+   Copyright (C) 2018-     Office national d'études et de recherches aérospatiales
+                 2018-     Centre National de la Recherche Scientifique
+
+   This script is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+   If you use this script, you are kindly asked to cite the following article:
+
+   "Augmented Lagrangian Preconditioning for Large-Scale Hydrodynamic Stability",
+   J. Moulin, P. Jolivet, and O. Marquet (2019).
+ */
+
+load "PETSc"
+include "include/params.idp"
+
+real tolNewton = getARGV("-Newton_tol", 1.0e-6);
+int itMax = getARGV("-Newton_max_it", 50);
+
+if(mpirank == 0) cout << " ### Building mesh..." << endl;
+
+mesh3 th = buildlayers(square(1, 1), 1);
+fespace Wh(th, Pk); // complete space [u, v, w, p]
+fespace Qh(th, P1); // pressure space for Schur complement
+
+int[int] arrayIntersection;               // ranks of neighboring subdomains
+int[int][int] restrictionIntersection(0); // local-to-neighbors renumbering
+real[int] D;                              // partition of unity
+
+Wh [uc1, uc2, uc3, pc], [du, du2, du3, dp], [rhs, rhs2, rhs3, rhsp];
+
+include "include/decomposition.idp"
+
+if(mpirank == 0) cout << " ### Building mesh... Done" << endl;
+
+real time;
+
+include "include/varf.idp"
+
+IFMACRO(original)
+varf vRes([u1, u2, u3, p], [v1, v2, v3, q]) = int3d(th)(
+    - nu * (grad(uc1)' * grad(v1) +
+            grad(uc2)' * grad(v2) +
+            grad(uc3)' * grad(v3))
+    + (-1.0) * UgradV(uc, uc)' * [v1, v2, v3]
+    + (pc - gamma * div(uc)) * div(v)
+    + div(uc) * q)
+    // Dirichlet (inlet + plate)
+    + on(1, u1 = 1-uc1, u2 = 0-uc2, u3 = 0-uc3) + on(2, u1 = 0-uc1, u2 = 0-uc2, u3 = 0-uc3)
+    // far field (zmax and ymax)
+    + on(6, 7, u1 = 1-uc1);
+ENDIFMACRO
+IFMACRO(opt)
+varf vRes([u1, u2, u3, p], [v1, v2, v3, q]) = int3d(th, qforder = 3)(
+        dx(uc1) * ((-nu - gamma) * dx(v1) - gamma * (dy(v2) + dz(v3)) + q)
+      + dy(uc1) * (-nu * dy(v1)                                      )
+      + dz(uc1) * (-nu * dz(v1)                                      )
+      + dx(uc2) * (-nu * dx(v2)                                      )
+      + dy(uc2) * ((-nu - gamma) * dy(v2) - gamma * (dx(v1) + dz(v3)) + q)
+      + dz(uc2) * (-nu * dz(v2)                                      )
+      + dx(uc3) * (-nu * dx(v3)                                      )
+      + dy(uc3) * (-nu * dy(v3)                                      )
+      + dz(uc3) * ((-nu - gamma) * dz(v3) - gamma * (dx(v1) + dy(v2)) + q)
+      +                                                                 pc * (dx(v1) + dy(v2) + dz(v3))
+    )
+    + int3d(th)(
+        dx(uc1) * (-uc1 * v1)
+      + dy(uc1) * (-uc2 * v1)
+      + dz(uc1) * (-uc3 * v1)
+      + dx(uc2) * (-uc1 * v2)
+      + dy(uc2) * (-uc2 * v2)
+      + dz(uc2) * (-uc3 * v2)
+      + dx(uc3) * (-uc1 * v3)
+      + dy(uc3) * (-uc2 * v3)
+      + dz(uc3) * (-uc3 * v3)
+    )
+    // Dirichlet (inlet + plate)
+    + on(1, u1 = 1-uc1, u2 = 0-uc2, u3 = 0-uc3) + on(2, u1 = 0-uc1, u2 = 0-uc2, u3 = 0-uc3)
+    // far-field (zmax and ymax)
+    + on(6, 7, u1 = 1-uc1);
+ENDIFMACRO
+
+matrix J;
+verbosity = 1;
+Mat dJ(Wh.ndof, arrayIntersection, restrictionIntersection, D);
+verbosity = 0;
+
+include "include/fieldsplit.idp"
+/*# Schur #*/
+matrix[int] S(1); // array with a single matrix
+varf vSchur(p, q) = int3d(th, qforder = 3)
+  (-1.0/(gamma + 1.0/Re) * p * q); // %*\color{DarkGreen}{\cref{eq:approximatedshurcomplement}}*) with %*\color{DarkGreen}{$s=0$}*)
+S[0] = vSchur(Qh, Qh); // matrix assembly
+/*# EndSchur #*/
+
+include "include/paramsXYZ.idp"
+/*# P #*/
+string paramsP = "-prefix_push fieldsplit_p_ " +
+  "-ksp_type cg -ksp_max_it 5 -pc_type jacobi -prefix_pop";
+/*# EndP #*/
+
+/*# Krylov #*/
+string paramsKrylov="-ksp_type fgmres -ksp_monitor"
+  + " -ksp_rtol 1.0e-1 -ksp_gmres_restart 200";
+/*# EndKrylov #*/
+
+/*# AllParams #*/
+string params = paramsXYZ + " " + paramsP + " " + paramsKrylov +
+  " -pc_type fieldsplit -pc_fieldsplit_type multiplicative";
+/*# EndAllParams #*/
+
+if(mpirank == 0) cout << " ### Entering Newton loop..." << endl;
+
+int it = 0;
+real res;
+while(it < itMax) {
+    ++it;
+    if(mpirank == 0) cout << " RHS assembly..." << endl;
+    time = mpiWtime();
+    rhs[] = vRes(0, Wh, tgv = -1);
+    time = mpiWtime() - time;
+    if(mpirank == 0) cout << " ### RHS assembly done in " << time << "s" << endl;
+
+    res = sqrt(dscalprod(D, rhs[], rhs[]));
+
+    if(mpirank == 0) cout << "-- it = " << it  << " -- res = " << res << endl;
+
+    if(res < tolNewton) break;
+
+    if(mpirank == 0) cout << " Matrix assembly..." << endl;
+    time = mpiWtime();
+    J = vJ(Wh, Wh, tgv = -1);
+    time = mpiWtime() - time;
+    if(mpirank == 0) cout << " ### Matrix assembly done in " << time << "s" << endl;
+
+    changeOperator(dJ, J);
+
+    if(mpirank == 0) cout << " Solving the linearized system..." << endl;
+    if(it == 1)
+        set(dJ, sparams = params, fields = vX[], names = names, schurPreconditioner = S, schurList = listX[]);
+
+    time = mpiWtime();
+    du[] = dJ^-1 * rhs[];
+    time = mpiWtime() - time;
+    if(mpirank == 0) cout << " ### Linearized system solved in " << time << "s" << endl;
+
+    uc1[] += du[];
+}
+if(Re < 75) {
+    savemesh(th, SaveDirName + "/mesh_" + nf + "_" + mpirank + "-" + mpisize + ".mesh");
+    {
+        ofstream file(SaveDirName + "/setup_" + nf + "_" + mpirank + "-" + mpisize + ".dat");
+        file << D << endl;
+        file << arrayIntersection.n << endl;
+        file << arrayIntersection << endl;
+        for(int i = 0; i < arrayIntersection.n; ++i) {
+            file << restrictionIntersection[i].n << endl;
+            file << restrictionIntersection[i] << endl;
+        }
+    }
+    ofstream file(SaveDirName + "/base_" + nf + "_" + mpirank + "-" + mpisize + ".dat");
+    file.precision(16);
+    file.scientific;
+    file << uc1[] << endl;
+}
+else {
+    ofstream file(SaveDirName + "/sol_" + nf + "_" + mpirank + "-" + mpisize + ".dat");
+    file.precision(16);
+    file.scientific;
+    file << uc1[] << endl;
+}

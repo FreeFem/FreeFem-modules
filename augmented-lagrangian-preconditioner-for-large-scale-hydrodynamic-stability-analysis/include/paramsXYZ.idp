@@ -1,0 +1,41 @@
+/*
+   Author(s): Johann Moulin <johann.moulin@onera.fr>
+              Pierre Jolivet <pierre.jolivet@enseeiht.fr>
+              Olivier Marquet <olivier.marquet@onera.fr>
+        Date: 2018-07-20
+
+   Copyright (C) 2018-     Office national d'études et de recherches aérospatiales
+                 2018-     Centre National de la Recherche Scientifique
+
+   This script is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+   If you use this script, you are kindly asked to cite the following article:
+
+   "Augmented Lagrangian Preconditioning for Large-Scale Hydrodynamic Stability",
+   J. Moulin, P. Jolivet, and O. Marquet (2019).
+ */
+
+/*# V #*/
+real tolV = getARGV("-velocity_tol", 1.0e-1); // default to %*\color{DarkGreen}{$10^{-1}$}*)
+// monodimensional velocity solver
+string paramsV = "-ksp_type gmres -ksp_converged_reason -ksp_pc_side right " +
+  "-ksp_rtol " + tolV + " -ksp_gmres_restart 50 -pc_type asm " +
+  "-pc_asm_overlap 1 -sub_pc_type lu -sub_pc_factor_mat_solver_type mumps";
+/*# EndV #*/
+IFMACRO(eigensolver)
+string paramsXYZ = "" +
+  "-prefix_push st_fieldsplit_vX_ " + paramsV + " -prefix_pop " +
+  "-prefix_push st_fieldsplit_vY_ " + paramsV + " -prefix_pop " +
+  "-prefix_push st_fieldsplit_vZ_ " + paramsV + " -prefix_pop";
+ENDIFMACRO
+IFMACRO(!eigensolver)
+/*# XYZ #*/
+// each velocity component gets the same monodimensional solver 
+// defined by paramsV
+string paramsXYZ = "-prefix_push fieldsplit_vX_ " + paramsV + " -prefix_pop"
+                  + " -prefix_push fieldsplit_vY_ " + paramsV + " -prefix_pop"
+                  + " -prefix_push fieldsplit_vZ_ " + paramsV + " -prefix_pop";
+/*# EndXYZ #*/
+ENDIFMACRO
