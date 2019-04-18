@@ -1,0 +1,33 @@
+/*
+   Author(s): Johann Moulin <johann.moulin@onera.fr>
+              Pierre Jolivet <pierre.jolivet@enseeiht.fr>
+              Olivier Marquet <olivier.marquet@onera.fr>
+        Date: 2018-07-20
+
+   Copyright (C) 2018-     Office national d'études et de recherches aérospatiales
+                 2018-     Centre National de la Recherche Scientifique
+
+   This script is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+   If you use this script, you are kindly asked to cite the following article:
+
+   "Augmented Lagrangian Preconditioning for Large-Scale Hydrodynamic Stability",
+   J. Moulin, P. Jolivet, and O. Marquet (2019).
+ */
+
+/*# Fields #*/
+Wh [vX, vY, vZ, p] = [1, 2, 3, 4]; // numbering of each field
+string[int] names(4); // prefix of each field
+names[0] = "vX"; // %*\color{DarkGreen}{$x$}*)-velocity
+names[1] = "vY"; // %*\color{DarkGreen}{$y$}*)-velocity
+names[2] = "vZ"; // %*\color{DarkGreen}{$z$}*)-velocity
+names[3] = "p";  // pressure
+/*# EndFields #*/
+/*# Correspondance #*/
+Qh pIdx; // function from the pressure space
+pIdx[] = 1:pIdx[].n; // numbering of the unknowns of Qh
+// renumbering into the complete space by doing an interpolation on Wh
+Wh [listX, listY, listZ, listP] = [0, 0, 0, pIdx];
+/*# EndCorrespondance #*/

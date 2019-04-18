@@ -1,0 +1,130 @@
+/*
+   Author(s): Johann Moulin <johann.moulin@onera.fr>
+              Pierre Jolivet <pierre.jolivet@enseeiht.fr>
+              Olivier Marquet <olivier.marquet@onera.fr>
+        Date: 2018-07-20
+
+   Copyright (C) 2018-     Office national d'études et de recherches aérospatiales
+                 2018-     Centre National de la Recherche Scientifique
+
+   This script is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+   If you use this script, you are kindly asked to cite the following article:
+
+   "Augmented Lagrangian Preconditioning for Large-Scale Hydrodynamic Stability",
+   J. Moulin, P. Jolivet, and O. Marquet (2019).
+ */
+
+load "PETSc-complex"
+include "include/params.idp"
+
+int nev = getARGV("-nev", 5);
+int ncv = getARGV("-ncv", 3 * nev);
+
+if(mpirank == 0) cout << " ### Loading mesh..." << endl;
+
+mesh3 th = buildlayers(square(1, 1), 1);
+fespace Wh(th, Pk); // complete space [u, v, w, p]
+fespace Qh(th, P1); // pressure space for Schur complement
+
+int[int] arrayIntersection;               // ranks of neighboring subdomains
+int[int][int] restrictionIntersection(0); // local-to-neighbors renumbering
+real[int] D;                              // partition of unity
+
+Wh<complex> [uc1, uc2, uc3, pc];
+
+macro eigensolver()//
+include "include/decomposition.idp"
+
+if(mpirank == 0) cout << " ### Loading mesh... Done " << endl;
+
+complex[int]     val(nev);      // array to store eigenvalues
+Wh<complex>[int] def(vec)(nev); // array to store eigenvectors
+
+real time;
+
+include "include/varf.idp"
+
+varf vM([u1, u2, u3, p], [v1, v2, v3, q]) = int3d(th)(u1 * v1 + u2 * v2 + u3 * v3);
+
+if(mpirank == 0) cout << " Matrix assembly..." << endl;
+time = mpiWtime();
+matrix<complex> J = vJ(Wh, Wh);
+J = -J; // opposite of the Jacobian because SLEPc solves J*q=sigma*M*q
+verbosity = 1;
+Mat<complex> dJ(J, arrayIntersection, restrictionIntersection, D, clean = true);
+verbosity = 0;
+matrix<complex> M = vM(Wh, Wh);
+Mat<complex> dM(dJ, M, clean = true);
+time = mpiWtime() - time;
+if(mpirank == 0) cout << " ### Matrix assembly done in " << time << "s" << endl;
+
+if(mpirank == 0) cout << " ### SLEPc..." << endl;
+time = mpiWtime();
+
+include "include/fieldsplit.idp"
+/*# Schur #*/
+matrix<complex>[int] S(2); // array with two matrices
+complex scale;
+varf vMp(p, q) = int3d(th, qforder = 3)(scale * p * q); // %*\color{DarkGreen}{\cref{eq:matJmatM}}*)
+scale = 1.0/(gamma + 1.0/Re);
+S[0] = vMp(Qh, Qh); // first matrix assembly
+/* macro grad(p)[dx(p), dy(p), dz(p)]// macro for computing %*\color{DarkGreen}{$\nabla p$}*) */
+varf vLp(p, q) = on(3, p = 1) // inlet boundary condition
+  + int3d(th, qforder = 2)(scale * (grad(p)' * grad(q)));
+// shift value %*\color{DarkGreen}{$s$}*)
+complex s = getARGV("-shift_real", 1.0e-6) + getARGV("-shift_imag", 0.6) * 1i;
+scale = 1.0/s;
+S[1] = vLp(Qh, Qh); // second matrix assembly
+/*# EndSchur #*/
+
+include "include/paramsXYZ.idp"
+/*# P #*/
+string paramsP = "-prefix_push st_fieldsplit_p_ " +
+  "-ksp_type preonly -pc_type composite " +
+    "-prefix_push sub_0_ " + // action of %*\color{DarkGreen}{$(\gamma+\Rey^{-1})\matMp^{-1}$}*)
+      "-pc_type bjacobi -sub_pc_type icc -prefix_pop " +
+    "-prefix_push sub_1_ " + // action of %*\color{DarkGreen}{$s\matLp^{-1}$}*)
+      "-pc_type gamg -pc_gamg_square_graph 10 -prefix_pop " +
+  "-prefix_pop";
+/*# EndP #*/
+
+/*# Krylov #*/
+int recycle = getARGV("-recycle", 0); // use GMRES by default
+int restart = getARGV("-restart", 200); // default to 200
+real tolInner = getARGV("-inner_tol", 1.0e-4); // default to %*\color{DarkGreen}{$10^{-4}$}*)
+string paramsKrylov = (recycle == 0 ?  "-st_ksp_type fgmres " +
+    "-st_ksp_monitor -st_ksp_rtol " + tolInner +
+    " -st_ksp_gmres_restart " + restart + " -st_ksp_max_it 1000" 
+    :
+    "-st_ksp_type hpddm -hpddm_st_krylov_method gcrodr " +
+    "-hpddm_st_recycle " + recycle + " -hpddm_st_max_it 1000" +
+    " -hpddm_st_verbosity 4 -hpddm_st_gmres_restart " + restart +
+    " -hpddm_st_tol " + tolInner + " -hpddm_st_variant flexible");
+/*# EndKrylov #*/
+
+/*# AllParams #*/
+string params = "-eps_tol 1.0e-6 -eps_nev " + nev + " -eps_ncv " + ncv + " " +
+    "-eps_type krylovschur -st_type sinvert -eps_monitor_all " +
+    "-eps_target " + real(s) + "+" + imag(s) + "i " +
+    paramsXYZ + " " + paramsP + " " + paramsKrylov + " -st_pc_type fieldsplit -st_pc_fieldsplit_type multiplicative";
+// if the above line is removed, SLEPc will use its default -st_ parameters, i.e., -st_pc_type lu -st_ksp_type preonly
+/*# EndAllParams #*/
+
+/*# EPS #*/
+int k = zeigensolver(dJ, dM, vectors = vec, values  = val, sparams = params,
+  fields = vX[], names = names, schurPreconditioner = S, schurList = listX[]);
+// solves the eigenvalue problem %*\color{DarkGreen}{$\texttt{dJ} \pqqh = \sigma \texttt{dM} \pqqh$}*)
+/*# EndEPS #*/
+
+time = mpiWtime() - time;
+if(mpirank == 0) cout << " ### SLEPc finished in " << time << "s" << endl;
+for(int i = 0; i < nev; ++i) {
+    ofstream file(SaveDirName + "/EV/EV_" + nf + "_" + mpirank + "-" + mpisize + "_" + i + ".dat");
+    file.precision(16);
+    file.scientific;
+    file << val(i) << endl;
+    file << vec[i][] << endl;
+}

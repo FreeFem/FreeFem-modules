@@ -1,0 +1,73 @@
+/*
+   Author(s): Johann Moulin <johann.moulin@onera.fr>
+              Pierre Jolivet <pierre.jolivet@enseeiht.fr>
+              Olivier Marquet <olivier.marquet@onera.fr>
+        Date: 2018-07-20
+
+   Copyright (C) 2018-     Office national d'études et de recherches aérospatiales
+                 2018-     Centre National de la Recherche Scientifique
+
+   This script is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+   If you use this script, you are kindly asked to cite the following article:
+
+   "Augmented Lagrangian Preconditioning for Large-Scale Hydrodynamic Stability",
+   J. Moulin, P. Jolivet, and O. Marquet (2019).
+ */
+
+if(Re < 75) {
+    mesh3 thG;
+    if(mpirank == 0) thG = readmesh3(MeshFileName); // global mesh read on rank 0
+    broadcast(processor(0, mpiCommWorld), thG);     // global mesh broadcasted to all ranks
+    int split = getARGV("-split", 1);               // refinement parameter
+    buildPETSc(th, thG, split, D, arrayIntersection, restrictionIntersection, Wh, Pk, mpiCommWorld)
+    [uc1, uc2, uc3, pc] = [1, 0, 0, 0];
+}
+else {
+    try {
+        th = readmesh3(SaveDirName + "/mesh_" + nf + "_" + mpirank + "-" + mpisize + ".mesh"); // local mesh
+    }
+    catch(...) {
+        if(mpirank == 0)
+            cout << "The code Nonlinear-solver.edp with the same mesh argument but -Re X, with X < 75, must be run first" << endl;
+        exit(1);
+    }
+    {
+        ifstream file(SaveDirName + "/setup_" + nf + "_" + mpirank + "-" + mpisize + ".dat"); // local connectivity
+        D.resize(Wh.ndof);
+        file >> D;
+        int tmp;
+        file >> tmp;
+        arrayIntersection.resize(tmp);
+        restrictionIntersection.resize(tmp);
+        file >> arrayIntersection;
+        for(int i = 0; i < arrayIntersection.n; ++i) {
+            file >> tmp;
+            restrictionIntersection[i].resize(tmp);
+            file >> restrictionIntersection[i];
+        }
+    }
+IFMACRO(eigensolver)
+    try {
+        ifstream file(SaveDirName + "/sol_" + nf + "_" + mpirank + "-" + mpisize + ".dat");
+        file >> uc1[];
+    }
+    catch(...) {
+        try {
+            ifstream file(SaveDirName + "/base_" + nf + "_" + mpirank + "-" + mpisize + ".dat");
+            file >> uc1[];
+        }
+        catch(...) {
+            if(mpirank == 0)
+                cout << "Neither " << SaveDirName << "/sol_" << nf << "_X-Y.dat nor " << SaveDirName << "/base_" << nf << "_X-Y.dat exists, did you let Nonlinear-solver.edp finish gracefully?" << endl;
+            exit(1);
+        }
+    }
+ENDIFMACRO
+IFMACRO(!eigensolver)
+    ifstream file(SaveDirName + "/base_" + nf + "_" + mpirank + "-" + mpisize + ".dat");
+    file >> uc1[];
+ENDIFMACRO
+}
