@@ -10,10 +10,30 @@ Algorithm to solve the non-linear elasticity problem using a minimization techni
 
 ## Problem
 
+Let $\Omega \subset \mathbb{R}^{3}$ denotes an hyperelastic material and $\partial \Omega= \Gamma_{0} \cup \Gamma_{1}$ its boundary, $\Gamma_{0}$ and $\Gamma_{1}$ denote respectively the disjoint parts of the boundary ($\Gamma_{0} \cap \Gamma_{1}= \emptyset$) where a null displacement and a surface traction $\mathbf{t}$ are applied.
 
-## Variational form
+The problem is to find the displacement field $\mathbf{u}$ of the body $\Omega$, which minimizes the total potential energy $\mathcal{E}$ given by:
 
+$
+\displaystyle{
+	\mathcal{E}(\mathbf{v})= \int_{\Omega} \Psi \, dV - \int_{\Gamma_{1}} \mathbf{t}.\mathbf{v} \, dA
+}
+$
 
+Therefore:
+
+$
+\displaystyle{
+	\mathbf{u}= \underset{\mathbf{v} \in \mathcal{A}}{\text{argmin}}(\mathcal{E}(\mathbf{v}))
+}
+$
+
+Where $\Psi$ is the strain energy function and $\mathcal{A}$ is the admissible displacements set defined by:
+$
+\displaystyle{
+\mathcal{A}=\left\lbrace \mathbf{v} \in \left( H^{1}(\Omega)\right)^{3} \; ; \; \mathbf{v}=0 \; \text{on} \; \Gamma_{0}  \right\rbrace
+}
+$
 
 ## Algorithms
 
@@ -122,6 +142,7 @@ load "ff-Ipopt"
 
 include "ElasticLaw2d.idp"
 include "NeoHookean.idp"
+
 // Dimension constants
 real L = 0.5;
 real l = 1.;
@@ -137,6 +158,7 @@ mesh Th = square(Nx, Ny, [L*x+cx, l*y+cy], label=labs, flags=1);
 
 fespace Wh(Th, [P1, P1]);
 
+//The total potential energy
 func real iW (real[int] &D) {
 	Wh [DDx, DDy];
 	DDx[] = D;
@@ -145,6 +167,7 @@ func real iW (real[int] &D) {
 	return res;
 }
 
+//The gradient of the energy
 func real[int] idW (real[int] &D) {
 	Wh [DDx, DDy];
 	DDx[] = D;
@@ -156,6 +179,7 @@ func real[int] idW (real[int] &D) {
 	return idWW;
 }
 
+//The Hessian of the energy
 matrix iddWW;
 func matrix iddW (real[int] &D) {
 	Wh [DDx, DDy];
@@ -189,7 +213,7 @@ for (int i = 0; i < ub1[].n; i++)
 
 Wh [Dx, Dy] = [0., 0.];
 
-IPOPT(iW, idW, iddW, Dx[], lb=lb1[], ub=ub1[]);
+IPOPT(iW, idW, iddW, Dx[], lb=lb1[], ub=ub1[]); // Minimize
 
 mesh Thm = movemesh(Th, [x+Dx, y+Dy]);
 [Dx, Dy] = [Dx, Dy];
