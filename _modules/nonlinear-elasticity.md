@@ -10,7 +10,7 @@ Algorithm to solve the non-linear elasticity problem using a minimization techni
 
 ## Problem
 
-Let $\Omega \subset \mathbb{R}^{3}$ denotes an hyperelastic material and $\partial \Omega= \Gamma_{0} \cup \Gamma_{1}$ its boundary, $\Gamma_{0}$ and $\Gamma_{1}$ denote respectively the disjoint parts of the boundary ($\Gamma_{0} \cap \Gamma_{1}= \emptyset$) where a null displacement and a surface traction $\mathbf{t}$ are applied.
+Let $\Omega \subset \mathbb{R}^{3}$ denotes a hyperelastic material and $\partial \Omega= \Gamma_{0} \cup \Gamma_{1}$ its boundary, $\Gamma_{0}$ and $\Gamma_{1}$ denote respectively the disjoint parts of the boundary ($\Gamma_{0} \cap \Gamma_{1}= \emptyset$) where a null displacement and a surface traction $\mathbf{t}$ are applied.
 
 The problem is to find the displacement field $\mathbf{u}$ of the body $\Omega$, which minimizes the total potential energy $\mathcal{E}$ given by:
 
@@ -29,6 +29,7 @@ $
 $
 
 Where $\Psi$ is the strain energy function and $\mathcal{A}$ is the admissible displacements set defined by:
+
 $
 \displaystyle{
 \mathcal{A}=\left\lbrace \mathbf{v} \in \left( H^{1}(\Omega)\right)^{3} \; ; \; \mathbf{v}=0 \; \text{on} \; \Gamma_{0}  \right\rbrace
