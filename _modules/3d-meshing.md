@@ -4,98 +4,122 @@ category: academic, electromagnetism
 layout: module
 ---
 
-# Coil
+# TEAM 7: Asymmetrical Conductor with a Hole
 
-Build a 3D coil mesh and solve the Poisson's problem.
+Build a mesh for the TEAM 7 problem and compute a div-free current in the coil.
 
 ## Algorithms
 
 ### 3D
 
-3D coil mesh and Poisson's problem solve.
+TEAM 7 model and a Dirichlet-Laplace problem to get a div-free current, without geometry modifications.
 
 {% highlight cpp %}
-load "medit"
 load "msh3"
 load "tetgen"
+load "medit"
 load "iovtk"
 
-// COIL PARAMETERS
-real R = 0.50;  // tube center to coil center distance
-real r = 0.10;  // tube radius
-real a = 0.05;  // stretching factor (depends on r)
-int  l = 6   ;  // number of rotations
+// 2D INITIAL MESH RESOLUTION --------------------------------------------------
+int n = 50;
 
-// TRANSFORMATION FROM SQUARE TO COIL
-func f1 = ( R + r*cos(x) )*cos(y);
-func f2 = ( R + r*cos(x) )*sin(y);
-func f3 = a*y + r*sin(x);
+// ALUMINIUM PLATE -------------------------------------------------------------
+// Outer contour
+border a01(t = 0.000, 0.294){x = t    ; y = 0.000; label = 1;}
+border a02(t = 0.000, 0.294){x = 0.294; y = t    ; label = 1;}
+border a03(t = 0.294, 0.000){x = t    ; y = 0.294; label = 1;}
+border a04(t = 0.294, 0.000){x = 0.000; y = t    ; label = 1;}
 
-// COIL SURFACE MESH
-int   resx = 10*l, resy = 60*l; // coil surface mesh resolution
-mesh  T2coil = square( resx, resy, [2.0*pi*x, 2.0*pi*y*l] );
-mesh3 T3coil = movemesh23( T2coil, transfo = [f1, f2, f3] );
+// Interior contour
+border a05(t = 0.018, 0.126){x = t    ; y = 0.018; label = 1;}
+border a06(t = 0.018, 0.126){x = 0.126; y = t    ; label = 1;}
+border a07(t = 0.126, 0.018){x = t    ; y = 0.126; label = 1;}
+border a08(t = 0.126, 0.018){x = 0.018; y = t    ; label = 1;}
 
-medit( "Open coil surface mesh", T3coil );
+// Two-dimensional mesh and refine
+mesh Tal = buildmesh(a01(n) + a02(n) + a03(n) + a04(n) + a05(-n/2) + a06(-n/2) + a07(-n/2) + a08(-n/2));
+for (int cnt = 1; cnt < 5; cnt++){
+  Tal = adaptmesh(Tal, 0.0025, IsMetric=true, nbjacoby=10, nbsmooth=10, nbvx=1000000);
+}
 
-// CAPS TO CLOSE THE SURFACE
-border C(t = 0, 2*pi){x = r*cos(t); y = r*sin(t);}
-mesh  T2cap1 = buildmesh( C(resx) );
-mesh3 T3cap1 = movemesh23( T2cap1, transfo = [R + x, 0, y] );
-mesh3 T3cap2 = movemesh23( T2cap1, transfo = [R + x, 0, 0.5*pi+y] );
+// Three dimensional volume and surface mesh
+mesh3 TalV = buildlayers(Tal, 5, zbound=[0, 0.019], transfo=[x, y, z]);
+TalV = buildBdMesh(TalV);
+meshS TalS = TalV.Gamma;
+medit("Aluminium plate", TalV);
 
-// GLUE SURFACE MESHES
-mesh3 Thcoil = T3coil + T3cap1 + T3cap2;
+// COPPER COIL -----------------------------------------------------------------
+// Outer contour
+border a09(t = 0.144 , 0.244 ){x = t                  ; y = 0.000             ; label = 2;}
+border a10(t = 1.5*pi, 2.0*pi){x = 0.244 + 0.05*cos(t); y = 0.05 + 0.05*sin(t); label = 2;}
+border a11(t = 0.05  , 0.15  ){x = 0.294              ; y = t                 ; label = 2;}
+border a12(t = 0.0*pi, 0.5*pi){x = 0.244 + 0.05*cos(t); y = 0.15 + 0.05*sin(t); label = 2;}
+border a13(t = 0.244 , 0.144 ){x = t                  ; y = 0.200             ; label = 2;}
+border a14(t = 0.5*pi, 1.0*pi){x = 0.144 + 0.05*cos(t); y = 0.15 + 0.05*sin(t); label = 2;}
+border a15(t = 0.150 , 0.050 ){x = 0.094              ; y = t                 ; label = 2;}
+border a16(t = 1.0*pi, 1.5*pi){x = 0.144 + 0.05*cos(t); y = 0.05 + 0.05*sin(t); label = 2;}
 
-medit( "Closed coil surface mesh", Thcoil );
+// Interior contour
+border a17(t = 0.144 , 0.244 ){x = t                   ; y = 0.025              ; label = 3;}
+border a18(t = 1.5*pi, 2.0*pi){x = 0.244 + 0.025*cos(t); y = 0.05 + 0.025*sin(t); label = 3;}
+border a19(t = 0.05  , 0.15  ){x = 0.269               ; y = t                  ; label = 3;}
+border a20(t = 0.0*pi, 0.5*pi){x = 0.244 + 0.025*cos(t); y = 0.15 + 0.025*sin(t); label = 3;}
+border a21(t = 0.244 , 0.144 ){x = t                   ; y = 0.175              ; label = 3;}
+border a22(t = 0.5*pi, 1.0*pi){x = 0.144 + 0.025*cos(t); y = 0.15 + 0.025*sin(t); label = 3;}
+border a23(t = 0.150 , 0.05 ){x = 0.119                ; y = t                  ; label = 3;}
+border a24(t = 1.0*pi, 1.5*pi){x = 0.144 + 0.025*cos(t); y = 0.05 + 0.025*sin(t); label = 3;}
 
-// SURFACE TO VOLUME MESH
-mesh3 Tcoil = tetg( Thcoil, switch = "pq1AAY" );
+// Two-dimensional mesh and refine
+mesh Tcu = buildmesh(a09(n) + a10(n) + a11(n) + a12(n) + a13(n) + a14(n) + a15(n) + a16(n) +
+                     a17(-n/2) + a18(-n/2) + a19(-n/2) + a20(-n/2) + a21(-n/2) + a22(-n/2) + a23(-n/2) + a24(-n/2));
+for (int cnt = 1; cnt < 5; cnt++){
+  Tcu = adaptmesh(Tcu, 0.005, IsMetric=true, nbjacoby=10, nbsmooth=10, nbvx=1000000);
+}
 
-medit( "Coil volume mesh", Tcoil );
+// Three dimensional volume and surface mesh
+int[int] top1 = [0, 4], down1 = [0, 5];
+mesh3 TcuV = buildlayers(Tcu, 20, zbound=[0.049, 0.149], transfo=[x, y, z], labelup=top1, labeldown=down1);
+TcuV = buildBdMesh(TcuV);
+meshS TcuS = TcuV.Gamma;
+medit("Copper coil", TcuV);
 
-// SPHERE SURFACE MESH
-real  rho   = 0.5*pi*l;
-mesh  T2sph = square( 40*R, 80*R, [x*pi-0.5*pi,2*y*pi] );
-mesh3 T3sph = movemesh23(T2sph, transfo = [rho*R*cos(x)*cos(y), rho*R*cos(x)*sin(y), (a*l)*pi + rho*R*sin(x)]);
+// BOUNDING BOX ----------------------------------------------------------------
+int[int] labs = [6, 6, 6, 6];
+mesh Tvd = square(n/2, n/2, [-1.353 + 3.0*x, -1.353 + 3.0*y], label=labs);
+int[int] top2 = [0, 6], down2 = [0, 6];
+mesh3 TvdV = buildlayers(Tvd, 3, zbound=[-0.3, 0.449], transfo=[x, y, z], labelup=top2, labeldown=down2);
+TvdV = buildBdMesh(TvdV);
+meshS TvdS = TvdV.Gamma;
+medit("Bounding box", TvdV);
 
-// GLUE COIL AND SPHERE SURFACE MESHES
-mesh3 Th = Thcoil + T3sph;
+// GLUE SURFACE MESHES, DEFINE DOMAIN INDICATORS, AND VOLUME CONSTRAINTS -------
+meshS TS = TalS + TcuS + TvdS;
+int alp = 1; // aluminium plate domain indicator
+int cuc = 2; // copper coil domain indicator
+int air = 3; // air/void space domain indicator
+real[int] domain = [0.15, 0.15, 0.01, alp, 0.0005, 0.15, 0.01, 0.1, cuc, 0.001, -1.0, -1.0, 0.0, air, 0.5];
+mesh3 TV = tetg(TS, switch = "pqaAAYYQ", nbofregions = 3, regionlist = domain);
+medit("Global mesh", TV);
 
-medit( "Combined surface mesh",Th);
+// FINITE ELEMENT SPACES -------------------------------------------------------
+fespace S0(TV, P0);
+fespace S1(TV, P1);
+fespace V0(TV, [P0, P0, P0]);
 
-// MAKE COMPLETE MESH
-real[int] domain = [0, 0, 0, 1, 0.5*r, 0, R, 0, 2, 0.1*r];
-mesh3 T = tetg(Th, switch = "pqaAAYYQ", nbofregions = 2, regionlist = domain);
+// DOMAIN INDICATOR FEM FUNCTION -----------------------------------------------
+S0 inCoil = 1e-12*(region == alp) + 1.0*(region == cuc) + 1e-12*(region == air);
 
-// -----------------------------------------------------------------------------
-// SAMPLE POISSON PROBLEM div( p.grad(u) ) = -z; u = 0 ON SPHERE
-// -----------------------------------------------------------------------------
+// PROBLEM TO GET DIV FREE CURRENT ---------------------------------------------
+S1 u, v;
+solve Current(u, v)
+      = int3d(TV)( inCoil * [dx(u), dy(u), dz(u)]' * [dx(v), dy(v), dz(v)] )
+      + on(2, u=1.0)  // outer coil surface
+      + on(3, u=0.0); // inner coil surface
 
-// FEM SPACES AND FUNCTIONS
-fespace V0(T, P0); fespace V1(T, P1);
-V0 mat, h = hTriangle; V1 u, v;
-
-// DOMAIN INDICATORS
-int reg1 = T(0,R,0).region; // coil is 2, see real[int] domain array
-int reg2 = T(0,0,0).region; // void is 1, see real[int] domain array
-cout << "Domain indicators" << endl;
-cout << "Coil: " << reg1 << endl;
-cout << "Void: " << reg2 << endl;
-
-// MATERIAL FUNCTION
-V0 p = 1.0*( region == reg1 ) +  1e-2*( region == reg2 );
-
-// SET LABEL FOR OUTER SPHERE TO 100
-func newlabel = ( x^2+y^2+(z-a*l*pi)^2 > rho*R-h[].min ) ? 100 : 0;
-T = change(T, flabel= newlabel);
-
-// SOLVE POISSON
-solve poisson(u, v) = int3d(T)( p*(dx(u)*dx(v) + dy(u)*dy(v) + dz(u)*dz(v)) )
-                    - int3d(T)( z*v )
-                    + on(100, u=0);
-
-medit("Solution", T, u);
+// CURRENT ---------------------------------------------------------------------
+V0 [Jx, Jy, Jz] = inCoil*[dy(u), -dx(u), dz(u)];
+medit("Current", TV, [Jx, Jy, Jz]);
+savevtk("currentCoilVector.vtu", TV, [Jx, Jy, Jz]);
 {% endhighlight %}
 
 |Geometry|
