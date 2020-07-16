@@ -122,13 +122,9 @@ medit("Current", TV, [Jx, Jy, Jz]);
 savevtk("currentCoilVector.vtu", TV, [Jx, Jy, Jz]);
 {% endhighlight %}
 
-|Geometry|
-|--|
-|![Result]({{ site.url }}{{ site.baseurl }}/assets/coilGeometry.jpg)|
-
 |Result|
 |--|
-|![Result]({{ site.url }}{{ site.baseurl }}/assets/coilSolution.jpg)|
+|![Result]({{ site.url }}{{ site.baseurl }}/assets/coilCurrent.jpg)|
 
 ## Authors
 
