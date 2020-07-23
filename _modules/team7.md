@@ -124,7 +124,7 @@ savevtk("currentCoilVector.vtu", TV, [Jx, Jy, Jz]);
 
 |Result|
 |--|
-|![Result]({{ site.url }}{{ site.baseurl }}/assets/coilCurrent.jpg)|
+|![Result]({{ site.url }}{{ site.baseurl }}/assets/coilCurrent.png)|
 
 ## Authors
 
