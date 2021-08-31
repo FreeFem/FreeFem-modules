@@ -105,36 +105,19 @@ for(int ii=0; ii<ff.n; ii++) {                  // for all frequencies
 
 {% endhighlight %}
 
-|Result warped by a factor 1000|
+|Result warped by a factor 10000|
 |--|
-|![Result warped by a factor 1000]({{ site.url }}{{ site.baseurl }}/assets/Piezoelectricity2D.png)|
+|![Result warped by a factor 1000]({{ site.url }}{{ site.baseurl }}/assets/ff_190kHz.png)|
 
 ### 3D
 
 Piezoelectricity equation on a circular disc.
 
-{% highlight cpp %}
-
-
-{% endhighlight %}
-
-|Result warped by a factor 1000|
-|--|
-|![Result warped by a factor 1000]({{ site.url }}{{ site.baseurl }}/assets/Elasticity3D.png)|
+TODO
 
 ### Optional
 
-Gmsh script:
-
-{% highlight cpp %}
-
-
-
-{% endhighlight %}
-
-|Mesh|
-|--|
-|![Mesh]({{ site.url }}{{ site.baseurl }}/assets/Elasticity3DMesh.png)|
+TODO
 
 ## Validation
 
