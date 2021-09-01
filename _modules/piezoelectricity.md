@@ -40,11 +40,11 @@ D_{i} = e_{ikl} S_{kl}(u) +\epsilon_{ik}^S E_k(\phi)
 }
 $
 
-where $c$ is a elasticy tensor, $e$ - piezoelectric tensor and $\epsilon$ - dielectric matrix
+where $c$ is a 3x3x3x3 elasticy tensor, $e$ - 3x3x3 piezoelectric tensor and $\epsilon$ - dielectric 3x3 matrix
 
 ## Variational form
 
-The variational form for free vibration (without impedance loads) reads as follows:
+The variational form for free vibration (without impedance loads on boundaries) reads as follows:
 
 $
 \displaystyle{
@@ -66,7 +66,7 @@ with $v$ and $w$ as test functions
 
 ### 2D
 
-Piezoelectricity equation on a circular disc.
+Piezoelectricity equation on a circular disc with radius $a$ and thinkness $l$ analysed in half of its cross-section using  cylindrical coordinates.
 
 {% highlight cpp %}
 
@@ -104,8 +104,8 @@ for(int ii=0; ii<ff.n; ii++) {                  // for all frequencies
   real f0 = ff[ii], w0 = 2*pi*f0; cout << f0/1e3 << "kHz" << endl;
 
   // ------ Problem -------
-  fespace Vh3(Sp,P1);                   // piecewise linear FE
-  Vh3 ur,uz,phi, vr,vz,w;                   // variational variables
+  fespace Vh3(Sp,P1);                           // piecewise linear FE
+  Vh3 ur,uz,phi, vr,vz,w;                       // variational variables
 
   solve Piezo2D([ur,uz,phi],[vr,vz,w])          // variational equation!
    = int2d(Sp)( x * rho*w0^2*[vr,vz]'*[ur,uz] ) // "mass" part
@@ -116,7 +116,7 @@ for(int ii=0; ii<ff.n; ii++) {                  // for all frequencies
 
   // -------Plot ----------
   Vh3 rephi=real(phi);
-  real c2 = 200*500;                            // scaling coefficient     
+  real c2 = 100000;                             // scaling coefficient     
   mesh Sp2 = movemesh(Sp,[x+c2*ur, y+c2*uz]);   // deformed mesh
   plot(Sp, Sp2, rephi, cmm="f0 = " + f0/1e3 + "kHz", fill=true, 
     ps="ff_"+(f0/1e3)+"kHz.eps");               // display and save
@@ -124,23 +124,10 @@ for(int ii=0; ii<ff.n; ii++) {                  // for all frequencies
 
 {% endhighlight %}
 
-|Result warped by a factor 10000|
+|Deformation warped by a factor 100000|
 |--|
-|![Result warped by a factor 1000]({{ site.url }}{{ site.baseurl }}/assets/ff_190kHz.png)|
+|![Deformation warped by a factor 100000]({{ site.url }}{{ site.baseurl }}/assets/ff_190kHz.png)|
 
-### 3D
-
-Piezoelectricity equation on a circular disc.
-
-TODO
-
-### Optional
-
-TODO
-
-## Validation
-
-TODO
 
 ## Authors
 
