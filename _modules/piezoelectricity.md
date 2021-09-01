@@ -48,7 +48,7 @@ The variational form for free vibration (without impedance loads on boundaries) 
 
 $
 \displaystyle{
--\omega_0^2\int_{\Omega_p}\rho_p v_i u_i \; d\Omega = -\int_{\Omega_p} S_{i,j}(v_i) T_{ij,j} \; d\Omega
+-\omega_0^2\int_{\Omega_p}\rho_p v_i u_i \; d\Omega = -\int_{\Omega_p} S_{i,j}(v_i) T_{ij} \; d\Omega
 }
 $
 
