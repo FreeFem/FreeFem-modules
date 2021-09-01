@@ -70,7 +70,7 @@ Piezoelectricity equation on a circular disc.
 
 {% highlight cpp %}
 
-// Free vibrations of 2.5cm x 1cm PZT5A cylindrical disc analysed in half of its ectangular cross-section
+// Free vibrations of 2.5cm x 1cm PZT5A cylindrical disc analysed in half of its rectangular cross-section
 // Marek Moszynski 30.03.2020
 
 // ------ Variables ------
