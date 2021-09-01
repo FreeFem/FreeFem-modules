@@ -48,7 +48,7 @@ The variational form for free vibration (without impedance loads on boundaries) 
 
 $
 \displaystyle{
--\omega_0^2\int_{\Omega_p}\rho_p v_i u_i \; d\Omega = -\int_{\Omega_p} S_{i,j}(v_i) T_{ij} \; d\Omega
+-\omega_0^2\int_{\Omega_p}\rho_p v_i u_i \; d\Omega = -\int_{\Omega_p} S_{ij}(v_i) T_{ij}(u_i) \; d\Omega
 }
 $
 
@@ -115,10 +115,9 @@ for(int ii=0; ii<ff.n; ii++) {                  // for all frequencies
    + on(4, ur=0);                               // BC: axis of symmetry
 
   // -------Plot ----------
-  Vh3 rephi=real(phi);
   real c2 = 100000;                             // scaling coefficient     
   mesh Sp2 = movemesh(Sp,[x+c2*ur, y+c2*uz]);   // deformed mesh
-  plot(Sp, Sp2, rephi, cmm="f0 = " + f0/1e3 + "kHz", fill=true, 
+  plot(Sp, Sp2, phi, cmm="f0 = " + f0/1e3 + "kHz", fill=true, 
     ps="ff_"+(f0/1e3)+"kHz.eps");               // display and save
 }
 
