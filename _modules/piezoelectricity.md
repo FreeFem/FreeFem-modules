@@ -4,17 +4,24 @@ category: solid
 layout: module
 ---
 
-# Elasticity
+# Piezoelectricity
 
-Algorithms for solving the axisymmetric linear piezoelectricity equations
+Algorithms for solving the linear piezoelectricity equations for axisymmetric circular disc
 
 ## Problem
 
-Solve:
+For time-harmonic case with stress $T$, electric displacement $D$, strain $S$ and electric field $E$, solve for displacement $u$ and potential $\phi$:
 
 $
 \displaystyle{
+-\omega_0^2\rho_p u_i  =  T_{ij,j}
+}
+$
+and 
 
+$
+\displaystyle{
+D_{i,i} = 0 
 }
 $
 
@@ -22,7 +29,26 @@ With:
 
 $
 \displaystyle{
+T_{ij} = c_{ijkl}^E S_{kl}(u) - e_{kij}E_k(\phi)
+}
+$
+and 
 
+$
+\displaystyle{
+D_{i} = e_{ikl} S_{kl}(u) +\epsilon_{ik}^S E_k(\phi)
+}
+$
+
+where $c$ is a elasticy tensor, $e$ - piezoelectric tensor and $\epsilon$ - dielectric matrix
+
+## Variational form
+
+The variational form for free vibration (without impedance loads) reads as follows:
+
+$
+\displaystyle{
+-\omega_0^2\int_{\Omega_p}\rho_p v_i u_i \; d\Omega = -\int_{\Omega_p} S_{i,j}(v_i) T_{ij,j} \; d\Omega
 }
 $
 
@@ -30,18 +56,11 @@ and
 
 $
 \displaystyle{
+\int_{\Omega_p} w D_{i,i} \; d\Omega = 0 
 }
 $
 
-## Variational form
-
-Let . The variational form reads as follows:
-
-$
-\displaystyle{
-
-}
-$
+with $v$ and $w$ as test functions
 
 ## Algorithms
 
@@ -51,7 +70,7 @@ Piezoelectricity equation on a circular disc.
 
 {% highlight cpp %}
 
-// Free vibrations of 2.5cm x 1cm PZT5A cylindrical disc 
+// Free vibrations of 2.5cm x 1cm PZT5A cylindrical disc analysed in half of its ectangular cross-section
 // Marek Moszynski 30.03.2020
 
 // ------ Variables ------
