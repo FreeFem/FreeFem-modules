@@ -6,7 +6,7 @@ layout: module
 
 # Piezoelectricity
 
-Algorithms for solving the linear piezoelectricity equations for axisymmetric circular disc
+Algorithms for solving the linear piezoelectricity equations
 
 ## Problem
 
@@ -14,14 +14,12 @@ For time-harmonic case with stress $T$, electric displacement $D$, strain $S$ an
 
 $
 \displaystyle{
--\omega_0^2\rho_p u_i  =  T_{ij,j}
-}
-$
-and 
 
-$
-\displaystyle{
-D_{i,i} = 0 
+\left\{\begin{matrix}
+-\omega_0^2\rho_p u_i  &=&  T_{ij,j}\\
+D_{i,i} &=& 0 
+\end{matrix} \right.
+ 
 }
 $
 
@@ -29,18 +27,25 @@ With:
 
 $
 \displaystyle{
-T_{ij} = c_{ijkl}^E S_{kl}(u) - e_{kij}E_k(\phi)
+\left\{\begin{matrix}
+T_{ij} = c_{ijkl}^E S_{kl}(u) - e_{kij}E_k(\phi)\\
+D_{i} = e_{ikl} S_{kl}(u) +\epsilon_{ik}^S E_k(\phi)
+\end{matrix} \right.
 }
 $
+
+where $c$ is a 3x3x3x3 elasticy tensor, $e$ - 3x3x3 piezoelectric tensor and $\epsilon$ - 3x3 dielectric matrix
 and 
 
 $
 \displaystyle{
-D_{i} = e_{ikl} S_{kl}(u) +\epsilon_{ik}^S E_k(\phi)
+\left\{\begin{matrix}
+S_{kl}(u) = \frac{1}{2}(u_{k,l}+u_{l,k})\\
+E_{i}(\phi) = -\phi_{,i}
+\end{matrix} \right.
 }
 $
 
-where $c$ is a 3x3x3x3 elasticy tensor, $e$ - 3x3x3 piezoelectric tensor and $\epsilon$ - dielectric 3x3 matrix
 
 ## Variational form
 
@@ -48,33 +53,29 @@ The variational form for free vibration (without impedance loads on boundaries) 
 
 $
 \displaystyle{
--\omega_0^2\int_{\Omega_p}\rho_p v_i u_i \; d\Omega = -\int_{\Omega_p} S_{ij}(v_i) T_{ij}(u_i) \; d\Omega
+\left\{\begin{matrix}
+-\int_{\Omega_p}\omega_0^2\rho_p v_i u_i \; d\Omega &=& -\int_{\Omega_p} S_{ij}(v_i) T_{ij} \; d\Omega\\
+\int_{\Omega_p} E_{i}(w) D_{i} \; d\Omega &=& 0 
+\end{matrix} \right.
 }
 $
 
-and
-
-$
-\displaystyle{
-\int_{\Omega_p} w D_{i,i} \; d\Omega = 0 
-}
-$
-
-with $v$ and $w$ as test functions
+with $v$ and $w$ as test functions.
 
 ## Algorithms
 
 ### 2D
 
-Piezoelectricity equation on a circular disc with radius $a$ and thinkness $l$ analysed in half of its cross-section using  cylindrical coordinates.
+Free vibration of voltage excited piezoelectric circular disc with radius $a$ and thickness $l$.  Due to axisymmetry of the disc shape the analysis is performed in one half of the disc's cross-section. The bottom (1) and top (3) edges of the rectangular domain represents electrodes and the left edge (4) represents the axis of symmetry.   The analysis is performed in several frequencies located near modal frequencies of the disc. The model uses coefficients of a PZT5A piezoelectric material without losses (real-valued problem) and uses axisymetric cylindrical coordinates.
 
 {% highlight cpp %}
 
-// Free vibrations of 2.5cm x 1cm PZT5A cylindrical disc analysed in half of its rectangular cross-section
+// Free vibrations of cylindrical disc analysed in half of its rectangular cross-section
+// Disc dimmensions: 2.5cm x 1cm, material constants: PZT5A (without losses) 
 // Marek Moszynski 30.03.2020
 
-// ------ Variables ------
-real[int] ff=[72e3, 73e3, 128e3, 129e3, 156e3, 157e3, 164e3, 165e3, 189e3, 190e3];  // the table of selected frequencies
+// ------ The table of selected frequencies ------
+real[int] ff=[72e3, 73e3, 128e3, 129e3, 156e3, 157e3, 164e3, 165e3, 189e3, 190e3]; 
 
 // ------ Geometry -------
 real a=0.025/2, l=0.01;   	                // disc dimensions
@@ -89,9 +90,9 @@ real e31 = -5.4,  e33 = 15.8,  e15 = 12.3,      // piezoelectric consts
      eps11S = 8.1e-9 , eps33S = 7.3e-9,         // dielectric consts
      c11 = 120e9, c12 = 75.2e9, c13 = 75.1e9, c33 = 110e9, c44 = 21.1e9;  
 						// elastic consts
-func C =  [[c11, c12, c13,  0 ,   0  , -e31 ],  // "stiffness" matrix
-           [c12, c11, c13,  0 ,   0  , -e31 ],
-           [c13, c13, c33,  0 ,   0  , -e33 ],
+func C =  [[c11, c12, c13,  0 ,   0  , -e31 ],  // piezoelectric matrix
+           [c12, c11, c13,  0 ,   0  , -e31 ],  // for material with 
+           [c13, c13, c33,  0 ,   0  , -e33 ],  // hexagonal symmetry
            [0  , 0  , 0  , c44, -e15,    0  ],
            [0  , 0  , 0  , e15, eps11S,  0  ],
            [e31, e31, e33,  0 ,   0  ,eps33S]];
@@ -123,9 +124,9 @@ for(int ii=0; ii<ff.n; ii++) {                  // for all frequencies
 
 {% endhighlight %}
 
-|Deformation warped by a factor 100000|
+|Deformation warped by a factor 100000 and false coloured potential field inside piezoelectric disc|
 |--|
-|![Deformation warped by a factor 100000]({{ site.url }}{{ site.baseurl }}/assets/ff_190kHz.png)|
+|![Deformation and potential]({{ site.url }}{{ site.baseurl }}/assets/ff_190kHz.png)|
 
 
 ## Authors
