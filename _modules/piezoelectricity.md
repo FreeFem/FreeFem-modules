@@ -6,7 +6,7 @@ layout: module
 
 # Piezoelectricity
 
-Algorithms for solving the linear piezoelectricity equations for axisymmetric circular disc
+Algorithms for solving the linear piezoelectricity equations
 
 ## Problem
 
@@ -14,14 +14,12 @@ For time-harmonic case with stress $T$, electric displacement $D$, strain $S$ an
 
 $
 \displaystyle{
--\omega_0^2\rho_p u_i  =  T_{ij,j}
-}
-$
-and 
 
-$
-\displaystyle{
-D_{i,i} = 0 
+\left\{\begin{matrix}
+-\omega_0^2\rho_p u_i  &=&  T_{ij,j}\\
+D_{i,i} &=& 0 
+\end{matrix} \right.
+ 
 }
 $
 
@@ -29,18 +27,14 @@ With:
 
 $
 \displaystyle{
-T_{ij} = c_{ijkl}^E S_{kl}(u) - e_{kij}E_k(\phi)
-}
-$
-and 
-
-$
-\displaystyle{
+\left\{\begin{matrix}
+T_{ij} = c_{ijkl}^E S_{kl}(u) - e_{kij}E_k(\phi)\\
 D_{i} = e_{ikl} S_{kl}(u) +\epsilon_{ik}^S E_k(\phi)
+\end{matrix} \right.
 }
 $
 
-where $c$ is a 3x3x3x3 elasticy tensor, $e$ - 3x3x3 piezoelectric tensor and $\epsilon$ - dielectric 3x3 matrix
+where $c$ is a 3x3x3x3 elasticy tensor, $e$ - 3x3x3 piezoelectric tensor and $\epsilon$ - 3x3 dielectric matrix
 
 ## Variational form
 
@@ -48,25 +42,20 @@ The variational form for free vibration (without impedance loads on boundaries) 
 
 $
 \displaystyle{
--\omega_0^2\int_{\Omega_p}\rho_p v_i u_i \; d\Omega = -\int_{\Omega_p} S_{i,j}(v_i) T_{ij,j} \; d\Omega
+\left\{\begin{matrix}
+-\omega_0^2\int_{\Omega_p}\rho_p v_i u_i \; d\Omega &=& -\int_{\Omega_p} S_{i,j}(v_i) T_{ij}(u_i) \; d\Omega\\
+\int_{\Omega_p} w D_{i,i} \; d\Omega &=& 0 
+\end{matrix} \right.
 }
 $
 
-and
-
-$
-\displaystyle{
-\int_{\Omega_p} w D_{i,i} \; d\Omega = 0 
-}
-$
-
-with $v$ and $w$ as test functions
+with $v$ and $w$ as test functions.
 
 ## Algorithms
 
 ### 2D
 
-Piezoelectricity equation on a circular disc with radius $a$ and thinkness $l$ analysed in half of its cross-section using  cylindrical coordinates.
+Free vibration of voltage excited piezoelectric circular disc with radius $a$ and thinkness $l$.  Due to axisymmetry of the disc shape the analysis is performed in one half of the disc's cross-section. The bottom (1) and top (3) edges of the rectangular domain represents electrodes and the left edge (4) represents the axis.   The analysis is performed in several frequencies located near modal frequencies of the disc. The model uses coefficients of a PZT5A piezoelectric material without losses (real-valued problem) and uses cylindrical coordinates.
 
 {% highlight cpp %}
 
@@ -115,18 +104,17 @@ for(int ii=0; ii<ff.n; ii++) {                  // for all frequencies
    + on(4, ur=0);                               // BC: axis of symmetry
 
   // -------Plot ----------
-  Vh3 rephi=real(phi);
   real c2 = 100000;                             // scaling coefficient     
   mesh Sp2 = movemesh(Sp,[x+c2*ur, y+c2*uz]);   // deformed mesh
-  plot(Sp, Sp2, rephi, cmm="f0 = " + f0/1e3 + "kHz", fill=true, 
+  plot(Sp, Sp2, phi, cmm="f0 = " + f0/1e3 + "kHz", fill=true, 
     ps="ff_"+(f0/1e3)+"kHz.eps");               // display and save
 }
 
 {% endhighlight %}
 
-|Deformation warped by a factor 100000|
+|Deformation warped by a factor 100000 and false coloured potential field inside piezoelectric disc|
 |--|
-|![Deformation warped by a factor 100000]({{ site.url }}{{ site.baseurl }}/assets/ff_190kHz.png)|
+|![Deformation and potential]({{ site.url }}{{ site.baseurl }}/assets/ff_190kHz.png)|
 
 
 ## Authors
