@@ -50,7 +50,7 @@ $
 
 Elasticity equation on a beam.
 
-{% highlight cpp %}
+{% highlight freefem %}
 //Parameters
 real Rho = 8000.;		//Density
 real E = 210.e9;		//Young modulus
@@ -120,7 +120,7 @@ plot([ux, uy], value=true, cmm="u");
 
 Elasticity equation on a beam.
 
-{% highlight cpp %}
+{% highlight freefem %}
 load "gmsh"
 load "msh3"
 
@@ -189,7 +189,7 @@ plot([ux, uy, uz], value=true, cmm="u");
 
 Gmsh script:
 
-{% highlight cpp %}
+{% highlight freefem %}
 Mesh.Optimize = 1;
 
 ////////////////
