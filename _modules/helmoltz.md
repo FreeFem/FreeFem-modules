@@ -33,7 +33,7 @@ $
 
 ### 2D
 
-{% highlight cpp %}
+{% highlight freefem %}
 load "ffrandom"
 
 // RandInit

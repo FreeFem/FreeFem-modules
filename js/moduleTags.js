@@ -1,59 +1,56 @@
-tags = []
+const tags = [];
 
-addToTags = (item) => {
-  const items = item.split(', ')
+const addToTags = (itemsList) => {
+  const items = itemsList.split(", ");
 
-  items.forEach(item => {
-    const index = tags.find(x => x.value === item)
-    if (index)
-    	return
+  items.forEach((item) => {
+    const index = tags.find((x) => x.value === item);
+    if (index) return;
 
     tags.push({
-		value: item,
-		label: item.charAt(0).toUpperCase() + item.substring(1),
-		selected: false,
-		disabled: false
-	})
-  })
-}
+      value: item,
+      label: item.charAt(0).toUpperCase() + item.substring(1),
+      selected: false,
+      disabled: false,
+    });
+  });
+};
 
-includesOnceOf = (string, array) => {
-	const length = array.length
+const includesOnceOf = (string, array) => {
+  const length = array.length;
 
-	for (let i = 0; i < length; i++) {
-		if (string.includes(array[i])) {
-			return true
-		}
-	}
+  for (let i = 0; i < length; i++) {
+    if (string.includes(array[i])) {
+      return true;
+    }
+  }
 
-	return false
-}
+  return false;
+};
 
-toggleTags = (value) => {
-	const usedTags = []
+const toggleTags = (value) => {
+  const usedTags = [];
 
-	for (let i = 0; i < value.target.children.length; i++) {
-		usedTags.push(value.target.children[i].value)
-	}
+  for (let child of value.target.children) {
+    usedTags.push(child.value);
+  }
 
-	const menu = document.getElementById('menu')
+  const menu = document.getElementById("menu");
 
-	if (usedTags.length === 0) {
-		for (let i = 0; i < menu.children.length; i++) {
-			const child = menu.children[i]
-			child.classList.remove('hidden')
-		}
-		return
-	}
+  if (usedTags.length === 0) {
+    for (let child of menu.children) {
+      child.classList.remove("hidden");
+    }
+    return;
+  }
 
-	for (let i = 0; i < menu.children.length; i++) {
-		const child = menu.children[i]
-		const moduleTags = child.children[1].innerHTML
+  for (let child of menu.children) {
+    const moduleTags = child.children[1].innerHTML;
 
-		if (includesOnceOf(moduleTags, usedTags)) {
-			child.classList.remove('hidden')
-		} else {
-			child.classList.add('hidden')
-		}
-	}
-}
+    if (includesOnceOf(moduleTags, usedTags)) {
+      child.classList.remove("hidden");
+    } else {
+      child.classList.add("hidden");
+    }
+  }
+};

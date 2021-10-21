@@ -42,7 +42,7 @@ $
 
 File `NeoHookean.idp`
 
-{% highlight cpp %}
+{% highlight freefem %}
 real c10 = 1.2345;
 real c01 = 0.;
 real nu = 0.499;
@@ -85,7 +85,7 @@ Definition of the elasticity law in 2D.
 
 File `ElasticLaw2d.idp`
 
-{% highlight cpp %}
+{% highlight freefem %}
 macro C2(d)
 [
 	1. + 2.*dx(d[0]) + dx(d[0])*dx(d[0]) + dx(d[1])*dx(d[1]),
@@ -138,7 +138,7 @@ macro ddW2d(d, dd, ddd) (ddW(I2d(d), dI2d(d, dd), dI2d(d, ddd)) + dW(I2d(d), ddI
 
 ### Minimization algorithm
 
-{% highlight cpp %}
+{% highlight freefem %}
 load "ff-Ipopt"
 
 include "ElasticLaw2d.idp"

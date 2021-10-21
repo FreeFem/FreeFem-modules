@@ -14,7 +14,7 @@ Build a mesh for the TEAM 7 problem and compute a div-free current in the coil.
 
 TEAM 7 model and a Dirichlet-Laplace problem to get a div-free current, without geometry modifications.
 
-{% highlight cpp %}
+{% highlight freefem %}
 load "msh3"
 load "tetgen"
 load "medit"

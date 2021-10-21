@@ -49,7 +49,7 @@ $
 
 Poiseuille flow in a pipe
 
-{% highlight cpp %}
+{% highlight freefem %}
 //Parameters
 real uMax = 10.;
 
@@ -125,7 +125,7 @@ plot([ux, uy], cmm="Velocity");
 
 Poiseuille flow in a pipe
 
-{% highlight cpp %}
+{% highlight freefem %}
 load "msh3"
 
 //Parameters

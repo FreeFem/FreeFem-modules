@@ -50,7 +50,7 @@ that allows one to implement it by means of FreeFEM tools without low-level matr
 
 Hardcoded TE modes. File `cartezian2D_TEmodes.idp`:
 
-{% highlight cpp %}
+{% highlight freefem %}
 // cartezian2D_TEmodes.idp
 func real Kappate(int modeNumber, real size1, real size2)
 {
@@ -92,7 +92,7 @@ func real fNormte(int modeNumber, real size1)
 
 Hardcoded TM modes. File `cartezian2D_TMmodes.idp`
 
-{% highlight cpp %}
+{% highlight freefem %}
 // cartezian2D_TMmodes.idp
 func real Kappatm(int modeNumber, real size1, real size2)
 {
@@ -135,7 +135,7 @@ func real fNormtm(int modeNumber, real size1)
 
 Script for intermixing TM and TE modes. File `cartezian2D_modes.idp`:
 
-{% highlight cpp %}
+{% highlight freefem %}
 // cartezian2D_modes.idp
 func real H(real k, real kp)
 {
@@ -179,7 +179,7 @@ func real Kappa(int modeNumber, real size1, real size2)
 
 Finally, the main script:
 
-{% highlight cpp %}
+{% highlight freefem %}
 load "Element_Mixte"
 func complex epsilon(real xx, real yy)
 {
@@ -367,7 +367,7 @@ In the axial-symmetric case dimensionless norm and transversal wave numbers are 
 
 Hardcoded TE modes, file `axial2D_TEmodes.idp`:
 
-{% highlight cpp %}
+{% highlight freefem %}
 //axial2D_TEmodes.idp
 func real Kappate(int modeNumber, real size1, real size2)
 {
@@ -425,7 +425,7 @@ func real fNormte(int modeNumber, real size1, real k)
 
 Hardcoded TM modes, file `axial2D_TMmodes.idp`:
 
-{% highlight cpp %}
+{% highlight freefem %}
 func real Kappatm(int modeNumber, real size1, real size2)
 {
     return kappas[abs(modeNumber)-1]/size1;
@@ -480,7 +480,7 @@ func real fNormtm(int modeNumber, real size1, real k)
 
 Script for intermixing TM and TE modes. File `axial2D_modes.idp`:
 
-{% highlight cpp %}
+{% highlight freefem %}
 // axial2D_modes.idp
 ifstream modeInput("modes_m=0.txt");
 int modesNumInput;
@@ -540,7 +540,7 @@ func real Kappa(int modeNumber, real size1, real size2)
 Finally, the main script.
 Note that in 2D axial symmetric Maxwell equations (in axial cut) the variable $r E_{\phi}$ is used rather than $E_{\phi}$
 
-{% highlight cpp %}
+{% highlight freefem %}
 load "Element_Mixte"
 func complex epsilon(real xx, real yy)
 {

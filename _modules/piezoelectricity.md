@@ -57,7 +57,7 @@ with $v$ and $w$ as test functions.
 
 Free vibration of voltage excited piezoelectric circular disc with radius $a$ and thinkness $l$.  Due to axisymmetry of the disc shape the analysis is performed in one half of the disc's cross-section. The bottom (1) and top (3) edges of the rectangular domain represents electrodes and the left edge (4) represents the axis.   The analysis is performed in several frequencies located near modal frequencies of the disc. The model uses coefficients of a PZT5A piezoelectric material without losses (real-valued problem) and uses cylindrical coordinates.
 
-{% highlight cpp %}
+{% highlight freefem %}
 
 // Free vibrations of 2.5cm x 1cm PZT5A cylindrical disc analysed in half of its rectangular cross-section
 // Marek Moszynski 30.03.2020

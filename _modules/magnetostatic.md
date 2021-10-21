@@ -29,7 +29,7 @@ $
 
 ### 2D
 
-{% highlight cpp %}
+{% highlight freefem %}
 //Parameters
 real Mu0 = 4.*pi*1.e-7;	//Vacuum magnetic permeability
 real MuC = 1.25e-6;		//Copper magnetic permeability
@@ -131,7 +131,7 @@ plot(L, nbiso=30, fill=true, value=true, cmm="L");
 
 ### 3D
 
-{% highlight cpp %}
+{% highlight freefem %}
 load "gmsh"
 
 //Parameters
@@ -202,7 +202,7 @@ Ah [Hx, Hy, Hz];
 
 Gmsh script for the 3D mesh:
 
-{% highlight cpp %}
+{% highlight freefem %}
 //////////////////
 ///Optimization///
 //////////////////

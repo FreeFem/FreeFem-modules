@@ -8,7 +8,7 @@ The code available in this repository can reproduce the results from the followi
 ```
 @article{moulin2019al,
     Author = {Moulin, Johann and Jolivet, Pierre and Marquet, Olivier},
-    Title = {{Augmented Lagrangian Preconditioner for Large-Scale Hydrodynamic Stability Analysis}},
+    Title = {Augmented Lagrangian Preconditioner for Large-Scale Hydrodynamic Stability Analysis},
     Year = {2019},
     Pages = {submitted for publication},
     Journal = {Computer Methods in Applied Mechanics and Engineering},

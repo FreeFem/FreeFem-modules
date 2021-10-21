@@ -47,7 +47,7 @@ $$
 
 ## FreeFEM code
 
-{% highlight cpp %}
+{% highlight freefem %}
 //Parameters
 real uMax = 10.;
 

@@ -26,7 +26,7 @@ $
 
 Wifi propagation
 
-{% highlight cpp %}
+{% highlight freefem %}
 // Parameters
 real beta = 0.3; // parameter for the Laplace-Beltrami coefficient
 				 // For Steklov eigenvalue choose 0

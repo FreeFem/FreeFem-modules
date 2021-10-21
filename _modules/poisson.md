@@ -39,7 +39,7 @@ $
 
 Poisson's equation on a square.
 
-{% highlight cpp %}
+{% highlight freefem %}
 // Parameters
 func f = 1.;
 
@@ -82,7 +82,7 @@ plot(u, nbiso=30, fill=true, value=true, cmm="A");
 
 Poisson's equation on a cube.
 
-{% highlight cpp %}
+{% highlight freefem %}
 include "cube.idp"
 
 // Parameters
