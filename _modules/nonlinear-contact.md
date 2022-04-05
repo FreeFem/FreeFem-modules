@@ -28,24 +28,36 @@ E_{p}(\mathbf{v})= \frac{1}{2} \int_{\Omega} \boldsymbol{\sigma}^{T}.\boldsymbol
 }
 $
 
-where $\boldsymbol{\epsilon}$ and $\boldsymbol{\sigma}$ is respectively the strain vector and the stress vector, as the following
+where $\boldsymbol{\epsilon}$ and $\boldsymbol{\sigma}$ is respectively the strain vector and the stress vector, if $\mathbf{v}=(v_{1},v_{2})$ we have
 
 $
 \displaystyle{
-\boldsymbol{\epsilon}=     and   \, \,    \boldsymbol{\sigma} = \mathbf{D} \boldsymbol{\epsilon}
+\boldsymbol{\epsilon}=\begin{pmatrix}
+	\epsilon_{x} \newline
+	\epsilon_{y} \newline
+	\gamma_{xy}
+\end{pmatrix}=\begin{pmatrix}
+	\frac{\partial v_{1}}{\partial x} \newline
+	\frac{\partial v_{2}}{\partial y} \newline
+	\frac{\partial v_{1}}{\partial y} + \frac{\partial v_{2}}{\partial x}
+\end{pmatrix}
+    \, \, \, and   \, \, \,    \boldsymbol{\sigma} = \mathbf{D} \boldsymbol{\epsilon}
 }
 $
 
-and
+In addition
 
 $
 \displaystyle{
-\mathbf{D}=\begin{bmatrix}
-	a & b\newline
-	c & d
+\mathbf{D}=\frac{E}{(1+\nu)(1-2\nu)} \, \begin{bmatrix}
+	1-\nu & \nu & 0 \newline
+	\nu & 1-\nu & 0 \newline
+	0 & 0 & \frac{1-2\nu}{2}
 \end{bmatrix}
 }
 $
+
+with $E$ the Young’s modulus and $\nu$ the Poisson’s ratio.
 
 
 The solution (the displacement field) of the contact problem involving a linear elastic body, can be written as the following minimization problem
@@ -60,15 +72,28 @@ where $\mathbf{K}$ is the set describing the non-penetration condition for the S
 
 $
 \displaystyle{
-\mathbf{K} = \left\lbrace \mathbf{v} \in \mathbf{V} \, | \, (\mathbf{v}+\mathbf{X}-\bar{\mathbf{X}}).\mathbf{n} \geq 0 \text{ a.e on } \Gamma_{C} \right\rbrace
+\mathbf{K} = \left\lbrace \mathbf{v} \in \mathbf{V} \, | \, (\mathbf{v}+\mathbf{X}-\bar{\mathbf{X}}).\mathbf{n} \geq 0 \text{ on } \Gamma_{C} \right\rbrace
 }
 $
 
 where $\mathbf{X}$ is the position in the initial configuration and $\bar{\mathbf{X}}$ its projection on the obstacle.
 
+## Discretization
+
+In order to describe the non-pentration between the body $\Omega$ and the obstacle, the node-to-segment discretization is used.
+
+In general, better and robust results can be obtained using the weak contact formulation (see [1,2]).
+
+
+**NB :** One can find another formulation for the Signorini's problem as in [3].
+
 
 
 ## Algorithms
+
+we consider the contact between an elastic arch and a rigid one, due to an applied pressure.
+
+Please cite [1] or [2] if you want to use the following code.
 
 ### Geometry
 
