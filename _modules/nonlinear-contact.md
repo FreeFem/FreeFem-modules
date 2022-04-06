@@ -372,7 +372,7 @@ func matrix hessianCnst (real[int] &X, real sigma, real[int] &lambda){
   return Hessian;
 }
 
-real[int] cl(nC1); cl=0.; // Constraints lower bounds (no upper bounds)
+real[int] cl(nC1); cl=0.; // Constraints lower bounds (no upper bounds)  
 
 // Boundary conditions for the body
 Wh1 [ub11, ub12] = [1e19, 1e19];                            // Unbounded in interior
