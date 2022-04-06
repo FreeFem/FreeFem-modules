@@ -123,7 +123,7 @@ $
 
 ## Algorithms
 
-we consider the contact between an elastic arch and a rigid one, due to an applied pressure.
+we consider the contact between an elastic arch and a rigid one, due to an applied pressure. A new FreeFEM function, called projection, is used in order to compute the projection points.
 
 Please cite [1] or [2] if you want to use the following code.
 
