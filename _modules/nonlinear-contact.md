@@ -10,9 +10,9 @@ Algorithm to solve the contact between an elastic body and a rigid foundation (o
 
 ## Problem
 
-We consider Signorini's problem which is the contact between a body and a rigid foundation. We treat only the linear elastic materials and the plane strain hypothesis (2D) is assumed. Let $\Omega$ denotes the body and $\Gamma= \partial \Omega$ its boundary. $\Gamma_{0} \subset \Gamma$  denotes the boundary part where a displacement is imposed, $\Gamma_{1} \subset \Gamma$ is the boundary part where a traction vector $\mathbf{t}$ is applied, finally $\Gamma_{C} \subset \Gamma$ denotes the potential contact area.
+We consider Signorini's problem which is the contact between a body and a rigid foundation. We treat only the linear elastic materials case and the plane strain hypothesis (2D) is assumed. Let $\Omega \subset \mathbb{R}^{2}$ denotes the body and $\Gamma= \partial \Omega$ its boundary. $\Gamma_{0} \subset \Gamma$  denotes the boundary part where a displacement is imposed, $\Gamma_{1} \subset \Gamma$ is the boundary part where a traction vector $\mathbf{t}$ is applied, finally $\Gamma_{C} \subset \Gamma$ denotes the potential contact area.
 
-By imposing a null displacement on $\Gamma_{0}$, the admissible set is defined as follows
+By imposing a null displacement on $\Gamma_{0}$, the displacement admissible set is defined as follows
 
 $
 \displaystyle{
@@ -24,7 +24,7 @@ The total potential energy $E_{p}$ is given by the following
 
 $
 \displaystyle{
-E_{p}(\mathbf{v})= \frac{1}{2} \int_{\Omega} \boldsymbol{\sigma}^{T}.\boldsymbol{\epsilon}  \, dV - \int_{\Gamma_{1}} \mathbf{t}.\mathbf{v} \, dA
+E_{p}(\mathbf{v})= \frac{1}{2} \int_{\Omega} \boldsymbol{\sigma}^{T}.\boldsymbol{\epsilon}  \, dV - \int_{\Gamma_{1}} \mathbf{t} . \mathbf{v} \, dA
 }
 $
 
@@ -64,7 +64,7 @@ The solution (the displacement field) of the contact problem involving a linear 
 
 $
 \displaystyle{
-	\mathbf{u}= \underset{\mathbf{v} \in \mathbf{K}}{\text{argmin}}(E_{p}(\mathbf{v}))
+	\mathbf{u}= \underset{\mathbf{v} \in \mathbf{K}}{\text{argmin}} \, (E_{p}(\mathbf{v}))
 }
 $
 
@@ -76,16 +76,48 @@ $
 }
 $
 
-where $\mathbf{X}$ is the position in the initial configuration and $\bar{\mathbf{X}}$ its projection on the obstacle.
+where $\mathbf{X}$ is the position in the initial configuration, $\bar{\mathbf{X}}$ its projection on the obstacle and $\mathbf{n}$ is the outward unit normal vector at $\bar{\mathbf{X}}$.
 
 ## Discretization
 
-In order to describe the non-pentration between the body $\Omega$ and the obstacle, the node-to-segment discretization is used.
+In order to describe the non-pentration between the body $\Omega$ and the obstacle, the node-to-segment discretization is used, in other words the body nodes can not penetrate the obstacle. Let $i$ be a node of the body, belonging to the potential contact area $\Gamma_{C}$, then the non-penetration conditions in this case can be given as follows
+
+$
+\displaystyle{
+(\mathbf{x}^{i}-\bar{\mathbf{x}}^{i}) . \mathbf{n}^{i} \geq 0 \, \, \, \forall \, i=1,\ldots,n_{C}
+}
+$
+
+where $n_{C}$ is the number of the contact nodes, $ \mathbf{x}^{i} $ the actual position of the node $i$, $\bar{\mathbf{x}}^{i}$ the projection on the obstacle of $\mathbf{x}^{i}$ which is equal to $\bar{\mathbf{X}}^{i}$, the projection of the initial position, in the case of small displacements. Finally $\mathbf{n}^{i}$ is the outward unit normal vector at $\bar{\mathbf{x}}^{i}$.
 
 In general, better and robust results can be obtained using the weak contact formulation (see [1,2]).
 
+In the case of small deformations, the total potential energy $E_{p}$ can be given as follows
 
-**NB :** One can find another formulation for the Signorini's problem as in [3].
+$
+\displaystyle{
+E_{p}(U)=\frac{1}{2}U^{T}KU - FU
+}
+$
+
+where $K$ is the rigidity matrix, $F$ the nodale forces and $U \in \mathbb{R}^{n}$ the displacement field degrees of freedom vector. In addition the non-penetration constraints are linear and can be expressed as follows
+
+$
+\displaystyle{
+AU + b \geq 0
+}
+$
+
+Finally, the contact problem for the linear elastic body, can be written as the following minimization problem
+
+$
+\begin{cases}
+\underset{V \in \mathbb{R}^{n}}{\text{min}} \, \frac{1}{2}V^{T}KV - FV \newline
+AV + b \geq 0
+\end{cases}
+$
+
+**NB :** One can find in [3] another formulation for the Signorini's problem.
 
 
 
@@ -115,9 +147,6 @@ real pres=30;
 
 // Amplification
 real amplify =1;
-
-// Finite element space
-func Pk = P1;
 
 //The first body
 int Contact1  = 1;
