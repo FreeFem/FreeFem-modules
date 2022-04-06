@@ -135,8 +135,8 @@ File `Geometry.idp`
 // Body geometry
 
 // Mesh quality
-int nu1  =100;           // Mesh quality for the first body
-int nu2  =102;           // Mesh quality for the second body
+int nu1  =100;           // Mesh quality for the body
+int nu2  =102;           // Mesh quality for the obstacle
 
 // Type of the Finite element space
 func Pk1 = P1;	// Finite element space
@@ -148,7 +148,7 @@ real pres=30;
 // Amplification
 real amplify =1;
 
-//The first body
+// The body
 int Contact1  = 1;
 int Force1    = 2;
 int Symmy     = 3;
@@ -176,8 +176,8 @@ border b24(t=0,e2){x=R6+t;y=0;label=Found2;}
 mesh Th2=buildmesh(b21(nu2)+b22(nu2/10)+b23(nu2)+b24(nu2/10));
 
 // The finite element spaces
-fespace Wh1(Th1,[Pk1,Pk1]); //FE for the first body
-fespace Wh2(Th2,[Pk2,Pk2]); //FE for the Second body
+fespace Wh1(Th1,[Pk1,Pk1]); //FE for the body
+fespace Wh2(Th2,[Pk2,Pk2]); //FE for the obstacle (to define the normal vector)
 {% endhighlight %}
 
 ### Material parameters
@@ -226,7 +226,7 @@ include "Elastic_lin_2d.idp"     // Material data
 include "Geometry.idp"           // Geometrical data
 
 //Degree of Freedom
-int ndof1=Wh1.ndof;        // Number of the degree of freedom for the first body
+int ndof1=Wh1.ndof;        // Number of the degree of freedom for the body
 meshL Lh = extract(Th2);   // The border of Th2 (used to compute the projection points)
 
 // Define the normal field
@@ -254,12 +254,12 @@ for [i, B1i:onBorder1]
 // Working space (All internal variables are deleted after)
 {
  Wh1 [xx1,yy1]=[x,y]; // position vector
- nC1=Jb1.n/2;         // Constraint number
+ nC1=Jb1.n/2;         // Constraints number
  Xb1.resize(2*nC1);
  Xb1=xx1[](Jb1);      // Coord on Border x, y
 } // End working space
 
-Wh1 [U1x, U1y];          // Displacement for the first body
+Wh1 [U1x, U1y];          // Displacement for the body
 
 ///////////////////////////////////////////////////////////
 matrix KRIG;
@@ -268,14 +268,14 @@ Wh1 [D01x, D01y];
 D01x[] = 0.;
 varf ddW1 ([Dx, Dy], [Vx, Vy])
   = int2d(Th1)(ddW2d1([D01x, D01y], [Dx, Dy], [Vx, Vy]));
-KRIG = ddW1(Wh1, Wh1); // Rigidity matrix for body 1
+KRIG = ddW1(Wh1, Wh1); // Rigidity matrix for the body
 
 // Compute external forces
 varf dW1 ([Dx, Dy], [Vx, Vy]) = int1d(Th1,Force1)(-Vx*pres*N.x-Vy*pres*N.y);
-real[int] FEXT = dW1(0, Wh1); // External forces for the first body
+real[int] FEXT = dW1(0, Wh1); // External forces for the body
 ///////////////////////////////////////////////////////////
 
-real[int] DIS(ndof1); 	   // The Unknown displacement composed from the displacement of the first and the second body
+real[int] DIS(ndof1); 	   // The Unknown displacement of the body
 DIS=0.;                    // Initial displacement
 real cpu0=clock();         // Time before resolution
 real[int] Proj(2*nC1);     // (x,y) of the projected points
@@ -297,17 +297,17 @@ for(int i=0;i<nC1;i++){
 
 //*****ENERGY AND ITS DIFFERENTALS*****
 
-// The Energy for the two bodies
+// The Energy of the body
 func real iW (real[int] &X) {
   real[int] idWW(ndof1);
   idWW=KRIG*X;
-	real res =X'*idWW;
+  real res =X'*idWW;
   res=0.5*res-X'*FEXT;   // Energy = 1/2* (X^T)*K*X - (X^T)*Fext
   return res;
 }
 // End Energy function
 
-// Energy Gradient for the two bodies
+// Energy Gradient
 func real[int] idW (real[int] &X) {
   real[int] idWW(ndof1);
   idWW=KRIG*X;
@@ -316,9 +316,9 @@ func real[int] idW (real[int] &X) {
 }
 // End of the gradient energy
 
-// The Energy Hessian of the two bodies
+// The Energy Hessian
 func matrix iddW (real[int] &X) {
- return KRIG;
+  return KRIG;
 }
 // End of the Hessian energy
 
@@ -362,17 +362,17 @@ func real[int] Cnst (real[int] &X) {    //
 } //Constraints
 
 func matrix jacCnst (real[int] &X){
-	return JACOB;
+  return JACOB;
 }
 
 // Hessian of the constraints
 matrix Hessian;
 func matrix hessianCnst (real[int] &X, real sigma, real[int] &lambda){
   Hessian = sigma*iddW(X);
- return Hessian;
+  return Hessian;
 }
 
-real[int] cl(nC1); cl=0.; //constraints lower bounds (no upper bounds)
+real[int] cl(nC1); cl=0.; // Constraints lower bounds (no upper bounds)
 
 // Boundary conditions for the body
 Wh1 [ub11, ub12] = [1e19, 1e19];                            // Unbounded in interior
@@ -396,10 +396,10 @@ plot(Thm1,Th2);
 //Compute the stresses
 fespace Vh1(Th1,P0);
 Vh1 Sigmavm1, sigy1, sigx1, sigxy1, sigz1, sigmar1;
-sigx1=Sigma1([U1x, U1y])[0];  // Stress Component (body 1)
-sigy1=Sigma1([U1x, U1y])[1];  // Stress Component (body 1)
-sigxy1=Sigma1([U1x, U1y])[2]; // Stress Component (body 1)
-sigz1=pois1*(sigx1+sigy1);    // Stress Component (body 1)
+sigx1=Sigma1([U1x, U1y])[0];  // Stress Component
+sigy1=Sigma1([U1x, U1y])[1];  // Stress Component
+sigxy1=Sigma1([U1x, U1y])[2]; // Stress Component
+sigz1=pois1*(sigx1+sigy1);    // Stress Component
 
 Sigmavm1 =sqrt(0.5*((sigx1-sigy1)^2 + (sigy1-sigz1)^2 + (sigz1-sigx1)^2 )+3*sigxy1^2); // Von-Mises stress
 sigmar1=sigx1*(x*x/(x^2+y^2))+sigy1*(y*y/(x^2+y^2)) +2.*sigxy1*(x*y/(x^2+y^2)); // Radial stress
