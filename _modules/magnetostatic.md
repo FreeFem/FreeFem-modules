@@ -455,23 +455,23 @@ Physical Volume(VACUUMVOLUME) = {v+1};
 
 ## Validation
 
-Taking the Biot and Savart formula, P a point on the solenoid , M a point in the space, $\overrightarrow{dl}$ the direction of the current at point P. $$\overrightarrow{Jfil}=Jfil*\overrightarrow{PM}$$
+Taking the Biot and Savart formula, P a point on the solenoid , M a point in the space, $\overrightarrow{dl}$ the direction of the current at point P. $$\overrightarrow{Jfil}=Jfil * \overrightarrow{PM}$$
 	
 $$
-Comme dPM = \overrightarrow{PM} / |PM| =  \overrightarrow{PM} /  \sqrt{\overrightarrow{PM}^2} =   \overrightarrow{PM} / \sqrt{( \overrightarrow{PM}*\overrightarrow{PM} )} 
+{As :   }dPM = \overrightarrow{PM} / |PM| =  \overrightarrow{PM} /  \sqrt{\overrightarrow{PM}^2} =   \overrightarrow{PM} / \sqrt{( \overrightarrow{PM} * \overrightarrow{PM} )} 
 $$
 
 
 $$
-\overrightarrow{dB} = Jfil*u0/(4*\pi) * \frac{ \overrightarrow{dl}  \wedge \overrightarrow{dPM}} {PM^2} =   \frac{Jfil*u0}{4*\pi} *  \begin{pmatrix} dl1  \cr dl2  \cr dl3  \end{pmatrix} \wedge \frac{ \begin{pmatrix} x_M - x_P  \cr y_M - y_P  \cr z_M - z_P  \end{pmatrix} } { ( (x_M - x_P)^2 + (y_M - y_P)^2 + (z_M - z_P)^2 )^{3/2} }
+\overrightarrow{dB} = Jfil * u0/(4 * \pi) * \frac{ \overrightarrow{dl}  \wedge \overrightarrow{dPM}} {PM^2} =   \frac{Jfil * u0}{4 * \pi} *  \begin{pmatrix} dl1  \cr dl2  \cr dl3  \end{pmatrix} \wedge \frac{ \begin{pmatrix} x_M - x_P  \cr y_M - y_P  \cr z_M - z_P  \end{pmatrix} } { ( (x_M - x_P)^2 + (y_M - y_P)^2 + (z_M - z_P)^2 )^{3/2} }
 $$	
 	
 $$
 P\colon
 \begin{pmatrix}
-R*cos(\theta)  \cr
+R * cos(\theta)  \cr
 ycerc        \cr
-R*sin(\theta) 
+R * sin(\theta) 
 \end{pmatrix}
 { ,   }
 M\colon
@@ -492,20 +492,16 @@ sin(\theta)   \cr
 \overrightarrow{PM} 
 \colon
 \begin{pmatrix}
--R*cos(\theta)  \cr
+-R * cos(\theta)  \cr
 ya-ycerc    \cr
--R*sin(\theta)  
+-R * sin(\theta)  
 \end{pmatrix}
 \implies
 { dB=   }
-$$
-
-	
-$$
 \begin{pmatrix}
- \frac{ Jfil*cos(\theta)*u0*(ya-ycerc) } {  4*\pi*((ya-ycerc)^2+R^2)^{3/2} } \cr
-\frac{  Jfil*R*u0 }  {  4*\pi*((ya-ycerc)^2+R^2)^{3/2} }  \cr
-\frac{  Jfil*sin(\theta)*u0*(ya-ycerc)  }  { 4*\pi*((ya-ycerc)^2+R^2)^{3/2}  }
+ \frac{ Jfil * cos(\theta) * u0 * (ya-ycerc) } {  4 * \pi * ((ya-ycerc)^2+R^2)^{3/2} } \cr
+\frac{  Jfil * R * u0 }  {  4 * \pi * ((ya-ycerc)^2+R^2)^{3/2} }  \cr
+\frac{  Jfil * sin(\theta) * u0 * (ya-ycerc)  }  { 4 * \pi * ((ya-ycerc)^2+R^2)^{3/2}  }
 \end{pmatrix}
 $$
 	
@@ -513,36 +509,33 @@ $$
 We are only interested in By according to the $\overrightarrow{y}$ axis.  Because of the cylindrical coordinates, we have to multiply the term dBy by R. We integrate on $\theta$ angle view of the coil, including the height of the coil ycerc and R radius of the coil. 
 
 
-$$
- By = \int_{0}^{2*\pi}\int_{R1}^{R2}\int_{-MagnetHeight/2}^{MagnetHeight/2}  R*  \frac{  Jfil*R*u0 }  {  4*\pi*((ya-ycerc)^2+R^2)^{(3/2)} }* d\theta * dr * dy   = \int  R*  (Jfil*R*u0/2)*\left(  \frac{2*ya+MagnetHeight} {R^2*\sqrt{4*ya^2+4*MagnetHeight*ya+MagnetHeight^2+4*R^2}  }  - \frac{ 2*ya-MagnetHeight }  {R^2*\sqrt{4*ya^2-4*MagnetHeight*ya+MagnetHeight^2+4*R^2}   }  \right) * dr  
+$$By = \int_{0}^{2 * \pi}\int_{R1}^{R2}\int_{-MagnetHeight/2}^{MagnetHeight/2}  R *  \frac{  Jfil * R * u0 }  {  4 * \pi * ((ya-ycerc)^2+R^2)^{(3/2)} } * d\theta * dr * dy = \int  R *  (Jfil * R * u0/2) * $$
+	
+$$\left(  \frac{2 * ya+MagnetHeight} {R^2 * \sqrt{4 * ya^2+4 * MagnetHeight * ya+MagnetHeight^2+4 * R^2}  }  - \frac{ 2 * ya-MagnetHeight }  {R^2 * \sqrt{4 * ya^2-4 * MagnetHeight * ya+MagnetHeight^2+4 * R^2}   }  \right) * dr  
 $$
 
 
 $$
- By= Jfil*u0*/4*\left [  (2*ya+MagnetHeight)*asinh (\frac{2*R2}{\sqrt{4*ya^2+4*MagnetHeight*ya+MagnetHeight^2}  }) \\
-   +(-2*ya-MagnetHeight)*asinh(\frac{2*R1}{\sqrt{4*ya^2+4*MagnetHeight*ya+MagnetHeight^2} }) +(MagnetHeight-2*ya)*asinh(\frac{2*R2}{\sqrt{4*ya^2-4*MagnetHeight*ya+MagnetHeight^2} }) +(2*ya-MagnetHeight)*asinh(\frac{2*R1}{\sqrt{4*ya^2-4*MagnetHeight*ya+MagnetHeight^2} })    \right ]   
+ By= Jfil * u0 * /4 * \left [  (2 * ya+MagnetHeight) * asinh (\frac{2 * R2}{\sqrt{4 * ya^2+4 * MagnetHeight * ya+MagnetHeight^2}  }) \\
+   +(-2 * ya-MagnetHeight) * asinh(\frac{2 * R1}{\sqrt{4 * ya^2+4 * MagnetHeight * ya+MagnetHeight^2} }) +(MagnetHeight-2 * ya) * asinh(\frac{2 * R2}{\sqrt{4 * ya^2-4 * MagnetHeight * ya+MagnetHeight^2} }) +(2 * ya-MagnetHeight) * asinh(\frac{2 * R1}{\sqrt{4 * ya^2-4 * MagnetHeight * ya+MagnetHeight^2} })    \right ]   
 $$
+
 
 At the center, z=0,y=0,   
-$$By (0,0,0) =  Jfil*u0*MagnetHeight/2* ( \operatorname{asinh}( \frac{2 * R2}{MagnetHeight}) -\operatorname{asinh}( \frac{2 *R1}{MagnetHeight}) ) $$
+$$By (0,0,0) =  Jfil * u0 * MagnetHeight/2 * ( \operatorname{asinh}( \frac{2 * R2}{MagnetHeight}) -\operatorname{asinh}( \frac{2 * R1}{MagnetHeight}) ) $$
 
-The function asinh , hyperbolic inverse sinus , is  unavailable under Paraview. Also the square function become 0 at the point $y= \pm MagnetHeight/2$, the ends of the solenoid .  We need to develop again using the following rules.
+The function asinh , inverse hyperbolic sinus , is  unavailable under Paraview. Also the square function become 0 at the point $y= \pm MagnetHeight/2$, the ends of the solenoid .  We need to develop again using the following rules.
 
 $$
 \operatorname{asinh(x)} = log( x + \sqrt{x^2+1} ) {   et   } asinh(a/b) = log( a/b + \sqrt{(a/b)^2+1} )  = log (a+ \sqrt{a^2+b^2})-log(b);
 $$
 
-$$By (0,ya,0) =  Jfil*u0/4* (  (2*ya+MagnetHeight)*(\log(  \sqrt{(2*ya+MagnetHeight)^2+4*R2^2}+2*R2  )  
-	
-	- \log(  \sqrt{(2*ya+MagnetHeight)^2+4*R1^2}+2*R1  ) )  
-	
-	+(2*ya-MagnetHeight)*(  \log(  \sqrt{(2*ya-MagnetHeight)^2+4*R1^2}+2*R1  ) - \log(  \sqrt{(2*ya-MagnetHeight)^2+4*R2^2}+2*R2  )  )  )
+$$By (0,ya,0) =  Jfil * u0/4 * (  (2 * ya+MagnetHeight) * (\log(  \sqrt{(2 * ya+MagnetHeight)^2+4 * R2^2}+2 * R2  )  - \log(  \sqrt{(2 * ya+MagnetHeight)^2+4 * R1^2}+2 * R1  ) ) +(2 * ya-MagnetHeight) * (  \log(  \sqrt{(2 * ya-MagnetHeight)^2+4 * R1^2}+2 * R1  ) - \log(  \sqrt{(2 * ya-MagnetHeight)^2+4 * R2^2}+2 * R2  )  )  )
 $$
 
 In the code , add the lines to compute the formula and produce a cut.
 
-{% highlight freefem %}
-	
+```
 Ah Byanaly;
 
 Byanaly  =    -(J0*Mu0*((2*y+MagnetHeight)*(log(sqrt((2*y+MagnetHeight)^2+4*MagnetExternalRadius^2)+2*MagnetExternalRadius)-log(sqrt((2*y+MagnetHeight)^2+4*MagnetInternalRadius^2)+2*MagnetInternalRadius))-(2*y-MagnetHeight)*(log(sqrt((2*y-MagnetHeight)^2+4*MagnetExternalRadius^2)+2*MagnetExternalRadius)-log(sqrt((2*y-MagnetHeight)^2+4*MagnetInternalRadius^2)+2*MagnetInternalRadius))))/4   ;
@@ -558,56 +551,51 @@ x = 0.0;
 xx[i] = i;
 yy[i] = By; // Value of uh at point (i/10., i/10.)
 yy2[i] = Byanaly;
-
 }
 
 plot([xx, yy], [xx, yy2] , wait=true);
 
-
+```
 
 An another way is the Gauss-Legendre quadrature. For an easy geometry, it can integrate and give the field anywhere in the space except in the conductor of solenoid.
 
 		       
 See the link:  [lien wikipedia FR ](https://fr.wikipedia.org/wiki/M%C3%A9thodes_de_quadrature_de_Gauss)
 
-To resume, an integral of f(x) become a sum of the function f(x) at xn specific points (roots of a Legendre polynome xn),  weighted by an. $$Y=\int f(x) = \sum_i^n an_i*f(x_i^n)$$
+To resume, an integral of f(x) become a sum of the function f(x) at xn specific points (roots of a Legendre polynome xn),  weighted by an. $$Y=\int f(x) = \sum_i^n an_i * f(x_i^n)$$
 
 
 With the same parameters , except M in the plan (x,y,0)  so M has the coordinates (xa,ya,0), giving:
 
 
-$${ dB=   Jfil*u0 }/4/\pi*
+$${ dB=   Jfil * u0 }/4/\pi * 
 \begin{pmatrix}
- \frac{ cos(\theta)*(ya-ycerc) } { ( (ya-ycerc)^2+(xa-R*cos(\theta))^2+R^2*sin(\theta)^2)^{(3/2)}   } \\
+ \frac{ cos(\theta) * (ya-ycerc) } { ( (ya-ycerc)^2+(xa-R * cos(\theta))^2+R^2 * sin(\theta)^2)^{(3/2)}   } \\
 \\
-\frac{ (R*sin(\theta)^2-cos(\theta)*(xa-R*cos(\theta) )  ) }  { ((ya-ycerc)^2+(xa-R*cos(\theta))^2+R^2*sin(\theta)^2)^{(3/2)} }  \\
+\frac{ (R * sin(\theta)^2-cos(\theta) * (xa-R * cos(\theta) )  ) }  { ((ya-ycerc)^2+(xa-R * cos(\theta))^2+R^2 * sin(\theta)^2)^{(3/2)} }  \\
 \\
-\frac{  sin(\theta)*(ya-ycerc) }  { ((ya-ycerc)^2+(xa-R*cos(\theta))^2+R^2*sin(\theta)^2)^{(3/2)}  }
+\frac{  sin(\theta) * (ya-ycerc) }  { ((ya-ycerc)^2+(xa-R * cos(\theta))^2+R^2 * sin(\theta)^2)^{(3/2)}  }
 \end{pmatrix}$$
 
 To avoid an triple integration, we "pre-integrate" along the axis of the solenoid and let two integrals along $\theta$ and R. The "pre-integration" is named f(x) for convenience. An term R is added due to the cylindricals coordinates.
-$$\iint_{\theta=0}$$
 
-$$By=\iint_{\theta=0,\ R=R1}^{\theta=2\pi,\ R=R2}  f(\theta,R) * d\theta * dr =$$
-$$\iint  -R*Jfil*u0/4/\pi*(cos(\theta)*xa-R)*  \left( \frac { ((2*ya+MagnetHeight)*\sqrt{(4*ya^2+4*MagnetHeight*ya+4*xa^2-8*R*cos(\theta)*xa+MagnetHeight^2+4*R^2)} )} {
-((4*xa^2-8*R*cos(\theta)*xa+4*R^2)*ya^2+(4*MagnetHeight*xa^2-8*R*MagnetHeight*cos(\theta)*xa+4*R^2*MagnetHeight)*ya \\
-+4*xa^4-16*R*cos(\theta)*xa^3+(16*R^2*cos(\theta)^2+MagnetHeight^2+8*R^2)*xa^2+(-2*R*MagnetHeight^2-16*R^3)*cos(\theta)*xa+R^2*MagnetHeight^2+4*R^4) }  \\
-\\
-- \frac {   -((2*ya-MagnetHeight)*\sqrt{(4*ya^2-4*MagnetHeight*ya+4*xa^2-8*R*cos(\theta)*xa+MagnetHeight^2+4*R^2)})  } {  ((4*xa^2-8*R*cos(\theta)*xa+4*R^2)*ya^2+(-4*MagnetHeight*xa^2+8*R*MagnetHeight*cos(\theta)*xa-4*R^2*MagnetHeight)*ya   \\
-+4*xa^4-16*R*cos(\theta)*xa^3+(16*R^2*cos(\theta)^2+MagnetHeight^2+8*R^2)*xa^2+(-2*R*MagnetHeight^2-16*R^3)*cos(\theta)*xa+R^2*MagnetHeight^2+4*R^4)  }  \right)     d\theta * dr
+$$
+By =  \iint_{\theta=0,\ R=R1}^{\theta=2\pi,\ R=R2}  f(\theta,R) * d\theta * dr = \iint  -R * Jfil * u0/4/\pi * (cos(\theta) * xa-R) *   \left( \frac { ((2 * ya+MagnetHeight) * \sqrt{(4 * ya^2+4 * MagnetHeight * ya+4 * xa^2-8 * R * cos(\theta) * xa+MagnetHeight^2+4 * R^2)} )} {  ((4 * xa^2-8 * R * cos(\theta) * xa+4 * R^2) * ya^2+(4 * MagnetHeight * xa^2-8 * R * MagnetHeight * cos(\theta) * xa+4 * R^2 * MagnetHeight) * ya  +4 * xa^4-16 * R * cos(\theta) * xa^3+(16 * R^2 * cos(\theta)^2+MagnetHeight^2+8 * R^2) * xa^2+(-2 * R * MagnetHeight^2-16 * R^3) * cos(\theta) * xa+R^2 * MagnetHeight^2+4 * R^4) }  - \frac {   -((2 * ya-MagnetHeight) * \sqrt{(4 * ya^2-4 * MagnetHeight * ya+4 * xa^2-8 * R * cos(\theta) * xa+MagnetHeight^2+4 * R^2)})  } {  ((4 * xa^2-8 * R * cos(\theta) * xa+4 * R^2) * ya^2+(-4 * MagnetHeight * xa^2+8 * R * MagnetHeight * cos(\theta) * xa-4 * R^2 * MagnetHeight) * ya   +4 * xa^4-16 * R * cos(\theta) * xa^3+(16 * R^2 * cos(\theta)^2+MagnetHeight^2+8 * R^2) * xa^2+(-2 * R * MagnetHeight^2-16 * R^3) * cos(\theta) * xa+R^2 * MagnetHeight^2+4 * R^4)  }  \right)    * d\theta * dr
 $$
 
 
-The integration is better with an higher degree of the polynomials used,  n is the quadrature degree  , an_i and an_j are the weights for the integral along $\theta$ and R.  $\theta_i$ and $R_i$ are the discrete values for $\theta$ et R. Legendre polynomials is valid on [-1;1], change the domain is necessary for $\theta$ and R respectively [0;\pi] et [R1;R2].
+
+The integration is better with an higher degree of the polynomials used,  n is the quadrature degree  , an_i and an_j are the weights for the integral along $\theta$ and R.  $\theta_i$ and $R_i$ are the discrete values for $\theta$ et R. Legendre polynomials is valid on [-1;1], change the domain is necessary for $\theta$ and R respectively $[0;\pi]$ et [R1;R2].
+		       
 $$
-\theta \in [0;\pi] \implies \theta_i^n =   (2*\pi -0)/2.0 *x_i  +  (2*\pi +0) /2 
+\theta \in [0;\pi] \implies \theta_i^n =   (2 * \pi -0)/2.0 * x_i  +  (2 * \pi +0) /2 
 {   }
 R \in [R1;R2] \implies   R_i^n  =   (MagnetExternalRadius - MagnetInternalRadius)/2.0 * x_j + (MagnetExternalRadius + MagnetInternalRadius)/2.0 
 $$
 
 
 $$
-By  \simeq   \sum_i^n \sum_j^n  an_i*an_j*(\theta_{max}-\theta_{min})/2*(Rbobine_{max} - Rbobine_{min})/2 * f(\theta_i,R_j) = \sum_i^n \sum_j^n    an_i*an_j* (2\pi -0)/2.0 *(MagnetExternalRadius - MagnetInternalRadius)/2.0 * f(\theta_i,R_j)
+By  \simeq   \sum_i^n \sum_j^n  an_i * an_j * (\theta_{max}-\theta_{min})/2 * (Rbobine_{max} - Rbobine_{min})/2 * f(\theta_i,R_j) = \sum_i^n \sum_j^n    an_i * an_j * (2\pi -0)/2.0 *(MagnetExternalRadius - MagnetInternalRadius)/2.0 * f(\theta_i,R_j)
 $$
 
 
@@ -615,17 +603,19 @@ The computing take 3/4 h with an laptop. Looking the curves on Paraview, the res
 
 The code :
 
-
+```
 /*
 
 Calcul du champ par méthode de Gauss Legendre
 
 */
-`
 
+load iovtk
+		       
+Ah Bymet;
+		       
 int degpoly= 9;
 real[int]  xn= [    0.000000000000000, 0.324253423403809,  0.613371432700590, 0.836031107326636, 0.968160239507626, -0.324253423403809, -0.613371432700590, -0.836031107326636, -0.968160239507626   ];
-
 real[int]  an=[  0.330239355001260,0.312347077040003,0.260610696402935,0.180648160694857,0.081274388361574,0.312347077040003,0.260610696402935,0.180648160694857,0.081274388361574  ];
 
 
@@ -633,7 +623,6 @@ real[int]  an=[  0.330239355001260,0.312347077040003,0.260610696402935,0.1806481
 real rayonc = 0.0;
 real theta2 = 0.0;
 real ycerc = 0.0;
-
 
 
 
@@ -648,7 +637,8 @@ rayonc  =   (MagnetExternalRadius - MagnetInternalRadius)/2.0 * xn[j] + (MagnetE
 
 cout << "iteration i = "<< i << "  iteration j = "<< j  << endl;
 
-Bzmet =  Bzmet +     an[i]*an[j]* (2*pi -0)/2.0 *(MagnetExternalRadius - MagnetInternalRadius)/2.0 * rayonc * (J0*Mu0*(rayonc*cos(theta2)^2-sin(theta2)*(x-rayonc*sin(theta2)))*(((2*y+MagnetHeight)*sqrt(4*y^2+4*MagnetHeight*y+4*x^2-8*rayonc*sin(theta2)*x+4*rayonc^2*sin(theta2)^2+4*rayonc^2*cos(theta2)^2+MagnetHeight^2))/((4*x^2-8*rayonc*sin(theta2)*x+4*rayonc^2*sin(theta2)^2+4*rayonc^2*cos(theta2)^2)*y^2+(4*MagnetHeight*x^2-8*MagnetHeight*rayonc*sin(theta2)*x+4*MagnetHeight*rayonc^2*sin(theta2)^2+4*MagnetHeight*rayonc^2*cos(theta2)^2)*y+4*x^4-16*rayonc*sin(theta2)*x^3+(24*rayonc^2*sin(theta2)^2+8*rayonc^2*cos(theta2)^2+MagnetHeight^2)*x^2+(((-16*rayonc^3*cos(theta2)^2)-2*MagnetHeight^2*rayonc)*sin(theta2)-16*rayonc^3*sin(theta2)^3)*x+4*rayonc^4*sin(theta2)^4+(8*rayonc^4*cos(theta2)^2+MagnetHeight^2*rayonc^2)*sin(theta2)^2+4*rayonc^4*cos(theta2)^4+MagnetHeight^2*rayonc^2*cos(theta2)^2)-((2*y-MagnetHeight)*sqrt(4*y^2-4*MagnetHeight*y+4*x^2-8*rayonc*sin(theta2)*x+4*rayonc^2*sin(theta2)^2+4*rayonc^2*cos(theta2)^2+MagnetHeight^2))/((4*x^2-8*rayonc*sin(theta2)*x+4*rayonc^2*sin(theta2)^2+4*rayonc^2*cos(theta2)^2)*y^2+((-4*MagnetHeight*x^2)+8*MagnetHeight*rayonc*sin(theta2)*x-4*MagnetHeight*rayonc^2*sin(theta2)^2-4*MagnetHeight*rayonc^2*cos(theta2)^2)*y+4*x^4-16*rayonc*sin(theta2)*x^3+(24*rayonc^2*sin(theta2)^2+8*rayonc^2*cos(theta2)^2+MagnetHeight^2)*x^2+(((-16*rayonc^3*cos(theta2)^2)-2*MagnetHeight^2*rayonc)*sin(theta2)-16*rayonc^3*sin(theta2)^3)*x+4*rayonc^4*sin(theta2)^4+(8*rayonc^4*cos(theta2)^2+MagnetHeight^2*rayonc^2)*sin(theta2)^2+4*rayonc^4*cos(theta2)^4+MagnetHeight^2*rayonc^2*cos(theta2)^2)))/(4*pi);
+								
+Bymet =  Bymet +     an[i]*an[j]* (2*pi -0)/2.0 *(MagnetExternalRadius - MagnetInternalRadius)/2.0 * rayonc * (J0*Mu0*(rayonc*cos(theta2)^2-sin(theta2)*(x-rayonc*sin(theta2)))*(((2*y+MagnetHeight)*sqrt(4*y^2+4*MagnetHeight*y+4*x^2-8*rayonc*sin(theta2)*x+4*rayonc^2*sin(theta2)^2+4*rayonc^2*cos(theta2)^2+MagnetHeight^2))/((4*x^2-8*rayonc*sin(theta2)*x+4*rayonc^2*sin(theta2)^2+4*rayonc^2*cos(theta2)^2)*y^2+(4*MagnetHeight*x^2-8*MagnetHeight*rayonc*sin(theta2)*x+4*MagnetHeight*rayonc^2*sin(theta2)^2+4*MagnetHeight*rayonc^2*cos(theta2)^2)*y+4*x^4-16*rayonc*sin(theta2)*x^3+(24*rayonc^2*sin(theta2)^2+8*rayonc^2*cos(theta2)^2+MagnetHeight^2)*x^2+(((-16*rayonc^3*cos(theta2)^2)-2*MagnetHeight^2*rayonc)*sin(theta2)-16*rayonc^3*sin(theta2)^3)*x+4*rayonc^4*sin(theta2)^4+(8*rayonc^4*cos(theta2)^2+MagnetHeight^2*rayonc^2)*sin(theta2)^2+4*rayonc^4*cos(theta2)^4+MagnetHeight^2*rayonc^2*cos(theta2)^2)-((2*y-MagnetHeight)*sqrt(4*y^2-4*MagnetHeight*y+4*x^2-8*rayonc*sin(theta2)*x+4*rayonc^2*sin(theta2)^2+4*rayonc^2*cos(theta2)^2+MagnetHeight^2))/((4*x^2-8*rayonc*sin(theta2)*x+4*rayonc^2*sin(theta2)^2+4*rayonc^2*cos(theta2)^2)*y^2+((-4*MagnetHeight*x^2)+8*MagnetHeight*rayonc*sin(theta2)*x-4*MagnetHeight*rayonc^2*sin(theta2)^2-4*MagnetHeight*rayonc^2*cos(theta2)^2)*y+4*x^4-16*rayonc*sin(theta2)*x^3+(24*rayonc^2*sin(theta2)^2+8*rayonc^2*cos(theta2)^2+MagnetHeight^2)*x^2+(((-16*rayonc^3*cos(theta2)^2)-2*MagnetHeight^2*rayonc)*sin(theta2)-16*rayonc^3*sin(theta2)^3)*x+4*rayonc^4*sin(theta2)^4+(8*rayonc^4*cos(theta2)^2+MagnetHeight^2*rayonc^2)*sin(theta2)^2+4*rayonc^4*cos(theta2)^4+MagnetHeight^2*rayonc^2*cos(theta2)^2)))/(4*pi);
 
 
 }
@@ -656,11 +646,15 @@ Bzmet =  Bzmet +     an[i]*an[j]* (2*pi -0)/2.0 *(MagnetExternalRadius - MagnetI
 //cout << "iteration i = "<< i << "  iteration j = "<< j  << endl;
 
 }
-`
+								 
+savevtk("/home/users/Documents/sortiemethodGL.vtk",Th, Bymet , dataname="B", bin=false );								 
+								 
+```
 
 
 ## Authors
 
 Author: [Simon Garnotel](https://github.com/sgarnotel)
+								 
 Author: [tess35](https://github.com/tess35)   for validation part
 
