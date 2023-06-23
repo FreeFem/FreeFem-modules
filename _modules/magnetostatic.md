@@ -560,19 +560,21 @@ See the link: [lien wikipedia FR ](https://fr.wikipedia.org/wiki/M%C3%A9thodes_d
 
 To resume, an integral of f(x) become a sum of the function f(x) at xn specific points (roots of a Legendre polynome xn), weighted by an.
 $
-\displaystyle{Y=\int f(x) = \sum_i^n an_i * f(x_i^n)}$
+\displaystyle{Y=\int f(x) = \sum_i^n an_i * f(x_i^n)}
+$
 
 With the same parameters , except M in the plan (x,y,0) so M has the coordinates (xa,ya,0), giving:
 
-$
-\displaystyle{{ dB=   Jfil * u0 }/4/\pi * 
-\begin{pmatrix}
- \frac{ cos(\theta) * (ya-ycerc) } { ( (ya-ycerc)^2+(xa-R * cos(\theta))^2+R^2 * sin(\theta)^2)^{(3/2)}   } \\
-\\
-\frac{ (R * sin(\theta)^2-cos(\theta) * (xa-R * cos(\theta) )  ) }  { ((ya-ycerc)^2+(xa-R * cos(\theta))^2+R^2 * sin(\theta)^2)^{(3/2)} }  \\
-\\
-\frac{  sin(\theta) * (ya-ycerc) }  { ((ya-ycerc)^2+(xa-R * cos(\theta))^2+R^2 * sin(\theta)^2)^{(3/2)}  }
-\end{pmatrix}}$
+$\displaystyle{
+	{ dB=   Jfil * u0 }/4/\pi * 
+	\begin{pmatrix}
+		\frac{ cos(\theta) * (ya-ycerc) } { ( (ya-ycerc)^2+(xa-R * cos(\theta))^2+R^2 * sin(\theta)^2)^{(3/2)}   } \\
+		\\
+		\frac{ (R * sin(\theta)^2-cos(\theta) * (xa-R * cos(\theta) )  ) }  { ((ya-ycerc)^2+(xa-R * cos(\theta))^2+R^2 * sin(\theta)^2)^{(3/2)} }  \\
+		\\
+		\frac{  sin(\theta) * (ya-ycerc) }  { ((ya-ycerc)^2+(xa-R * cos(\theta))^2+R^2 * sin(\theta)^2)^{(3/2)}  }
+	\end{pmatrix}
+}$
 
 To avoid an triple integration, we "pre-integrate" along the axis of the solenoid and let two integrals along $\theta$ and R. The "pre-integration" is named f(x) for convenience. An term R is added due to the cylindricals coordinates.
 
@@ -582,7 +584,7 @@ By =  \iint_{\theta=0,\ R=R1}^{\theta=2\pi,\ R=R2}  f(\theta,R) * d\theta * dr =
 }$
 
 The integration is better with an higher degree of the polynomials used, n is the quadrature degree , an_i and an_j are the weights for the integral along $\theta$ and R. $\theta_i$ and $R_i$ are the discrete values for $\theta$ et R. Legendre polynomials is valid on [-1;1], change the domain is necessary for $\theta$ and R respectively $[0;\pi]$ et [R1;R2].
-  
+
 $
 \displaystyle{
 \theta \in [0;\pi] \implies \theta_i^n =   (2 * \pi -0)/2.0 * x_i  +  (2 * \pi +0) /2 
