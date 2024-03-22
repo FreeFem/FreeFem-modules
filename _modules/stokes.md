@@ -15,7 +15,7 @@ Solve:
 $$
 \left\{
 \begin{align*}
-	-\Delta\mathbf{u} + \nabla p &= 0\\
+	-\mu\Delta\mathbf{u} + \nabla p &= 0\\
 	\nabla\cdot\mathbf{u} &= 0
 \end{align*}
 \right.
@@ -25,7 +25,7 @@ $$
 
 $
 \displaystyle{
-	\mu\int_{\Omega}{\nabla\mathbf{u}:\nabla\mathbf{v} - p\nabla\cdot\mathbf{v}} - \int_{\partial\Omega}{\left(\nu\frac{\partial\mathbf{u}}{\partial\mathbf{n}}-p\mathbf{n}\right)\cdot\mathbf{v}} = \int_{\Omega}{\mathbf{f}\cdot\mathbf{v}}
+	\mu\int_{\Omega}{\nabla\mathbf{u}:\nabla\mathbf{v} - p\nabla\cdot\mathbf{v}} - \int_{\partial\Omega}{\left(\mu\frac{\partial\mathbf{u}}{\partial\mathbf{n}}-p\mathbf{n}\right)\cdot\mathbf{v}} = \int_{\Omega}{\mathbf{f}\cdot\mathbf{v}}
 }
 $
 

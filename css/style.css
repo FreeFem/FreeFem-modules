@@ -1,5 +1,5 @@
 /** IMPORT **/
-@import "media.css";
+@import 'media.css';
 
 /** GLOBAL **/
 html {
@@ -26,13 +26,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-body>section {
-  border-bottom: 0.125rem solid #EFEFEF;
+body > section {
+  border-bottom: 0.125rem solid #efefef;
 }
 
 a {
   text-decoration: none;
-  color: #00007F;
+  color: #00007f;
 }
 
 p {
@@ -40,7 +40,7 @@ p {
 }
 
 a:hover {
-  color: #0000FF;
+  color: #0000ff;
 }
 
 /** HEADER **/
@@ -48,11 +48,11 @@ header {
   min-height: 3.75rem;
   display: flex;
   flex-direction: row;
-  background-color: #FFF;
+  background-color: #fff;
   justify-content: space-between;
   align-items: center;
   text-align: center;
-  border-bottom: 0.125rem solid #EFEFEF;
+  border-bottom: 0.125rem solid #efefef;
   position: sticky;
   top: 0;
   z-index: 1;
@@ -77,7 +77,7 @@ nav {
 }
 
 #donate {
-  background-color: #00007F;
+  background-color: #00007f;
   color: #fff;
   font-weight: 900;
   padding: 0 0.25rem;
@@ -93,7 +93,7 @@ header a.icon {
 #main {
   display: flex;
   flex-direction: row;
-  background-color: #F7F7F9;
+  background-color: #f7f7f9;
   align-items: stretch;
   justify-content: space-between;
   padding: 0;
@@ -103,7 +103,7 @@ header a.icon {
 /** SIDE NAVIGATION **/
 #sideNavigation {
   width: 30%;
-  border-right: 0.125rem solid #EFEFEF;
+  border-right: 0.125rem solid #efefef;
 }
 
 .side-nav {
@@ -111,14 +111,16 @@ header a.icon {
   top: 5.3rem;
 }
 
-.categoriesArea, .searchArea, .modulesList {
-  margin: .5rem 1rem .5rem 1rem;
+.categoriesArea,
+.searchArea,
+.modulesList {
+  margin: 0.5rem 1rem 0.5rem 1rem;
 }
 
 /** CATEGORIES TAGS **/
 #sideNavigation .categoriesArea {
-  background-color: #FFF;
-  border: 1px solid #DDD;
+  background-color: #fff;
+  border: 1px solid #ddd;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -126,17 +128,17 @@ header a.icon {
 }
 
 #sideNavigation .categoriesArea:focus-within {
-  border: 1px solid #00007F;
+  border: 1px solid #00007f;
 }
 
 #sideNavigation .categoriesArea i {
-  color: #00007F;
+  color: #00007f;
   margin: 7px;
 }
 
 /** SEARCH AREA **/
 #sideNavigation .searchArea {
-  background-color: #FFF;
+  background-color: #fff;
   height: 1.875rem;
 }
 
@@ -163,7 +165,7 @@ header a.icon {
 }
 
 #sideNavigation .search input:focus {
-  border: 1px solid #00007F;
+  border: 1px solid #00007f;
 }
 
 #sideNavigation .search svg {
@@ -172,7 +174,7 @@ header a.icon {
 }
 
 #sideNavigation .search svg g {
-  fill: #00007F;
+  fill: #00007f;
 }
 
 /** MODULES LIST **/
@@ -183,16 +185,16 @@ header a.icon {
 }
 
 #modulesList a {
-  margin: .3rem 0;
+  margin: 0.3rem 0;
   color: #444 !important;
 }
 
 #modulesList a:hover {
-  color: #0000FF !important;
+  color: #0000ff !important;
 }
 
 #modulesList .current {
-  color: #00007F !important;
+  color: #00007f !important;
 }
 
 .hidden {
@@ -201,7 +203,7 @@ header a.icon {
 
 #modulesList li {
   list-style-type: none;
-  margin: .7rem 0;
+  margin: 0.7rem 0;
 }
 
 #menu {
@@ -213,24 +215,35 @@ header a.icon {
   width: 70%;
   display: flex;
   flex-direction: column;
-  background-color: #FFF;
+  background-color: #fff;
   overflow-y: auto;
 }
 
-#algoDisplay h1, #algoDisplay h2, #algoDisplay h3, #algoDisplay h4, #algoDisplay h5, #algoDisplay h6 {
+#algoDisplay h1,
+#algoDisplay h2,
+#algoDisplay h3,
+#algoDisplay h4,
+#algoDisplay h5,
+#algoDisplay h6 {
   margin: 0;
-  background-color: #F7F7F9;
+  background-color: #f7f7f9;
   padding: 1rem;
   font-weight: 700;
 }
 
-#algoDisplay p, .MathJax_Display {
+#algoDisplay p {
   margin: 1rem !important;
   width: unset !important;
 }
 
+mjx-math {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
 #algoDisplay figure.highlight {
-  background-color: #EFEFEF;
+  background-color: #efefef;
 }
 
 #algoDisplay figure pre {
@@ -242,11 +255,11 @@ header a.icon {
 
 #algoDisplay table {
   margin: 20px 40px;
-  background-color: #EFEFEF;
+  background-color: #efefef;
 }
 
 #algoDisplay tbody {
-  background-color: #FFF;
+  background-color: #fff;
 }
 
 #algoDisplay table img {
@@ -289,9 +302,8 @@ header a.icon {
 #home div {
   flex: 0 1 auto;
   max-width: 50%;
-  background-color: #F7F7F9;
+  background-color: #f7f7f9;
   padding: 1rem;
-  /* text-align: center; */
   display: flex;
   flex-direction: column;
   z-index: 1;
@@ -326,7 +338,7 @@ header a.icon {
   margin: 0;
   font-weight: 700;
   font-size: 0.9em;
-  color: #00007F;
+  color: #00007f;
 }
 
 #home .header-github-stars {
@@ -337,33 +349,33 @@ header a.icon {
   margin: 0;
   font-size: 0.9em;
   display: none;
-  color: #00007F;
+  color: #00007f;
 }
 
 #home .header-github:hover {
-  color: #0000FF;
+  color: #0000ff;
 }
 
-#home .header-github:hover>i {
-  color: #0000FF;
+#home .header-github:hover > i {
+  color: #0000ff;
 }
 
-#home .header-github:hover>.header-github-title {
-  color: #0000FF;
+#home .header-github:hover > .header-github-title {
+  color: #0000ff;
 }
 
-#home .header-github:hover>.header-github-stars {
-  color: #0000FF;
+#home .header-github:hover > .header-github-stars {
+  color: #0000ff;
 }
 
 /** SCROLLBAR DESIGN **/
 body::-webkit-scrollbar {
-  width: .55rem;
+  width: 0.55rem;
 }
 
 ::-webkit-scrollbar {
-  width: .27rem;
-  height: .27rem;
+  width: 0.27rem;
+  height: 0.27rem;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -371,5 +383,5 @@ body::-webkit-scrollbar {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #0000FF;
+  background: #0000ff;
 }
