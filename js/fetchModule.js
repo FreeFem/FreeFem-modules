@@ -6,6 +6,10 @@ window.addEventListener('popstate', function (event) {
   }
 })
 
+function updateMathJax() {
+  MathJax.typesetPromise().catch(updateMathJax)
+}
+
 function fetchModule(e, url, title, disableHistory) {
   e.preventDefault()
 
@@ -48,7 +52,7 @@ function fetchModule(e, url, title, disableHistory) {
       document.title = 'FreeFEM - ' + title
 
       // Relaunch MathJax
-      MathJax.typesetPromise().catch(console.error)
+      updateMathJax()
     })
     .catch(function (err) {
       console.log('Failed to fetch page: ', err)
