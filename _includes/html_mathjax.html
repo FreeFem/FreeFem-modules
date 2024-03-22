@@ -14,3 +14,31 @@
   async
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
 ></script>
+<script>
+  const maxRretry = 100
+  let nRetry = 0
+
+  const mathjaxRefresh = () => {
+    if (!MathJax) {
+      mathjaxRetry(() => mathjaxRefresh())
+      return
+    }
+
+    MathJax.typesetPromise().catch(() => {
+      console.warn('MathJax::typeset failed')
+      mathjaxRetry(() => mathjaxRefresh())
+    })
+  }
+
+  const mathjaxRetry = (func) => {
+    nRetry++
+    if (nRetry <= maxRretry) {
+      // Retry if error
+      setTimeout(func, 50)
+    } else {
+      console.warn('MathJax::Max retry number reached. No retry')
+    }
+  }
+
+  mathjaxRefresh()
+</script>
